@@ -2,7 +2,7 @@ using System;
 
 namespace ifpfc.Logic.Hohmann
 {
-	public class HohmannState : BasicState
+	public class HohmannState : LogicState
 	{
 		public double TargetOrbitR { get; set; }
 

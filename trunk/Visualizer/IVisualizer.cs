@@ -1,7 +1,9 @@
+using ifpfc;
+
 namespace Visualizer
 {
 	internal interface IVisualizer
 	{
-		void Paint(SimulationState state);
+		void Paint(VisualizerState state);
 	}
 }
