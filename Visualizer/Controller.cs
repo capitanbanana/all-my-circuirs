@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using ifpfc;
 using ifpfc.Logic;
 using ifpfc.VM;
-using SKBKontur.LIT.Core;
 
 namespace Visualizer
 {
@@ -11,10 +11,11 @@ namespace Visualizer
 	{
 		public Controller(ProblemDescription problem, IVisualizer visualizer)
 		{
-			vm = new VirtualMachine(117, problem.ScenarioNumber, problem.ScenarioNumber, new File(problem.ImageFile).Content.Data);
+			vm = new HohmannsEngine(117, problem.ScenarioNumber, problem.ScenarioNumber);
 			solverDriver = new Driver(problem.Solver);
 			this.visualizer = visualizer;
 			simulationTimer.Tick += (sender, args) => StepForward();
+			simulationTimer.Start();
 		}
 		
 		public void StepForward()
@@ -56,9 +57,7 @@ namespace Visualizer
 		{
 			get
 			{
-				if (currentTime >= history.Count)
-					return null;
-				return history[currentTime];
+				return history[currentTime - 1];
 			}
 		}
 
