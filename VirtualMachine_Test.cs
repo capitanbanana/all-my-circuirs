@@ -15,8 +15,15 @@ namespace ifpfc
 		[Fact]
 		public void can_run_first_image()
 		{
-			var vm = new VirtualMachine(42, 42, 42, ReadImage("bin1.obf"));
-			vm.RunTimeStep(0.0, 0.0);
+			var vm = new VirtualMachine(42, 1001, 1001, ReadImage("bin1.obf"));
+			var ports = vm.RunTimeStep(0.0, 0.0);
+			LogOutputPorts(ports);
+		}
+		
+		private static void LogOutputPorts(double[] output)
+		{
+			for (int i = 0; i < 10; i++)
+				Console.WriteLine("port {0} = {1}", i, output[i]);
 		}
 
 		[Fact]

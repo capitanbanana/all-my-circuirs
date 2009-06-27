@@ -12,7 +12,13 @@ namespace ifpfc
 			this.teamId = teamId;
 			this.scenarioId = scenarioId;
 			inport[configurationPort] = configurationNumber;
+			imageSize = initialImage.Length;
 			ImportImage(initialImage);
+		}
+
+		public int TickCount
+		{
+			get { return tickCount; }
 		}
 
 		public double[] RunTimeStep(double dx, double dy)
@@ -21,7 +27,7 @@ namespace ifpfc
 			dys.Add(dy);
 			inport[dxPort] = dx;
 			inport[dyPort] = dy;
-			for (int i = 0; i < addressSpaceSize; i++)
+			for (int i = 0; i < imageSize; i++)
 				RunInstruction(i);
 			tickCount++;
 			return outport;
@@ -258,5 +264,6 @@ namespace ifpfc
 		private readonly List<double> dys = new List<double>();
 
 		private static readonly ILog log = LogManager.GetLogger(typeof(VirtualMachine));
+		private readonly int imageSize;
 	}
 }
