@@ -6,10 +6,23 @@ namespace ifpfc.VM
 	public class Compiler_Test
 	{
 		[Fact]
-		public void Disassemble()
+		public void DisassembleHohmann()
 		{
 			string code = new Compiler(TestData.Hohmann).Compile("HohmannsEngine");
-			File.WriteAllText(@"..\..\HohmannEngine.cs", code);
+			File.WriteAllText(@"..\..\VM\HohmannEngine.cs", code);
+		}
+
+		[Fact]
+		public void DisassembleMeetAndGreet()
+		{
+			string code = new Compiler(TestData.MeetAndGreet).Compile("MeetAndGreetEngine");
+			File.WriteAllText(@"..\..\VM\MeetAndGreetEngine.cs", code);
+		}
+		[Fact]
+		public void DisassembleEccentricMeetAndGreet()
+		{
+			string code = new Compiler(TestData.MeetAndGreet).Compile("EccentricMeetAndGreet");
+			File.WriteAllText(@"..\..\VM\EccentricMeetAndGreet.cs", code);
 		}
 	}
 }

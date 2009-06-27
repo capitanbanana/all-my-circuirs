@@ -25,6 +25,11 @@ namespace ifpfc
 			get { return ReadImage("bin2.obf"); }
 		}
 
+		public static byte[] EccentricMeetAndGreet
+		{
+			get { return ReadImage("bin3.obf"); }
+		}
+
 		public static byte[] ReadImage(string imageName)
 		{
 			return VMImagesDirectory.GetFile(imageName).Content.Data;

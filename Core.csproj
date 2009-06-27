@@ -73,6 +73,7 @@
     <Compile Include="VM\Compiler_Test.cs" />
     <Compile Include="VM\Disassembler.cs" />
     <Compile Include="VM\Disassembler_Test.cs" />
+    <Compile Include="VM\EccentricMeetAndGreet.cs" />
     <Compile Include="VM\Engine.cs" />
     <Compile Include="VM\HohmannEngine.cs" />
     <Compile Include="Logic\Hohmann\HohmannSolver.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Logic\Physics.cs" />
     <Compile Include="Logic\IProblemSolver.cs" />
     <Compile Include="Logic\Vector.cs" />
+    <Compile Include="VM\MeetAndGreetEngine.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
