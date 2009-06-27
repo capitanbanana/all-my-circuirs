@@ -8,7 +8,7 @@ namespace ifpfc
 		[Fact]
 		public void Disassemble()
 		{
-			var disassemble = new Disasembler(TestData.Hohmann).Disassemble();
+			var disassemble = new Disasembler(TestData.MeetAndGreet).Disassemble();
 			Console.WriteLine(disassemble);
 		}
 	}

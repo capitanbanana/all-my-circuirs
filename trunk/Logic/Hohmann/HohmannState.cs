@@ -10,8 +10,6 @@ namespace ifpfc.Logic.Hohmann
 		{
 			return "TargetR=" + TargetOrbitR + 
 			       " CurrentR=" + Math.Sqrt(Sx*Sx + Sy*Sy) +
-			       "xy:" + Sx + ", " + Sy +
-			       "Vxy:" + Vx + ", " + Vy +
 			       " V=" + Math.Sqrt(Vx * Vx + Vy * Vy) + 
 			       " Fuel=" + Fuel + " Score=" + Score;
 		}
@@ -20,6 +18,7 @@ namespace ifpfc.Logic.Hohmann
 	public enum HohmannAlgoState
 	{
 		ReadyToJump = 0,
-		Jumping
+		Jumping,
+		Finishing
 	}
 }

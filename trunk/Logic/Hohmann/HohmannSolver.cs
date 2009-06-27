@@ -8,6 +8,7 @@ namespace ifpfc.Logic.Hohmann
 	{
 		private HohmannAlgoState algoState = HohmannAlgoState.ReadyToJump;
 		private int jumpTimeout;
+		private int goodTicks;
 
 		protected override void FinishStateInitialization(double[] outPorts, HohmannState newState)
 		{
@@ -19,30 +20,46 @@ namespace ifpfc.Logic.Hohmann
 			double r0 = Math.Sqrt(s.Sx*s.Sx + s.Sy*s.Sy);
 			double v0 = Math.Sqrt(s.Vx*s.Vx + s.Vy*s.Vy);
 			double r1 = s.TargetOrbitR;
-			double dv = 0;
+			if (Math.Abs(r0 - r1) < 1000)
+			{
+				goodTicks++;
+			}
+			else
+			{
+				goodTicks = 0;
+			}
+			if (goodTicks > 0)
+				File.AppendAllText("driver.txt", "GOOD "+ goodTicks + "\r\n");
+			double desirableV = 0;
 			if (algoState == HohmannAlgoState.ReadyToJump)
 			{
-				if (Math.Abs(r0 - r1) > 100)
-				{
-					dv = GetDvForFirstJump(r1, r0, v0);
-					File.AppendAllText("driver.txt", "IMPULSE = " + dv + " s = " + algoState + "\r\n");
-					algoState = HohmannAlgoState.Jumping;
-					jumpTimeout = 100;
-				}
+				desirableV = GetDvForFirstJump(r1, r0);
+				algoState = HohmannAlgoState.Jumping;
+				jumpTimeout = 100;
+				var dv = GetDV(r0, desirableV);
+				File.AppendAllText("driver.txt", "IMPULSE 1 " + dv.x + ", " + dv.y + "\r\n");
+				return dv;
+
 			}
-			else if (algoState == HohmannAlgoState.Jumping)
+			if((Math.Abs(r0 - r1) < 50)) 
+				algoState = HohmannAlgoState.Finishing;
+			if (algoState == HohmannAlgoState.Finishing)
 			{
-				var sp = s.Sx*s.Vx + s.Sy*s.Vy;
-				var value = sp / r0 / v0;
-				if (jumpTimeout <= 0 && Math.Abs(value) < 0.001)
-				{
-					dv = GetDvForSecondJump(r0, v0);
-					File.AppendAllText("driver.txt", "IMPULSE = " + dv + " value = " + value + " s = " + algoState + "\r\n");
-					algoState = HohmannAlgoState.ReadyToJump;
-				}
-				jumpTimeout--;
+				algoState = HohmannAlgoState.Finishing;
+				desirableV = GetDvForSecondJump(r0);
+				var dv = GetDV(r0, desirableV);
+				File.AppendAllText("driver.txt", "IMPULSE 2 " + dv.x + ", " + dv.y + "\r\n");
+				return dv;
 			}
-			return new Vector(-dv*s.Vx / v0, -dv*s.Vy / v0);
+			return new Vector(0, 0);
+		}
+
+		private Vector GetDV(double r0, double desirableV)
+		{
+			Vector desirableVector = new Vector(desirableV * s.Sy / r0, -desirableV * s.Sx / r0);
+			var vector = new Vector(s.Vx - desirableVector.x, s.Vy - desirableVector.y);
+			if (s.Fuel < 5 || vector.x * vector.x + vector.y * vector.y < 1) return new Vector(0,0);
+			return vector;
 		}
 
 		public override VisualizerState GetVisualizerState(LogicState state)
@@ -55,16 +72,14 @@ namespace ifpfc.Logic.Hohmann
 				Enumerable.Empty<Sattelite>());
 		}
 
-		private static double GetDvForSecondJump(double r1, double v0)
+		private static double GetDvForSecondJump(double r)
 		{
-			double vAfter = Math.Sqrt(2*Physics.mu/r1);
-			return vAfter-v0;
+			return Math.Sqrt(2*Physics.mu/r);
 		}
 
-		private static double GetDvForFirstJump(double r1, double r0, double v0)
+		private static double GetDvForFirstJump(double r1, double r0)
 		{
-			double vAfter = Math.Sqrt(2*Physics.mu*r1/(r0*(r0 + r1)));
-			return vAfter-v0;
+			return Math.Sqrt(2*Physics.mu*r1/(r0*(r0 + r1)));
 		}
 	}
 }

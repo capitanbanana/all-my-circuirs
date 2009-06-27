@@ -69,18 +69,22 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Compile Include="Compiler.cs" />
+    <Compile Include="Compiler_Test.cs" />
     <Compile Include="Disassembler.cs" />
     <Compile Include="Disassembler_Test.cs" />
+    <Compile Include="Engine.cs" />
+    <Compile Include="HohmannEngine.cs" />
     <Compile Include="Logic\Hohmann\HohmannSolver.cs" />
+    <Compile Include="Logic\IProblemSolverDriver.cs" />
+    <Compile Include="Logic\LogicState.cs" />
     <Compile Include="Logic\Sattelite.cs" />
     <Compile Include="VisualizerState.cs" />
     <Compile Include="TestData.cs" />
     <Compile Include="Logic\BaseSolver.cs" />
-    <Compile Include="Logic\LogicState.cs" />
     <Compile Include="Logic\Hohmann\HohmannSolver_Test.cs" />
     <Compile Include="Logic\Hohmann\HohmannState.cs" />
     <Compile Include="Logic\Physics.cs" />
-    <Compile Include="Logic\IProblemSolverDriver.cs" />
     <Compile Include="Logic\IProblemSolver.cs" />
     <Compile Include="Logic\Vector.cs" />
   </ItemGroup>
