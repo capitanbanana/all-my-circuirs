@@ -1,0 +1,455 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SKBKontur.LIT.Core</name>
+    </assembly>
+    <members>
+        <member name="M:SKBKontur.LIT.Core.ActionsExecutor.ExecuteSet(System.String,System.Threading.ThreadStart[])">
+            <summary>
+            Выполняет неупорядоченное множество действий. Гарантируется, что каждое действие будет запущено.
+            </summary>
+            <exception cref="T:System.ApplicationException">Если при выполнении хотя бы одного действия возникло исключение</exception>
+        </member>
+        <member name="T:SKBKontur.LIT.Core.AliveHandle">
+            <summary>Обеспечивает, что handleObject не будет собран GC вплоть до вызова Dispose у AliveHandle</summary>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.BinaryData.#ctor(System.Byte[],System.Int32,System.Int32)">
+            <exception cref="T:System.ArgumentOutOfRangeException">Count is negative.</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.BinaryData.CompareTo(System.Object)">
+            <exception cref="T:System.ArgumentException"/>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.BinaryData.EncodeString(System.String,System.Int32)">
+            <exception cref="T:System.NotSupportedException">codepage is not supported by the underlying platform.</exception>
+            <exception cref="T:System.ArgumentException">codepage is not supported by the underlying platform.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">codepage is less than zero or greater than 65535.</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.BinaryData.EncodeString(System.String,System.Int32,System.Boolean)">
+            <exception cref="T:System.NotSupportedException">codepage is not supported by the underlying platform.</exception>
+            <exception cref="T:System.ArgumentException">codepage is not supported by the underlying platform.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">codepage is less than zero or greater than 65535.</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.BinaryData.DecodeString(System.Int32)">
+            <exception cref="T:System.NotSupportedException">codepage is not supported by the underlying platform.</exception>
+            <exception cref="T:System.ArgumentException">codepage is not supported by the underlying platform.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">codepage is less than zero or greater than 65535.</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.BinaryData.DecodeString(System.Int32,System.Boolean)">
+            <exception cref="T:System.NotSupportedException">codepage is not supported by the underlying platform.</exception>
+            <exception cref="T:System.ArgumentException">codepage is not supported by the underlying platform.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">codepage is less than zero or greater than 65535.</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.BinaryData.DecodeXml">
+            <exception cref="T:System.Xml.XmlException">There is a load or parse error in the XML. In this case, the document remains empty.</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.BinaryData.ToBase64(System.Int32)">
+            <exception cref="T:System.NotSupportedException">codepage is not supported by the underlying platform.</exception>
+            <exception cref="T:System.ArgumentException">codepage is not supported by the underlying platform.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">codepage is less than zero or greater than 65535.</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.BinaryData.ReadByteChecked">
+            <exception cref="T:System.IO.EndOfStreamException"/>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.BinaryData.ReadChecked(System.Int32)">
+            <exception cref="T:System.IO.EndOfStreamException"/>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.BinaryDataConversion.FromHex(System.String)">
+            <exception cref="T:System.ArgumentException">hex не является корректной шестнадцатиричной строкой</exception>
+        </member>
+        <member name="T:SKBKontur.LIT.CanBeNullAttribute">
+            <summary>
+            Сущности, помеченные данным атрибутом могут возвращать / принимать значение null. 
+            За этим умеет следить механизм Value Analysis в Resharper 2.5, 
+            если его настроить соответствующим образом
+            </summary>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.DateTimeParser.#ctor(System.Text.RegularExpressions.Regex)">
+            <param name="dateTimeRegex">Должны быть группы "year", "month", "day". Могут быть также группы "hour", "min", "sec" и "msec"</param>
+            <exception cref="T:System.ArgumentException">Отсутсвуют обязательные группы в регекспе</exception>
+            <exception cref="T:System.ArgumentNullException">dateTimeRegex = null</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.DateTimeParser.Parse(System.String)">
+            <exception cref="T:System.FormatException">Неверный формат</exception>
+            <exception cref="T:System.ArgumentNullException">value = null</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.Directory.#ctor(System.String)">
+            <exception cref="T:System.IO.PathTooLongException">The specified path, file name, or both exceed the system-defined maximum length. For example, on Windows-based platforms, paths must be less than 248 characters, and file names must be less than 260 characters</exception>
+            <exception cref="T:System.NotSupportedException">path contains a colon (:) in the middle of the string</exception>
+            <exception cref="T:System.ArgumentException">path is a zero-length string, contains only white space, or contains one or more invalid characters as defined by InvalidPathChars, or contains a wildcard character.-or- The system could not retrieve the absolute path</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.Directory.#ctor(System.String,System.Boolean)">
+            <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission. </exception>
+            <exception cref="T:System.IO.IOException">The directory read-only or is not empty.-or-A file with the same name and location specified by path exists.</exception>
+            <exception cref="T:System.NotSupportedException">Попытка создать корневую директорию.</exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException">The directory is invalid (for example, it is on an unmapped drive).</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.Directory.GetFile(System.String)">
+            <exception cref="T:System.IO.PathTooLongException">The specified path, file name, or both exceed the system-defined maximum length. For example, on Windows-based platforms, paths must be less than 248 characters, and file names must be less than 260 characters</exception>
+            <exception cref="T:System.NotSupportedException">name contains a colon (:) in the middle of the string</exception>
+            <exception cref="T:System.ArgumentException">path2 contain one or more of the invalid characters defined in InvalidPathChars, or contains a wildcard character. </exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.Directory.Create">
+            <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission. </exception>
+            <exception cref="T:System.IO.IOException">The directory read-only or is not empty.-or-A file with the same name and location specified by path exists.</exception>
+            <exception cref="T:System.NotSupportedException">Попытка создать корневую директорию.</exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException">The directory is invalid (for example, it is on an unmapped drive).</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.Directory.Delete">
+            <exception cref="T:System.NotImplementedException">Невозможно удалить корневую директорию</exception>
+            <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission.</exception>
+            <exception cref="T:System.IO.IOException">A file with the same name and location exists.-or-The directory is the application's current working directory.</exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException">The directory is invalid (for example, it is on an unmapped drive).</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.Directory.DeleteAllSubfolders(System.String)">
+            <exception cref="T:System.NotImplementedException">Невозможно удалить корневую директорию</exception>
+            <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission.</exception>
+            <exception cref="T:System.IO.IOException">A file with the same name and location exists.-or-The directory is the application's current working directory.</exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException">The directory is invalid (for example, it is on an unmapped drive).</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.Directory.CopyTo(SKBKontur.LIT.Core.Directory,System.Boolean)">
+            <exception cref="T:System.NotSupportedException">Попытка скопировать корневую директорию</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.Directory.CopyTo(SKBKontur.LIT.Core.Directory,System.String,System.Boolean)">
+            <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission. </exception>
+            <exception cref="T:System.IO.IOException">The directory read-only or is not empty.-or-A file with the same name and location specified by path exists.</exception>
+            <exception cref="T:System.NotSupportedException">Попытка создать корневую директорию.</exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException">The directory is invalid (for example, it is on an unmapped drive).</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.Directory.GetTotalFilesCount">
+            <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission.</exception>
+            <exception cref="T:System.IO.IOException">Directory is a file.</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.Directory.Delete(SKBKontur.LIT.Core.Directory)">
+            <exception cref="T:System.NotImplementedException">Невозможно удалить корневую директорию</exception>
+            <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission.</exception>
+            <exception cref="T:System.IO.IOException">A file with the same name and location exists.-or-The directory is the application's current working directory.</exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException">The directory is invalid (for example, it is on an unmapped drive).</exception>
+        </member>
+        <member name="P:SKBKontur.LIT.Core.Directory.Directories">
+            <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission.</exception>
+            <exception cref="T:System.IO.IOException">Directory is a file.</exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException">The Directory is invalid (for example, it is on an unmapped drive).</exception>
+        </member>
+        <member name="P:SKBKontur.LIT.Core.Directory.Parent">
+            <exception cref="T:System.IO.DirectoryNotFoundException">Корневая директория</exception>
+        </member>
+        <member name="P:SKBKontur.LIT.Core.Directory.Hidden">
+            <exception cref="T:System.IO.FileNotFoundException">path represents a directory and is invalid, such as being on an unmapped drive, or the directory cannot be found.</exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException">path represents a directory and is invalid, such as being on an unmapped drive, or the directory cannot be found.</exception>
+        </member>
+        <member name="T:SKBKontur.LIT.Core.DisposableArrayList">
+            <summary>На Dispose вызываются Dispose у всех элементов, которые реализуют интерфейс IDisposable</summary>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.IFile.ReadString(System.Int32)">
+            <exception cref="T:System.NotSupportedException">codepage is not supported by the underlying platform.</exception>
+            <exception cref="T:System.ArgumentException">codepage is not supported by the underlying platform.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">codepage is less than zero or greater than 65535.</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.IFile.WriteString(System.String,System.Int32)">
+            <exception cref="T:System.NotSupportedException">codepage is not supported by the underlying platform.</exception>
+            <exception cref="T:System.ArgumentException">codepage is not supported by the underlying platform.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">codepage is less than zero or greater than 65535.</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.IFile.CopyTo(SKBKontur.LIT.Core.File)">
+            <returns>Возвращает <paramref name="destination"/></returns>
+            <exception cref="T:System.UnauthorizedAccessException">Недостаточно прав для выполнения операции.</exception>
+            <exception cref="T:System.IO.IOException">Ошибка чтения или записи.</exception>
+            <exception cref="T:System.IO.FileNotFoundException">Исходный файл не существует.</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.IFile.MoveTo(SKBKontur.LIT.Core.File)">
+            <returns>Возвращает <paramref name="destination"/></returns>
+            <exception cref="T:System.IO.FileNotFoundException">sourceFileName was not found</exception>
+            <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission</exception>
+            <exception cref="T:System.IO.IOException">The destination file already exists</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.IFile.MoveTo(SKBKontur.LIT.Core.Directory)">
+            <returns>Возвращает файл полученный в результате перемещения.</returns>
+            <exception cref="T:System.IO.FileNotFoundException">sourceFileName was not found</exception>
+            <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission</exception>
+            <exception cref="T:System.IO.IOException">The destination file already exists</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.IFile.Append(SKBKontur.LIT.Core.File)">
+            <return>Дописывает в конец содержимое файла <param name="appendee"/>.</return>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.IFile.GetStream(System.IO.FileMode)">
+            <exception cref="T:System.IO.FileNotFoundException">The file cannot be found, such as when mode is FileMode.Truncate or FileMode.Open, and the file specified by path does not exist. The file must already exist in these modes.</exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException">The File is invalid, such as being on an unmapped drive.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">FileMode contains an invalid value.</exception>
+            <exception cref="T:System.UnauthorizedAccessException">The access requested is not permitted by the operating system for the specified File, such as when access is Write or ReadWrite and the file or directory is set for read-only access.</exception>
+            <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
+            <exception cref="T:System.IO.IOException">An I/O error occurs, such as specifying FileMode.CreateNew and the file specified by path already exists. The system is running Windows 98 or Windows 98 Second Edition and share is set to FileShare.Delete.</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.IFile.GetWriter(System.IO.FileMode)">
+            <exception cref="T:System.IO.FileNotFoundException">The file cannot be found, such as when mode is FileMode.Truncate or FileMode.Open, and the file specified by path does not exist. The file must already exist in these modes.</exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException">The File is invalid, such as being on an unmapped drive.</exception>
+            <exception cref="T:System.UnauthorizedAccessException">The access requested is not permitted by the operating system for the specified File, such as when access is Write or ReadWrite and the file or directory is set for read-only access.</exception>
+            <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
+            <exception cref="T:System.IO.IOException">An I/O error occurs, such as specifying FileMode.CreateNew and the file specified by path already exists. The system is running Windows 98 or Windows 98 Second Edition and share is set to FileShare.Delete.</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.IFile.Write(SKBKontur.LIT.Core.BinaryData)">
+            <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission. </exception>
+            <exception cref="T:System.IO.IOException">The directory read-only or is not empty.-or-A file with the same name and location specified by path exists.</exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException">The file is invalid (for example, it is on an unmapped drive).</exception>
+            <exception cref="T:System.IO.FileNotFoundException">The file cannot be found, such as when mode is FileMode.Truncate or FileMode.Open, and the file specified by path does not exist. The file must already exist in these modes.</exception>
+            <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
+        </member>
+        <member name="P:SKBKontur.LIT.Core.IFile.Extension">
+            <summary>Расширение файла без точки. Например "txt".</summary>
+        </member>
+        <member name="P:SKBKontur.LIT.Core.IFile.CreationDateTime">
+            <exception cref="T:System.Security.SecurityException">The caller does not have the required permission</exception>
+            <exception cref="T:System.IO.IOException">A device such as a disk drive is not ready.</exception>
+            <exception cref="T:System.IO.FileNotFoundException"> - Файл не существует</exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException"> - Папка не существует</exception>
+            <exception cref="T:System.PlatformNotSupportedException">The current operating system is not Microsoft Windows NT or later.</exception>
+            <exception cref="T:System.UnauthorizedAccessException">Access to fileName is denied</exception>
+        </member>
+        <member name="P:SKBKontur.LIT.Core.IFile.ShortFullPath">
+            <exception cref="T:System.ComponentModel.Win32Exception"/>
+        </member>
+        <member name="P:SKBKontur.LIT.Core.IFile.Content">
+            <exception cref="T:System.UnauthorizedAccessException">Нет доступа к файлу</exception>
+            <exception cref="T:System.Security.SecurityException">Недостаточно прав для доступа к файлу</exception>
+            <exception cref="T:System.IO.FileNotFoundException">Файл отсутствует</exception>
+            <exception cref="T:System.IO.PathTooLongException">Слишком длинный путь до файла</exception>
+            <exception cref="T:System.IO.IOException">Ошибка при чтении файла</exception>
+        </member>
+        <member name="P:SKBKontur.LIT.Core.IFile.ReadOnly">
+            <exception cref="T:System.IO.FileNotFoundException">File is invalid, such as being on an unmapped drive, or the file cannot be found. </exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException">File is a directory and is invalid, such as being on an unmapped drive, or the directory cannot be found.</exception>
+            <exception cref="T:System.UnauthorizedAccessException">file that is read-only.-or- This operation is not supported on the current platform.-or- path specified a directory.-or- The caller does not have the required permission.</exception>
+        </member>
+        <member name="P:SKBKontur.LIT.Core.IFile.Hidden">
+            <exception cref="T:System.IO.FileNotFoundException">File is invalid, such as being on an unmapped drive, or the file cannot be found. </exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException">File is a directory and is invalid, such as being on an unmapped drive, or the directory cannot be found.</exception>
+        </member>
+        <member name="P:SKBKontur.LIT.Core.IFile.Length">
+            <exception cref="T:System.UnauthorizedAccessException">Access to file is denied.</exception>
+            <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
+            <exception cref="T:System.IO.IOException">FileSystemInfo.Refresh() cannot update the state of the file or directory. </exception>
+            <exception cref="T:System.IO.FileNotFoundException">The file does not exist.-or- is a directory.</exception>
+        </member>
+        <member name="P:SKBKontur.LIT.Core.IFile.LongLength">
+            <exception cref="T:System.UnauthorizedAccessException">Access to file is denied.</exception>
+            <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
+            <exception cref="T:System.IO.IOException">FileSystemInfo.Refresh() cannot update the state of the file or directory. </exception>
+            <exception cref="T:System.IO.FileNotFoundException">The file does not exist.-or- is a directory.</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.File.#ctor(System.String)">
+            <exception cref="T:System.IO.PathTooLongException">The specified path, file name, or both exceed the system-defined maximum length. For example, on Windows-based platforms, paths must be less than 248 characters, and file names must be less than 260 characters</exception>
+            <exception cref="T:System.NotSupportedException">path contains a colon (:) in the middle of the string</exception>
+            <exception cref="T:System.ArgumentException">path is a zero-length string, contains only white space, or contains one or more invalid characters as defined by InvalidPathChars, or contains a wildcard character.-or- The system could not retrieve the absolute path</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.File.ReadString(System.Int32)">
+            <exception cref="T:System.NotSupportedException">codepage is not supported by the underlying platform.</exception>
+            <exception cref="T:System.ArgumentException">codepage is not supported by the underlying platform.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">codepage is less than zero or greater than 65535.</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.File.WriteString(System.String,System.Int32)">
+            <exception cref="T:System.NotSupportedException">codepage is not supported by the underlying platform.</exception>
+            <exception cref="T:System.ArgumentException">codepage is not supported by the underlying platform.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">codepage is less than zero or greater than 65535.</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.File.CopyTo(SKBKontur.LIT.Core.File)">
+            <returns>Возвращает <paramref name="destination"/></returns>
+            <exception cref="T:System.UnauthorizedAccessException">Недостаточно прав для выполнения операции.</exception>
+            <exception cref="T:System.IO.IOException">Ошибка чтения или записи.</exception>
+            <exception cref="T:System.IO.FileNotFoundException">Исходный файл не существует.</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.File.MoveTo(SKBKontur.LIT.Core.File)">
+            <returns>Возвращает <paramref name="destination"/></returns>
+            <exception cref="T:System.IO.FileNotFoundException">sourceFileName was not found</exception>
+            <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission</exception>
+            <exception cref="T:System.IO.IOException">The destination file already exists</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.File.MoveTo(SKBKontur.LIT.Core.Directory)">
+            <returns>Возвращает файл полученный в результате перемещения.</returns>
+            <exception cref="T:System.IO.FileNotFoundException">sourceFileName was not found</exception>
+            <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission</exception>
+            <exception cref="T:System.IO.IOException">The destination file already exists</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.File.Append(SKBKontur.LIT.Core.File)">
+            <return>Дописывает в конец содержимое файла <param name="appendee"/>.</return>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.File.GetStream(System.IO.FileMode)">
+            <exception cref="T:System.IO.FileNotFoundException">The file cannot be found, such as when mode is FileMode.Truncate or FileMode.Open, and the file specified by path does not exist. The file must already exist in these modes.</exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException">The File is invalid, such as being on an unmapped drive.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">FileMode contains an invalid value.</exception>
+            <exception cref="T:System.UnauthorizedAccessException">The access requested is not permitted by the operating system for the specified File, such as when access is Write or ReadWrite and the file or directory is set for read-only access.</exception>
+            <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
+            <exception cref="T:System.IO.IOException">An I/O error occurs, such as specifying FileMode.CreateNew and the file specified by path already exists. The system is running Windows 98 or Windows 98 Second Edition and share is set to FileShare.Delete.</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.File.GetWriter(System.IO.FileMode)">
+            <exception cref="T:System.IO.FileNotFoundException">The file cannot be found, such as when mode is FileMode.Truncate or FileMode.Open, and the file specified by path does not exist. The file must already exist in these modes.</exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException">The File is invalid, such as being on an unmapped drive.</exception>
+            <exception cref="T:System.UnauthorizedAccessException">The access requested is not permitted by the operating system for the specified File, such as when access is Write or ReadWrite and the file or directory is set for read-only access.</exception>
+            <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
+            <exception cref="T:System.IO.IOException">An I/O error occurs, such as specifying FileMode.CreateNew and the file specified by path already exists. The system is running Windows 98 or Windows 98 Second Edition and share is set to FileShare.Delete.</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.File.Write(SKBKontur.LIT.Core.BinaryData)">
+            <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission. </exception>
+            <exception cref="T:System.IO.IOException">The directory read-only or is not empty.-or-A file with the same name and location specified by path exists.</exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException">The file is invalid (for example, it is on an unmapped drive).</exception>
+            <exception cref="T:System.IO.FileNotFoundException">The file cannot be found, such as when mode is FileMode.Truncate or FileMode.Open, and the file specified by path does not exist. The file must already exist in these modes.</exception>
+            <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.File.GetStream(System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare)">
+            <exception cref="T:System.IO.FileNotFoundException">The file cannot be found, such as when mode is FileMode.Truncate or FileMode.Open, and the file specified by path does not exist. The file must already exist in these modes.</exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException">The File is invalid, such as being on an unmapped drive.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">FileMode contains an invalid value.</exception>
+            <exception cref="T:System.UnauthorizedAccessException">The access requested is not permitted by the operating system for the specified File, such as when access is Write or ReadWrite and the file or directory is set for read-only access.</exception>
+            <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
+            <exception cref="T:System.IO.IOException">An I/O error occurs, such as specifying FileMode.CreateNew and the file specified by path already exists. The system is running Windows 98 or Windows 98 Second Edition and share is set to FileShare.Delete.</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.File.GetReader">
+            <exception cref="T:System.IO.FileNotFoundException">The file cannot be found, such as when mode is FileMode.Truncate or FileMode.Open, and the file specified by path does not exist. The file must already exist in these modes.</exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException">The File is invalid, such as being on an unmapped drive.</exception>
+            <exception cref="T:System.UnauthorizedAccessException">The access requested is not permitted by the operating system for the specified File</exception>
+            <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+        </member>
+        <member name="P:SKBKontur.LIT.Core.File.Extension">
+            <summary>Расширение файла без точки. Например "txt".</summary>
+        </member>
+        <member name="P:SKBKontur.LIT.Core.File.CreationDateTime">
+            <exception cref="T:System.Security.SecurityException">The caller does not have the required permission</exception>
+            <exception cref="T:System.IO.IOException">A device such as a disk drive is not ready.</exception>
+            <exception cref="T:System.IO.FileNotFoundException"> - Файл не существует</exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException"> - Папка не существует</exception>
+            <exception cref="T:System.PlatformNotSupportedException">The current operating system is not Microsoft Windows NT or later.</exception>
+            <exception cref="T:System.UnauthorizedAccessException">Access to fileName is denied</exception>
+        </member>
+        <member name="P:SKBKontur.LIT.Core.File.ShortFullPath">
+            <exception cref="T:System.ComponentModel.Win32Exception"/>
+        </member>
+        <member name="P:SKBKontur.LIT.Core.File.Content">
+            <exception cref="T:System.UnauthorizedAccessException">Нет доступа к файлу</exception>
+            <exception cref="T:System.Security.SecurityException">Недостаточно прав для доступа к файлу</exception>
+            <exception cref="T:System.IO.FileNotFoundException">Файл отсутствует</exception>
+            <exception cref="T:System.IO.PathTooLongException">Слишком длинный путь до файла</exception>
+            <exception cref="T:System.IO.IOException">Ошибка при чтении файла</exception>
+        </member>
+        <member name="P:SKBKontur.LIT.Core.File.ReadOnly">
+            <exception cref="T:System.IO.FileNotFoundException">File is invalid, such as being on an unmapped drive, or the file cannot be found. </exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException">File is a directory and is invalid, such as being on an unmapped drive, or the directory cannot be found.</exception>
+            <exception cref="T:System.UnauthorizedAccessException">file that is read-only.-or- This operation is not supported on the current platform.-or- path specified a directory.-or- The caller does not have the required permission.</exception>
+        </member>
+        <member name="P:SKBKontur.LIT.Core.File.Hidden">
+            <exception cref="T:System.IO.FileNotFoundException">File is invalid, such as being on an unmapped drive, or the file cannot be found. </exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException">File is a directory and is invalid, such as being on an unmapped drive, or the directory cannot be found.</exception>
+        </member>
+        <member name="P:SKBKontur.LIT.Core.File.Length">
+            <exception cref="T:System.UnauthorizedAccessException">Access to file is denied.</exception>
+            <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
+            <exception cref="T:System.IO.IOException">FileSystemInfo.Refresh() cannot update the state of the file or directory. </exception>
+            <exception cref="T:System.IO.FileNotFoundException">The file does not exist.-or- is a directory.</exception>
+        </member>
+        <member name="P:SKBKontur.LIT.Core.File.LongLength">
+            <exception cref="T:System.UnauthorizedAccessException">Access to file is denied.</exception>
+            <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
+            <exception cref="T:System.IO.IOException">FileSystemInfo.Refresh() cannot update the state of the file or directory. </exception>
+            <exception cref="T:System.IO.FileNotFoundException">The file does not exist.-or- is a directory.</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.Information.Deserialize(System.Type)">
+            <exception cref="T:System.InvalidOperationException">Ошибка при десериализации</exception>
+        </member>
+        <member name="P:SKBKontur.LIT.Core.Information.BinaryData">
+            <exception cref="T:SKBKontur.LIT.Core.InformationFormatException">Неверный формат данных</exception>
+        </member>
+        <member name="T:SKBKontur.LIT.NotNullAttribute">
+            <summary>
+            Сущности, помеченным данным атрибутом не могут возвращать / принимать значение null. 
+            За этим умеет следить механизм Value Analysis в Resharper 2.5, 
+            если его настроить соответствующим образом
+            </summary>
+        </member>
+        <member name="T:SKBKontur.LIT.Core.Repeat">
+            <summary>
+            Повторяет заданное действие несколько раз через некоторые промежутки, пока оно не завершится успешно.
+            </summary>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.Repeat.Default``1(SKBKontur.LIT.Core.Func{``0})">
+            <summary>
+            Повторяет максимум 3 раза с задержкой между попытками в 100 мс, до тех пор, пока действие не выполнится без исключений.
+            </summary>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.Repeat.Default(SKBKontur.LIT.Core.Action)">
+            <summary>
+            Повторяет максимум 3 раза с задержкой между попытками в 100 мс, до тех пор, пока действие не выполнится без исключений.
+            </summary>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.Repeat.WhileException(System.Type)">
+            <summary>
+            Будет повторять пока возникает исключение типа exceptionType или его наследников.
+            Если возникает другое исключение, оно выбрасывается наружу и повторы прекращаются.
+            </summary>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.Repeat.Until(SKBKontur.LIT.Core.Func{System.Boolean})">
+            <summary>
+            Будет повторять пока stopCondition не возвратит true. stopCondition вызывается после каждой попытки.
+            Если возникает исключение, оно будет выбражено наружу, а повторы прекратятся. Если
+            </summary>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.Repeat.Times(System.Int32)">
+            <summary>
+            Задаёт максимальное количество повторов.
+            </summary>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.Repeat.WithDelay(System.Int32)">
+            <summary>
+            Задаёт время задержки между повторами в миллисекундах
+            </summary>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.Repeat.Do``1(SKBKontur.LIT.Core.Func{``0})">
+            <summary>
+            Начинает процесс выполения функции (с возвращаемым значением).
+            Если за указанное количество повторов функция так и не выполнится успешно,
+            возвращается результат последнего выполнения.
+            В том числе, если при последнем выполнении из func было выброшено исключение, 
+            оно будет выброшено и из этого метода.
+            </summary>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.Repeat.Do(SKBKontur.LIT.Core.Action)">
+            <summary>
+            Начинает процесс выполения функции (с возвращаемым значением).
+            Если при последнем выполнении из func было выброшено исключение, 
+            оно будет выброшено и из этого метода.
+            </summary>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.ResourcesNamespace.ReadResource(System.String)">
+            <exception cref="T:System.IO.IOException">Ресурс не найден или не удалось прочитать</exception>
+            <exception cref="T:System.ArgumentNullException">relativeResourceName = null</exception>
+        </member>
+        <member name="P:SKBKontur.LIT.Core.ResourcesNamespace.ParentNamespace">
+            <exception cref="T:System.InvalidOperationException">Родительского пространства имён нет</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.ResourceReader.ReadResource(System.String)">
+            <exception cref="T:System.IO.IOException">Ресурс не найден или не удалось прочитать</exception>
+            <exception cref="T:System.ArgumentNullException">resourceName = null</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.BufferedStreamReader.GetAllStreamData">
+            <exception cref="T:System.InvalidOperationException">Поток ещё не прочитан до конца</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.CommandLineStrings.UnescapeStrings(System.String,SKBKontur.LIT.Core.UnescapeOptions)">
+            <exception cref="T:System.ArgumentException">Попытка игнорировать пробельные символы при разборе нескольких срок</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.CommandShell.RunConsoleApplication(SKBKontur.LIT.Core.File,System.String[])">
+            <summary>Запуск и ожидание завершения консольного приложения. Возвращает вывод программы на консоль.</summary>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.CommandShell.RunConsoleApplication(SKBKontur.LIT.Core.ApplicationRunParameters)">
+            <summary>Запуск и ожидание завершения консольного приложения. Возвращает вывод программы на консоль.</summary>
+            <exception cref="T:SKBKontur.LIT.Core.ConsoleApplicationErrorsException">Код возврата не ноль или вывод на консоль ошибок не пустой</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.CommandShell.FindFileInPaths(System.String)">
+            <summary>Находит полный путь файла, путь до которого прописан в переменной окружения PATH</summary>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.CommandShell.LaunchTemporaryTypedFile(SKBKontur.LIT.Core.BinaryData,System.String,SKBKontur.LIT.Core.TemporaryDirectoryFactory)">
+            <summary>Сохраняет файл во временной директории и запускает файл средствами explorer-а</summary>
+            <exception cref="T:SKBKontur.LIT.Core.NoFileTypeAssociationException">Файлу не сопоставлено ни одно приложение</exception>
+            <exception cref="T:System.ApplicationException">Ошибка при запуске процесса</exception>
+        </member>
+        <member name="M:SKBKontur.LIT.Core.StringUtils.FormatExceptionMessage(System.Exception)">
+            <summary>Шаблон форматирования: Исключение:\n$MESSAGE$\nСтек вызовов:\n$STACK$\n\n\n$INNER_EXCEPTIONS$</summary>
+        </member>
+    </members>
+</doc>
