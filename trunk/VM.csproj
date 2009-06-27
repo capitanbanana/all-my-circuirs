@@ -64,6 +64,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VirtualMachine.cs" />
     <Compile Include="VirtualMachine_Test.cs" />
+    <Compile Include="VirtualMachine_Test2.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
