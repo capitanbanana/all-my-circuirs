@@ -1,4 +1,4 @@
-namespace ifpfc
+namespace ifpfc.VM
 {
 	public class Engine
 	{
@@ -6,9 +6,6 @@ namespace ifpfc
 		private const int addressSpaceSize = 1 << addressSize;
 		private bool status;
 
-		public double[] Outport { get; private set; }
-		public double[] Inport { get; private set; }
-		public double[] Mem { get; private set; }
 		public Engine(int configNumber)
 		{
 			Mem = new double[addressSpaceSize];
@@ -17,6 +14,10 @@ namespace ifpfc
 			Inport[16000] = configNumber;
 			InitMem();
 		}
+
+		public double[] Outport { get; private set; }
+		public double[] Inport { get; private set; }
+		public double[] Mem { get; private set; }
 
 		private void InitMem()
 		{
