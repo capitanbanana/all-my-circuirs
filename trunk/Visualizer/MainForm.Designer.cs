@@ -188,10 +188,11 @@
 			// splitContainer1
 			// 
 			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.splitContainer1.IsSplitterFixed = true;
 			this.splitContainer1.Location = new System.Drawing.Point(0, 49);
 			this.splitContainer1.Name = "splitContainer1";
 			this.splitContainer1.Size = new System.Drawing.Size(840, 585);
-			this.splitContainer1.SplitterDistance = 339;
+			this.splitContainer1.SplitterDistance = 575;
 			this.splitContainer1.TabIndex = 3;
 			// 
 			// MainForm

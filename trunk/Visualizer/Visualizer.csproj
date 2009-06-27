@@ -58,7 +58,7 @@
     <Compile Include="Controller.cs" />
     <Compile Include="DummySystemState.cs" />
     <Compile Include="IController.cs" />
-    <Compile Include="ISystemState.cs" />
+    <Compile Include="IVisualizerState.cs" />
     <Compile Include="IVisualizer.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
