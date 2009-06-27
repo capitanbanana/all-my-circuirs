@@ -4,6 +4,6 @@ namespace Visualizer
 {
 	internal interface IVisualizer
 	{
-		void Paint(VisualizerState state);
+		void Render(VisualizerState state);
 	}
 }

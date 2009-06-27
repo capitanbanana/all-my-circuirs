@@ -1,6 +1,6 @@
 ﻿namespace Visualizer
 {
-	partial class MainForm
+	internal partial class MainForm
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -43,7 +43,13 @@
 			this.copyToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.pasteToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+			this.cmbxSolvers_ = new System.Windows.Forms.ToolStripComboBox();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.btnBackward_ = new System.Windows.Forms.ToolStripButton();
+			this.btnRun_ = new System.Windows.Forms.ToolStripButton();
+			this.btnForward_ = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.menuStrip1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
@@ -96,7 +102,13 @@
             this.copyToolStripButton,
             this.pasteToolStripButton,
             this.toolStripSeparator1,
-            this.helpToolStripButton});
+            this.toolStripLabel1,
+            this.cmbxSolvers_,
+            this.toolStripSeparator2,
+            this.btnBackward_,
+            this.btnRun_,
+            this.btnForward_,
+            this.toolStripSeparator3});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 24);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Size = new System.Drawing.Size(840, 25);
@@ -176,14 +188,58 @@
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
 			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
 			// 
-			// helpToolStripButton
+			// toolStripLabel1
 			// 
-			this.helpToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.helpToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("helpToolStripButton.Image")));
-			this.helpToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.helpToolStripButton.Name = "helpToolStripButton";
-			this.helpToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.helpToolStripButton.Text = "He&lp";
+			this.toolStripLabel1.Name = "toolStripLabel1";
+			this.toolStripLabel1.Size = new System.Drawing.Size(46, 22);
+			this.toolStripLabel1.Text = "Solvers:";
+			// 
+			// cmbxSolvers_
+			// 
+			this.cmbxSolvers_.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cmbxSolvers_.DropDownWidth = 200;
+			this.cmbxSolvers_.Name = "cmbxSolvers_";
+			this.cmbxSolvers_.Size = new System.Drawing.Size(200, 25);
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+			// 
+			// btnBackward_
+			// 
+			this.btnBackward_.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.btnBackward_.Image = ((System.Drawing.Image)(resources.GetObject("btnBackward_.Image")));
+			this.btnBackward_.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btnBackward_.Name = "btnBackward_";
+			this.btnBackward_.Size = new System.Drawing.Size(23, 22);
+			this.btnBackward_.Text = "<";
+			this.btnBackward_.Click += new System.EventHandler(this.btnBackward__Click);
+			// 
+			// btnRun_
+			// 
+			this.btnRun_.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.btnRun_.Image = ((System.Drawing.Image)(resources.GetObject("btnRun_.Image")));
+			this.btnRun_.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btnRun_.Name = "btnRun_";
+			this.btnRun_.Size = new System.Drawing.Size(63, 22);
+			this.btnRun_.Text = "Run/Pause";
+			this.btnRun_.Click += new System.EventHandler(this.btnRun__Click);
+			// 
+			// btnForward_
+			// 
+			this.btnForward_.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.btnForward_.Image = ((System.Drawing.Image)(resources.GetObject("btnForward_.Image")));
+			this.btnForward_.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btnForward_.Name = "btnForward_";
+			this.btnForward_.Size = new System.Drawing.Size(23, 22);
+			this.btnForward_.Text = ">";
+			this.btnForward_.Click += new System.EventHandler(this.btnForward__Click);
+			// 
+			// toolStripSeparator3
+			// 
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
 			// 
 			// splitContainer1
 			// 
@@ -235,9 +291,15 @@
 		private System.Windows.Forms.ToolStripButton copyToolStripButton;
 		private System.Windows.Forms.ToolStripButton pasteToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-		private System.Windows.Forms.ToolStripButton helpToolStripButton;
 		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+		private System.Windows.Forms.ToolStripComboBox cmbxSolvers_;
+		private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.ToolStripButton btnBackward_;
+		private System.Windows.Forms.ToolStripButton btnRun_;
+		private System.Windows.Forms.ToolStripButton btnForward_;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 	}
 }
 
