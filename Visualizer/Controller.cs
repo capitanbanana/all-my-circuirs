@@ -9,9 +9,9 @@ namespace Visualizer
 {
 	internal class Controller : IController
 	{
-		public Controller(ProblemDescription problem, IVisualizer visualizer, int scenarioNumber)
+		public Controller(ProblemDescription problem, IVisualizer visualizer)
 		{
-			vm = new VirtualMachine(117, scenarioNumber, scenarioNumber, new File(problem.ImageFile).Content.Data);
+			vm = new VirtualMachine(117, problem.ScenarioNumber, problem.ScenarioNumber, new File(problem.ImageFile).Content.Data);
 			solverDriver = new Driver(problem.Solver);
 			this.visualizer = visualizer;
 			simulationTimer.Tick += (sender, args) => StepForward();
@@ -48,7 +48,7 @@ namespace Visualizer
 				currentTime = Math.Max(0, value);
 				if (currentTime >= history.Count)
 					Simulate();
-				visualizer.Paint(solverDriver.UnderlyingSolver.GetVisualizerState(CurrentState));
+				visualizer.Render(solverDriver.UnderlyingSolver.GetVisualizerState(CurrentState));
 			}
 		}
 

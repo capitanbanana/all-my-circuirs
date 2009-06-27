@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ifpfc.Logic.Hohmann
 {
-	internal class HohmannSolver : BaseSolver<HohmannState>
+	public class HohmannSolver : BaseSolver<HohmannState>
 	{
 		private HohmannAlgoState algoState = HohmannAlgoState.ReadyToJump;
 		private int jumpTimeout;
