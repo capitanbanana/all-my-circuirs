@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.IO;
+using ifpfc.Logic;
 using Xunit;
 
-namespace ifpfc
+namespace ifpfc.VM
 {
 	public class VirtualMachine_TestOpcodes
 	{
@@ -183,7 +184,7 @@ namespace ifpfc
 
 		private double[] Run(double dx, double dy)
 		{
-			var output = new VirtualMachine(1, 1, 1, image.ToArray()).RunTimeStep(dx, dy);
+			var output = new VirtualMachine(1, 1, 1, image.ToArray()).RunTimeStep(new Vector(dx, dy));
 			LogOutputPorts(output);
 			return output;
 		}

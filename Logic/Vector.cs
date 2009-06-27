@@ -9,5 +9,7 @@ namespace ifpfc.Logic
 			this.x = x;
 			this.y = y;
 		}
+
+		public static readonly Vector Zero = new Vector(0.0, 0.0);
 	}
 }

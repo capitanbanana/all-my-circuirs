@@ -1,4 +1,4 @@
-namespace ifpfc
+namespace ifpfc.VM
 {
 	internal static class Bits
 	{
