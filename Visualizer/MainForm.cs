@@ -8,7 +8,9 @@ namespace Visualizer
 {
 	internal partial class MainForm : Form, IVisualizer
 	{
+		private readonly VisualizerStateDataSource ds_ = new VisualizerStateDataSource();
 		private IController currentController_;
+		private bool nowRunning_;
 
 		public MainForm()
 		{
@@ -16,7 +18,7 @@ namespace Visualizer
 
 			splitContainer1.SplitterDistance = splitContainer1.Panel1.Height;
 
-			var pnlCanvas = new CanvasPanel(new DummySystemState()) { Parent = splitContainer1.Panel1 };
+			var pnlCanvas = new CanvasPanel(ds_) { Parent = splitContainer1.Panel1 };
 
 			SetUpSolversCombobox();
 		}
@@ -50,22 +52,43 @@ namespace Visualizer
 				var problem = (ProblemDescription)cmbxSolvers_.ComboBox.SelectedValue;
 				if (problem == null) return;
 				currentController_ = new Controller(problem, this);
+				SetRunningState(false);
 			};
+		}
+
+		private void SetRunningState(bool nowRunning)
+		{
+			nowRunning_ = nowRunning;
+			btnRun_.Text = nowRunning_ ? "Pause" : "Run";
+			btnForward_.Enabled = !nowRunning_;
+			btnBackward_.Enabled = !nowRunning_;
 		}
 
 		private void btnRun__Click(object sender, EventArgs e)
 		{
 			if (currentController_ == null) return;
+			if (nowRunning_)
+			{
+				currentController_.SetSimulationMode(SimulationMode.Manual);
+				SetRunningState(false);
+			}
+			else
+			{
+				currentController_.SetSimulationMode(SimulationMode.Manual);
+				SetRunningState(true);
+			}
 		}
 
 		private void btnBackward__Click(object sender, EventArgs e)
 		{
 			if (currentController_ == null) return;
+			currentController_.StepBackward();
 		}
 
 		private void btnForward__Click(object sender, EventArgs e)
 		{
 			if (currentController_ == null) return;
+			currentController_.StepForward();
 		}
 
 
@@ -73,6 +96,7 @@ namespace Visualizer
 
 		public void Render(VisualizerState state)
 		{
+			ds_.UpdateState(state);
 			Invalidate();
 		}
 	}
