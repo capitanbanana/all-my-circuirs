@@ -3,6 +3,6 @@
 	public interface IVirtualMachine
 	{
 		double[] RunTimeStep(double dx, double dy);
-		byte[] FormSubmission();
+		byte[] CreateSubmission();
 	}
 }
