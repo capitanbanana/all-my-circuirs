@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using ifpfc.VM;
 using log4net.Config;
 using Xunit;
 

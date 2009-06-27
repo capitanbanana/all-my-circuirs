@@ -1,11 +1,16 @@
 using System;
 using System.Text;
-using ifpfc.VM;
 
-namespace ifpfc
+namespace ifpfc.VM
 {
 	public class Disasembler
 	{
+		private const int addressSize = 14;
+		private const int addressSpaceSize = 1 << addressSize;
+		private readonly int imageSize;
+		private readonly uint[] instructions = new uint[addressSpaceSize];
+		private readonly double[] mem = new double[addressSpaceSize];
+
 		public Disasembler(byte[] initialImage)
 		{
 			imageSize = initialImage.Length;
@@ -22,9 +27,9 @@ namespace ifpfc
 
 		private void ImportImage(byte[] initialImage)
 		{
-			for(int start = 0, offset = 0; start < initialImage.Length; start += 12, offset++)
+			for (int start = 0, offset = 0; start < initialImage.Length; start += 12, offset++)
 			{
-				bool even = offset % 2 == 0;
+				bool even = offset%2 == 0;
 				int dataOffset = even ? 0 : 4;
 				int instrOffset = even ? 8 : 0;
 				mem[offset] = BitConverter.ToDouble(initialImage, start + dataOffset);
@@ -54,14 +59,14 @@ namespace ifpfc
 		private string ReadSType(int rd, uint op, uint imm, uint r1)
 		{
 			string readableInstr;
-			switch(op)
+			switch (op)
 			{
 				case 0:
 					readableInstr = "nop";
 					break;
 				case 1:
 					string cmpOp;
-					switch(imm)
+					switch (imm)
 					{
 						case 0:
 							cmpOp = "<";
@@ -101,9 +106,9 @@ namespace ifpfc
 		private string ReadDType(int rd, uint op, uint r1, uint r2)
 		{
 			string readableInstr;
-			Func<char, string>  FormatBinOp = o => string.Format("mem[{0}] <- mem[{1}] {2} mem[{3}]", rd, r1, o, r2);
+			Func<char, string> FormatBinOp = o => string.Format("mem[{0}] <- mem[{1}] {2} mem[{3}]", rd, r1, o, r2);
 
-			switch(op)
+			switch (op)
 			{
 				case 1:
 					readableInstr = FormatBinOp('+');
@@ -133,11 +138,5 @@ namespace ifpfc
 		{
 			return string.Format("{0:D5}", address);
 		}
-
-		private const int addressSize = 14;
-		private const int addressSpaceSize = 1 << addressSize;
-		private readonly uint[] instructions = new uint[addressSpaceSize];
-		private readonly double[] mem = new double[addressSpaceSize];
-		private readonly int imageSize;
 	}
 }

@@ -1,14 +1,14 @@
 ﻿using System;
 using Xunit;
 
-namespace ifpfc
+namespace ifpfc.VM
 {
 	public class Disassembler_Test
 	{
 		[Fact]
 		public void Disassemble()
 		{
-			var disassemble = new Disasembler(TestData.MeetAndGreet).Disassemble();
+			string disassemble = new Disasembler(TestData.MeetAndGreet).Disassemble();
 			Console.WriteLine(disassemble);
 		}
 	}

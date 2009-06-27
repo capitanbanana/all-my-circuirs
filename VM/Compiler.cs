@@ -1,8 +1,7 @@
 using System;
 using System.Text;
-using ifpfc.VM;
 
-namespace ifpfc
+namespace ifpfc.VM
 {
 	public class Compiler
 	{
@@ -13,7 +12,7 @@ using System.Linq;
 using ifpfc.Logic;
 using ifpfc.VM;
 
-namespace ifpfc
+namespace ifpfc.VM
 {
 	public class {CLASSNAME} : IVirtualMachine
 	{
