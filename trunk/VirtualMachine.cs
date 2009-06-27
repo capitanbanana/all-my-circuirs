@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using log4net;
+using System.Linq;
 
 namespace ifpfc
 {
@@ -9,23 +11,73 @@ namespace ifpfc
 		{
 			this.teamId = teamId;
 			this.scenarioId = scenarioId;
-			inport[0x3E80] = configurationNumber;
+			inport[configurationPort] = configurationNumber;
 			ImportImage(initialImage);
 		}
 
 		public double[] RunTimeStep(double dx, double dy)
 		{
-			inport[0x2] = dx;
-			inport[0x3] = dy;
+			dxs.Add(dx);
+			dys.Add(dy);
+			inport[dxPort] = dx;
+			inport[dyPort] = dy;
 			for (int i = 0; i < addressSpaceSize; i++)
 				RunInstruction(i);
-			timeStep++;
+			tickCount++;
 			return outport;
 		}
 
-		public byte[] FormSubmission()
+		public byte[] CreateSubmission()
 		{
-			throw new NotImplementedException();
+			return
+				BitConverter.GetBytes(0xCAFEBABE)
+				.Concat(BitConverter.GetBytes(teamId))
+				.Concat(BitConverter.GetBytes(scenarioId))
+				.Concat(CreateFrames())
+				.Concat(BitConverter.GetBytes(tickCount))
+				.Concat(BitConverter.GetBytes(0))
+				.ToArray();
+		}
+
+		private IEnumerable<byte> CreateFrames()
+		{
+			return
+				from tick in Enumerable.Range(0, tickCount)
+				let portList = CreatePortList(tick)
+				where portList.Count > 0
+				from b in CreateFrame(tick, portList)
+				select b;
+		}
+
+		private IEnumerable<byte> CreateFrame(int tick, IList<int> portList)
+		{
+			var portBytes =
+				from portNum in portList
+				from b in
+					BitConverter.GetBytes(portNum)
+					.Concat(BitConverter.GetBytes(inport[portNum]))
+				select b;
+			return
+				BitConverter.GetBytes(tick)
+				.Concat(BitConverter.GetBytes(portList.Count))
+				.Concat(portBytes);
+		}
+
+		private IList<int> CreatePortList(int tick)
+		{
+			var result = new List<int>();
+			if (tick == 0)
+				result.Add(configurationPort);
+			if (ShouldIncludePort(tick, dxs))
+				result.Add(dxPort);
+			if (ShouldIncludePort(tick, dys))
+				result.Add(dyPort);
+			return result;
+		}
+
+		private static bool ShouldIncludePort(int tick, IList<double> portValues)
+		{
+			return (tick == 0) || (portValues[tick - 1] != portValues[tick]);
 		}
 
 		private void ImportImage(byte[] initialImage)
@@ -187,17 +239,23 @@ namespace ifpfc
 		private const string memAtR2 = "mem[r2]";
 		private const string inportAtR1 = "inport[r1]";
 		private const string outportAtR1 = "outport[r1]";
+		private const int configurationPort = 0x3E80;
+		private const int dxPort = 0x2;
+		private const int dyPort = 0x3;
 
 		private readonly uint[] instructions = new uint[addressSpaceSize];
 		private readonly double[] mem = new double[addressSpaceSize];
 		private readonly double[] inport = new double[addressSpaceSize];
 		private readonly double[] outport = new double[addressSpaceSize];
 
-		private int timeStep;
+		private int tickCount;
 		private bool status;
 
 		private readonly int teamId;
 		private readonly int scenarioId;
+
+		private readonly List<double> dxs = new List<double>();
+		private readonly List<double> dys = new List<double>();
 
 		private static readonly ILog log = LogManager.GetLogger(typeof(VirtualMachine));
 	}

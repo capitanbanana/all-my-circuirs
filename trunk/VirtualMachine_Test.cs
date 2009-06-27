@@ -1,3 +1,4 @@
+using System;
 using log4net.Config;
 using SKBKontur.LIT.Core;
 using Xunit;
@@ -30,6 +31,33 @@ namespace ifpfc
 		{
 			var vm = new VirtualMachine(42, 42, 42, ReadImage("bin3.obf"));
 			vm.RunTimeStep(0.0, 0.0);
+		}
+
+		[Fact]
+		public void create_test_submission()
+		{
+			var rng = new Random();
+			var vm = new VirtualMachine(117, 1001, 1001, ReadImage("bin1.obf"));
+			const int scorePort = 0;
+			string fuelFile = VMImagesDirectory.GetFile("fuel.txt").FullPath;
+			double[] outport = null;
+			int ticks = 0;
+			while ((ticks < 50) && ((outport == null) || (outport[scorePort] == 0.0)))
+			{
+				outport = vm.RunTimeStep(rng.Next(0, 0), rng.Next(0, 0));
+				System.IO.File.WriteAllLines(
+					fuelFile,
+					new[]
+					{
+						"Score: " + outport[0],
+						"Fuel: " + outport[1],
+						"X to Earth: " + outport[2],
+						"Y to Earth: " + outport[3],
+						"Ticks: " + ticks,
+					});
+				ticks++;
+			}
+			VMImagesDirectory.GetFile("bin1.osf").Write(new BinaryData(vm.CreateSubmission()));
 		}
 
 		private static Directory VMImagesDirectory
