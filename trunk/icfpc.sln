@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VM", "VM.csproj", "{CA1E372F-60D3-4BF4-B686-18E2A8C2DBB2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core.csproj", "{CA1E372F-60D3-4BF4-B686-18E2A8C2DBB2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hohmann", "hohmann\Hohmann.csproj", "{CF8063C3-B1F2-482A-AEE9-CDAAA83E713D}"
 EndProject
