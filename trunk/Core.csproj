@@ -70,6 +70,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Compile Include="Disassembler.cs" />
+    <Compile Include="Disassembler_Test.cs" />
+    <Compile Include="TestData.cs" />
     <Compile Include="Logic\BaseSolver.cs" />
     <Compile Include="Logic\BasicState.cs" />
     <Compile Include="Logic\Hohmann\HohmannSolver_Test.cs" />

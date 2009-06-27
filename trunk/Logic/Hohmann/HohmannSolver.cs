@@ -5,33 +5,41 @@ namespace ifpfc.Logic.Hohmann
 {
 	internal class HohmannSolver : BaseSolver<HohmannState>
 	{
-		public override HohmannState ApplyPortsOutput(double[] outPorts, HohmannState oldState)
+		private HohmannAlgoState algoState = HohmannAlgoState.ReadyToJump;
+		private int jumpTimeout;
+
+		protected override void FinishStateInitialization(double[] outPorts, HohmannState newState)
 		{
-			var newState = base.ApplyPortsOutput(outPorts, oldState);
 			newState.TargetOrbitR = outPorts[4];
-			if (oldState != null) newState.ImpulsesDone = oldState.ImpulsesDone;
-			return newState;
 		}
 
-		public override Vector CalculateDV(HohmannState s)
+		public override Vector CalculateDV()
 		{
 			double r0 = Math.Sqrt(s.Sx*s.Sx + s.Sy*s.Sy);
 			double v0 = Math.Sqrt(s.Vx*s.Vx + s.Vy*s.Vy);
 			double r1 = s.TargetOrbitR;
 			double dv = 0;
-			if (s.ImpulsesDone == 0)
+			if (algoState == HohmannAlgoState.ReadyToJump)
 			{
-				dv = GetDvForFirstJump(r1, r0, v0);
-				File.AppendAllText("driver.txt", "IMPULSE = " + dv + "\r\n");
-				s.ImpulsesDone = 1;
+				if (Math.Abs(r0 - r1) > 100)
+				{
+					dv = GetDvForFirstJump(r1, r0, v0);
+					File.AppendAllText("driver.txt", "IMPULSE = " + dv + " s = " + algoState + "\r\n");
+					algoState = HohmannAlgoState.Jumping;
+					jumpTimeout = 100;
+				}
 			}
-			else if (s.ImpulsesDone == 1)
+			else if (algoState == HohmannAlgoState.Jumping)
 			{
-				if (Math.Abs(r0 - r1) < 500)
+				var sp = s.Sx*s.Vx + s.Sy*s.Vy;
+				var value = sp / r0 / v0;
+				if (jumpTimeout <= 0 && Math.Abs(value) < 0.001)
 				{
 					dv = GetDvForSecondJump(r0, v0);
-					File.AppendAllText("driver.txt", "IMPULSE = " + dv + "\r\n");
+					File.AppendAllText("driver.txt", "IMPULSE = " + dv + " value = " + value + " s = " + algoState + "\r\n");
+					algoState = HohmannAlgoState.ReadyToJump;
 				}
+				jumpTimeout--;
 			}
 			return new Vector(-dv*s.Vx / v0, -dv*s.Vy / v0);
 		}

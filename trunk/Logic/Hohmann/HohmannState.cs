@@ -5,7 +5,6 @@ namespace ifpfc.Logic.Hohmann
 	public class HohmannState : BasicState
 	{
 		public double TargetOrbitR { get; set; }
-		public int ImpulsesDone { get; set; }
 
 		public override string ToString()
 		{
@@ -16,5 +15,11 @@ namespace ifpfc.Logic.Hohmann
 			       " V=" + Math.Sqrt(Vx * Vx + Vy * Vy) + 
 			       " Fuel=" + Fuel + " Score=" + Score;
 		}
+	}
+
+	public enum HohmannAlgoState
+	{
+		ReadyToJump = 0,
+		Jumping
 	}
 }

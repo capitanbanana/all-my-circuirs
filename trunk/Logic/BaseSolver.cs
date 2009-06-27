@@ -1,21 +1,31 @@
 namespace ifpfc.Logic
 {
-	public abstract class BaseSolver<TState> : IProblemSolver<TState> where TState : BasicState, new()
+	public abstract class BaseSolver<TState> : IProblemSolver where TState : BasicState, new()
 	{
-		#region IProblemSolver<TState> Members
+		protected TState s;
 
-		public virtual TState ApplyPortsOutput(double[] outPorts, TState oldState)
+		#region IProblemSolver Members
+
+		public void ApplyPortsOutput(double[] outPorts)
 		{
 			var newState = new TState {Score = outPorts[0], Fuel = outPorts[1], Sx = outPorts[2], Sy = outPorts[3]};
-			if (oldState != null)
+			if (s != null)
 			{
-				newState.Vx = newState.Sx - oldState.Sx;
-				newState.Vy = newState.Sy - oldState.Sy;
+				newState.Vx = newState.Sx - s.Sx;
+				newState.Vy = newState.Sy - s.Sy;
 			}
-			return newState;
+			FinishStateInitialization(outPorts, newState);
+			s = newState;
 		}
 
-		public abstract Vector CalculateDV(TState state);
+		protected abstract void FinishStateInitialization(double[] outPorts, TState newState);
+
+		public abstract Vector CalculateDV();
+
+		public BasicState State
+		{
+			get { return s; }
+		}
 
 		#endregion
 	}
