@@ -1,8 +1,9 @@
 namespace ifpfc.Logic
 {
-	public interface IProblemSolver<TState> where TState : BasicState, new()
+	public interface IProblemSolver
 	{
-		TState ApplyPortsOutput(double[] outPorts, TState oldState);
-		Vector CalculateDV(TState state);
+		void ApplyPortsOutput(double[] outPorts);
+		Vector CalculateDV();
+		BasicState State { get; }
 	}
 }
