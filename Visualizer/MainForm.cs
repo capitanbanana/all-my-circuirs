@@ -8,7 +8,9 @@ namespace Visualizer
 		{
 			InitializeComponent();
 
-			var pnlCanvas = new CanvasPanel { Parent = splitContainer1.Panel1 };
+			splitContainer1.SplitterDistance = splitContainer1.Panel1.Height;
+
+			var pnlCanvas = new CanvasPanel(new DummySystemState()) { Parent = splitContainer1.Panel1 };
 		}
 	}
 }
