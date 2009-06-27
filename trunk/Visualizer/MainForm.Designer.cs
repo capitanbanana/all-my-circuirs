@@ -51,9 +51,11 @@
 			this.btnForward_ = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+			this.pgVisualizer = new System.Windows.Forms.PropertyGrid();
 			this.menuStrip1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
+			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -247,9 +249,21 @@
 			this.splitContainer1.IsSplitterFixed = true;
 			this.splitContainer1.Location = new System.Drawing.Point(0, 49);
 			this.splitContainer1.Name = "splitContainer1";
+			// 
+			// splitContainer1.Panel2
+			// 
+			this.splitContainer1.Panel2.Controls.Add(this.pgVisualizer);
 			this.splitContainer1.Size = new System.Drawing.Size(840, 585);
 			this.splitContainer1.SplitterDistance = 575;
 			this.splitContainer1.TabIndex = 3;
+			// 
+			// pgVisualizer
+			// 
+			this.pgVisualizer.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pgVisualizer.Location = new System.Drawing.Point(0, 0);
+			this.pgVisualizer.Name = "pgVisualizer";
+			this.pgVisualizer.Size = new System.Drawing.Size(261, 585);
+			this.pgVisualizer.TabIndex = 0;
 			// 
 			// MainForm
 			// 
@@ -270,6 +284,7 @@
 			this.statusStrip1.PerformLayout();
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
+			this.splitContainer1.Panel2.ResumeLayout(false);
 			this.splitContainer1.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -300,6 +315,7 @@
 		private System.Windows.Forms.ToolStripButton btnRun_;
 		private System.Windows.Forms.ToolStripButton btnForward_;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+		private System.Windows.Forms.PropertyGrid pgVisualizer;
 	}
 }
 

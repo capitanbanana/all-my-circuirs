@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using ifpfc.Logic;
 
 namespace Visualizer
 {
@@ -56,7 +57,8 @@ namespace Visualizer
 			gr.TranslateTransform(ClientRectangle.Width / 2.0f, ClientRectangle.Height / 2.0f);
 
 			bodyBrush_.Color = EarthColor;
-			gr.FillEllipse(bodyBrush_, new Rectangle(-5, -5, 10, 10));
+			int scaledR = ScaleDistance(Physics.R);
+			gr.FillEllipse(bodyBrush_, new Rectangle(-scaledR, -scaledR, 2*scaledR, 2*scaledR));
 			DrawCaption(gr, "Earth", 3, 3);
 
 			DrawSattelite(gr, dataSource_.Voyager, VoyagerColor);

@@ -11,6 +11,7 @@ namespace Visualizer
 		private readonly VisualizerStateDataSource ds_ = new VisualizerStateDataSource();
 		private IController currentController_;
 		private bool nowRunning_;
+		private readonly CanvasPanel pnlCanvas;
 
 		public MainForm()
 		{
@@ -18,7 +19,7 @@ namespace Visualizer
 
 			splitContainer1.SplitterDistance = splitContainer1.Panel1.Height;
 
-			var pnlCanvas = new CanvasPanel(ds_) { Parent = splitContainer1.Panel1 };
+			pnlCanvas = new CanvasPanel(ds_) { Parent = splitContainer1.Panel1 };
 
 			SetUpSolversCombobox();
 		}
@@ -30,16 +31,16 @@ namespace Visualizer
 			var scenarios = new List<KeyValuePair<string, ProblemDescription>>(new[]{
 				new KeyValuePair<string, ProblemDescription>("Select scenario", null),
 				new KeyValuePair<string, ProblemDescription>(
-					"Hohmann - 1", new ProblemDescription(@"..\..\..\ProblemVMImages\bin1.obf", new HohmannSolver(), 1)
+					"Hohmann - 1", new ProblemDescription(@"..\..\..\ProblemVMImages\bin1.obf", new HohmannSolver(), 1001)
 				),
 				new KeyValuePair<string, ProblemDescription>(
-					"Hohmann - 2", new ProblemDescription(@"..\..\..\ProblemVMImages\bin1.obf", new HohmannSolver(), 2)
+					"Hohmann - 2", new ProblemDescription(@"..\..\..\ProblemVMImages\bin1.obf", new HohmannSolver(), 1002)
 				),
 				new KeyValuePair<string, ProblemDescription>(
-					"Hohmann - 3", new ProblemDescription(@"..\..\..\ProblemVMImages\bin1.obf", new HohmannSolver(), 3)
+					"Hohmann - 3", new ProblemDescription(@"..\..\..\ProblemVMImages\bin1.obf", new HohmannSolver(), 1003)
 				),
 				new KeyValuePair<string, ProblemDescription>(
-					"Hohmann - 4", new ProblemDescription(@"..\..\..\ProblemVMImages\bin1.obf", new HohmannSolver(), 4)
+					"Hohmann - 4", new ProblemDescription(@"..\..\..\ProblemVMImages\bin1.obf", new HohmannSolver(), 1004)
 				),
 			});
 			cmbxSolvers_.ComboBox.DataSource = scenarios;
@@ -52,7 +53,7 @@ namespace Visualizer
 				var problem = (ProblemDescription)cmbxSolvers_.ComboBox.SelectedValue;
 				if (problem == null) return;
 				currentController_ = new Controller(problem, this);
-				SetRunningState(false);
+				SetRunningState(true);
 			};
 		}
 
@@ -91,13 +92,10 @@ namespace Visualizer
 			currentController_.StepForward();
 		}
 
-
-		
-
 		public void Render(VisualizerState state)
 		{
 			ds_.UpdateState(state);
-			Invalidate();
+			pnlCanvas.Invalidate();
 		}
 	}
 }
