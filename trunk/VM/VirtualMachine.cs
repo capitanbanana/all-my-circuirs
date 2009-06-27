@@ -232,8 +232,8 @@ namespace ifpfc.VM
 		{
 			string r1DebugInfo =
 				includeInport ? (inportAtR1 + " = " + inport[r1]) :
-				                                                  	includeOutport ? (outportAtR1 + " = " + outport[r1]) :
-				                                                  	                                                     	memAtR1 + " = " + mem[r1];
+				includeOutport ? (outportAtR1 + " = " + outport[r1]) :
+				memAtR1 + " = " + mem[r1];
 			string debugInfo = string.Format("r1 = {0}, {1}", FormatAddress(r1), r1DebugInfo);
 			if (r2 != null)
 				debugInfo += string.Format(", r2 = {0}, {1} = {2}", FormatAddress(r2.Value), memAtR2, mem[r2.Value]);
