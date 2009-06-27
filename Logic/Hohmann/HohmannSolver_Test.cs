@@ -1,6 +1,5 @@
-﻿using log4net.Config;
-using ifpfc.VM;
-using SKBKontur.LIT.Core;
+﻿using System.IO;
+using log4net.Config;
 using Xunit;
 
 namespace ifpfc.Logic.Hohmann
@@ -11,7 +10,8 @@ namespace ifpfc.Logic.Hohmann
 		public void Fly1001()
 		{
 			XmlConfigurator.Configure();
-			var vm = new VirtualMachine(42, 1001, 1001, TestData.Hohmann);
+			//var vm = new VirtualMachine(117, 1001, 1001, TestData.Hohmann);
+			var vm = new HohmannsEngine(117, 1001, 1001);
 			var driver = new Driver(new HohmannSolver());
 			Vector dv = new Vector(0, 0);
 			while (!driver.IsEnd())
@@ -19,6 +19,7 @@ namespace ifpfc.Logic.Hohmann
 				var outPorts = vm.RunTimeStep(new Vector(dv.x, dv.y));
 				dv = driver.RunStep(outPorts);
 			}
+			File.WriteAllBytes("res.bin", vm.CreateSubmission());
 		}
 	}
 }

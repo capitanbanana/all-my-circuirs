@@ -20,6 +20,11 @@ namespace ifpfc
 			get { return ReadImage("bin1.obf"); }
 		}
 
+		public static byte[] MeetAndGreet
+		{
+			get { return ReadImage("bin2.obf"); }
+		}
+
 		public static byte[] ReadImage(string imageName)
 		{
 			return VMImagesDirectory.GetFile(imageName).Content.Data;
