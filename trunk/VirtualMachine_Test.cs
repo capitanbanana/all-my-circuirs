@@ -1,3 +1,4 @@
+using log4net.Config;
 using SKBKontur.LIT.Core;
 using Xunit;
 
@@ -5,6 +6,11 @@ namespace ifpfc
 {
 	public class VirtualMachine_Test
 	{
+		public VirtualMachine_Test()
+		{
+			XmlConfigurator.Configure();
+		}
+
 		[Fact]
 		public void can_run_first_image()
 		{
