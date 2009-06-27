@@ -73,8 +73,6 @@ namespace Visualizer
 
 		private void DrawSattelite(Graphics gr, Sattelite s, Color color)
 		{
-			var gs = gr.Save();
-
 			var pos = new Point(ScaleDistance(s.Location.X), ScaleDistance(s.Location.Y));
 			bodyBrush_.Color = color;
 			gr.FillEllipse(bodyBrush_, new Rectangle(pos.X - 3, pos.Y - 3, 6, 6));
@@ -101,20 +99,23 @@ namespace Visualizer
 			//var mxFlipY = new Matrix(1, 0, 0, -1, 0, ClientRectangle.Height);
 			//gr.MultiplyTransform(mxFlipY, MatrixOrder.Append);
 
-			var transformAngle = (float)(-1 * s.Orbit.TransformAngle * (180.0F / Math.PI));
-			gr.RotateTransform(transformAngle, MatrixOrder.Prepend);
+			if (s.Orbit.SemiMajorAxis > 0)
+			{
+				var gs = gr.Save();
+				var transformAngle = (float)(-1 * s.Orbit.TransformAngle * (180.0F / Math.PI));
+				gr.RotateTransform(transformAngle, MatrixOrder.Prepend);
 
-			orbitPen_.Color = color;
-			var or = new RectangleF(
-				(float)(-1 * s.Orbit.SemiMinorAxis), (float)(-1 * s.Orbit.PeriapsisDistance),
-				(float)(2 * s.Orbit.SemiMinorAxis), (float)(2 * s.Orbit.SemiMajorAxis)
-			);
-			gr.DrawEllipse(
-				orbitPen_,
-				new Rectangle(ScaleDistance(or.Left), ScaleDistance(or.Top), ScaleDistance(or.Width), ScaleDistance(or.Height))
-			);
-
-			gr.Restore(gs);
+				orbitPen_.Color = color;
+				var or = new RectangleF(
+					(float)(-1 * s.Orbit.SemiMinorAxis), (float)(-1 * s.Orbit.PeriapsisDistance),
+					(float)(2 * s.Orbit.SemiMinorAxis), (float)(2 * s.Orbit.SemiMajorAxis)
+				);
+				gr.DrawEllipse(
+					orbitPen_,
+					new Rectangle(ScaleDistance(or.Left), ScaleDistance(or.Top), ScaleDistance(or.Width), ScaleDistance(or.Height))
+				);
+				gr.Restore(gs);
+			}
 		}
 	}
 }
