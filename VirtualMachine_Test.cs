@@ -12,6 +12,20 @@ namespace ifpfc
 			vm.RunTimeStep(0.0, 0.0);
 		}
 
+		[Fact]
+		public void can_run_second_image()
+		{
+			var vm = new VirtualMachine(42, 42, 42, ReadImage("bin2.obf"));
+			vm.RunTimeStep(0.0, 0.0);
+		}
+
+		[Fact]
+		public void can_run_third_image()
+		{
+			var vm = new VirtualMachine(42, 42, 42, ReadImage("bin3.obf"));
+			vm.RunTimeStep(0.0, 0.0);
+		}
+
 		private static Directory VMImagesDirectory
 		{
 			get
