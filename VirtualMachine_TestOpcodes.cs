@@ -5,7 +5,7 @@ using Xunit;
 
 namespace ifpfc
 {
-	public class VirtualMachine_Test2
+	public class VirtualMachine_TestOpcodes
 	{
 		private MemoryStream image = new MemoryStream();
 
