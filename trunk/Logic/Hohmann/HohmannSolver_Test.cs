@@ -1,4 +1,5 @@
-﻿using SKBKontur.LIT.Core;
+﻿using ifpfc.VM;
+using SKBKontur.LIT.Core;
 using Xunit;
 
 namespace ifpfc.Logic.Hohmann
@@ -24,7 +25,7 @@ namespace ifpfc.Logic.Hohmann
 			Vector dv = new Vector(0, 0);
 			while (!driver.IsEnd())
 			{
-				var outPorts = vm.RunTimeStep(dv.x, dv.y);
+				var outPorts = vm.RunTimeStep(new Vector(dv.x, dv.y));
 				dv = driver.RunStep(outPorts);
 			}
 		}

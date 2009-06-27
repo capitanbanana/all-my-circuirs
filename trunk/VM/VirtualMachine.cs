@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using ifpfc.Logic;
 using log4net;
 using System.Linq;
 
-namespace ifpfc
+namespace ifpfc.VM
 {
 	public class VirtualMachine : IVirtualMachine
 	{
@@ -21,8 +22,10 @@ namespace ifpfc
 			get { return tickCount; }
 		}
 
-		public double[] RunTimeStep(double dx, double dy)
+		public double[] RunTimeStep(Vector dv)
 		{
+			double dx = dv.x;
+			double dy = dv.y;
 			dxs.Add(dx);
 			dys.Add(dy);
 			inport[dxPort] = dx;
@@ -37,12 +40,12 @@ namespace ifpfc
 		{
 			return
 				BitConverter.GetBytes(0xCAFEBABE)
-				.Concat(BitConverter.GetBytes(teamId))
-				.Concat(BitConverter.GetBytes(scenarioId))
-				.Concat(CreateFrames())
-				.Concat(BitConverter.GetBytes(tickCount))
-				.Concat(BitConverter.GetBytes(0))
-				.ToArray();
+					.Concat(BitConverter.GetBytes(teamId))
+					.Concat(BitConverter.GetBytes(scenarioId))
+					.Concat(CreateFrames())
+					.Concat(BitConverter.GetBytes(tickCount))
+					.Concat(BitConverter.GetBytes(0))
+					.ToArray();
 		}
 
 		private IEnumerable<byte> CreateFrames()
@@ -65,8 +68,8 @@ namespace ifpfc
 				select b;
 			return
 				BitConverter.GetBytes(tick)
-				.Concat(BitConverter.GetBytes(portList.Count))
-				.Concat(portBytes);
+					.Concat(BitConverter.GetBytes(portList.Count))
+					.Concat(portBytes);
 		}
 
 		private IList<int> CreatePortList(int tick)
@@ -229,8 +232,8 @@ namespace ifpfc
 		{
 			string r1DebugInfo =
 				includeInport ? (inportAtR1 + " = " + inport[r1]) :
-				includeOutport ? (outportAtR1 + " = " + outport[r1]) :
-				memAtR1 + " = " + mem[r1];
+				                                                  	includeOutport ? (outportAtR1 + " = " + outport[r1]) :
+				                                                  	                                                     	memAtR1 + " = " + mem[r1];
 			string debugInfo = string.Format("r1 = {0}, {1}", FormatAddress(r1), r1DebugInfo);
 			if (r2 != null)
 				debugInfo += string.Format(", r2 = {0}, {1} = {2}", FormatAddress(r2.Value), memAtR2, mem[r2.Value]);

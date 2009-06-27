@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SKBKontur.LIT.Core, Version=2.1.2.38483, Culture=neutral, PublicKeyToken=567ac58b067ec6fa, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\SKBKontur.LIT.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -51,8 +55,11 @@
     <Compile Include="CanvasPanel.cs">
       <SubType>NotDesignable</SubType>
     </Compile>
+    <Compile Include="Controller.cs" />
     <Compile Include="DummySystemState.cs" />
+    <Compile Include="IController.cs" />
     <Compile Include="ISystemState.cs" />
+    <Compile Include="IVisualizer.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,6 +90,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="SimulationMode.cs" />
+    <Compile Include="SimulationState.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core.csproj">

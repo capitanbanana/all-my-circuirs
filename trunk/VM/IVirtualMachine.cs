@@ -1,8 +1,10 @@
-﻿namespace ifpfc
+﻿using ifpfc.Logic;
+
+namespace ifpfc.VM
 {
 	public interface IVirtualMachine
 	{
-		double[] RunTimeStep(double dx, double dy);
+		double[] RunTimeStep(Vector dv);
 		byte[] CreateSubmission();
 	}
 }

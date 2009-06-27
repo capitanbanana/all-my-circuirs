@@ -1,9 +1,10 @@
 using System;
+using ifpfc.Logic;
 using log4net.Config;
 using SKBKontur.LIT.Core;
 using Xunit;
 
-namespace ifpfc
+namespace ifpfc.VM
 {
 	public class VirtualMachine_Test
 	{
@@ -16,7 +17,7 @@ namespace ifpfc
 		public void can_run_first_image()
 		{
 			var vm = new VirtualMachine(42, 1001, 1001, ReadImage("bin1.obf"));
-			var ports = vm.RunTimeStep(0.0, 0.0);
+			var ports = vm.RunTimeStep(Vector.Zero);
 			LogOutputPorts(ports);
 		}
 		
@@ -30,20 +31,19 @@ namespace ifpfc
 		public void can_run_second_image()
 		{
 			var vm = new VirtualMachine(42, 42, 42, ReadImage("bin2.obf"));
-			vm.RunTimeStep(0.0, 0.0);
+			vm.RunTimeStep(Vector.Zero);
 		}
 
 		[Fact]
 		public void can_run_third_image()
 		{
 			var vm = new VirtualMachine(42, 42, 42, ReadImage("bin3.obf"));
-			vm.RunTimeStep(0.0, 0.0);
+			vm.RunTimeStep(Vector.Zero);
 		}
 
 		[Fact]
 		public void create_test_submission()
 		{
-			var rng = new Random();
 			var vm = new VirtualMachine(117, 1001, 1001, ReadImage("bin1.obf"));
 			const int scorePort = 0;
 			string fuelFile = VMImagesDirectory.GetFile("fuel.txt").FullPath;
@@ -51,17 +51,17 @@ namespace ifpfc
 			int ticks = 0;
 			while ((ticks < 50) && ((outport == null) || (outport[scorePort] == 0.0)))
 			{
-				outport = vm.RunTimeStep(rng.Next(0, 0), rng.Next(0, 0));
+				outport = vm.RunTimeStep(Vector.Zero);
 				System.IO.File.WriteAllLines(
 					fuelFile,
 					new[]
-					{
-						"Score: " + outport[0],
-						"Fuel: " + outport[1],
-						"X to Earth: " + outport[2],
-						"Y to Earth: " + outport[3],
-						"Ticks: " + ticks,
-					});
+						{
+							"Score: " + outport[0],
+							"Fuel: " + outport[1],
+							"X to Earth: " + outport[2],
+							"Y to Earth: " + outport[3],
+							"Ticks: " + ticks,
+						});
 				ticks++;
 			}
 			VMImagesDirectory.GetFile("bin1.osf").Write(new BinaryData(vm.CreateSubmission()));
