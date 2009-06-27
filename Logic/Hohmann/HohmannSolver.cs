@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 namespace ifpfc.Logic.Hohmann
 {
@@ -42,6 +43,16 @@ namespace ifpfc.Logic.Hohmann
 				jumpTimeout--;
 			}
 			return new Vector(-dv*s.Vx / v0, -dv*s.Vy / v0);
+		}
+
+		public override VisualizerState GetVisualizerState(LogicState state)
+		{
+			return new VisualizerState(
+				new Sattelite(
+					"Гагарин",
+					new Vector(state.Sx, state.Sy),
+					new Vector(state.Vx, state.Vy)),
+				Enumerable.Empty<Sattelite>());
 		}
 
 		private static double GetDvForSecondJump(double r1, double v0)

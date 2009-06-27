@@ -62,7 +62,6 @@
     <Compile Include="VM\Bits.cs" />
     <Compile Include="VM\IVirtualMachine.cs" />
     <Compile Include="Logic\Driver.cs" />
-    <Compile Include="Logic\Hohmann\HohmannSolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VM\VirtualMachine.cs" />
     <Compile Include="VM\VirtualMachine_Test.cs" />
@@ -72,13 +71,16 @@
     <None Include="App.config" />
     <Compile Include="Disassembler.cs" />
     <Compile Include="Disassembler_Test.cs" />
+    <Compile Include="Logic\Hohmann\HohmannSolver.cs" />
+    <Compile Include="Logic\Sattelite.cs" />
+    <Compile Include="VisualizerState.cs" />
     <Compile Include="TestData.cs" />
     <Compile Include="Logic\BaseSolver.cs" />
-    <Compile Include="Logic\BasicState.cs" />
+    <Compile Include="Logic\LogicState.cs" />
     <Compile Include="Logic\Hohmann\HohmannSolver_Test.cs" />
     <Compile Include="Logic\Hohmann\HohmannState.cs" />
     <Compile Include="Logic\Physics.cs" />
-    <Compile Include="Logic\IDriver.cs" />
+    <Compile Include="Logic\IProblemSolverDriver.cs" />
     <Compile Include="Logic\IProblemSolver.cs" />
     <Compile Include="Logic\Vector.cs" />
   </ItemGroup>

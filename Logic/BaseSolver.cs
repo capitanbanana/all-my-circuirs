@@ -1,6 +1,8 @@
+using System;
+
 namespace ifpfc.Logic
 {
-	public abstract class BaseSolver<TState> : IProblemSolver where TState : BasicState, new()
+	public abstract class BaseSolver<TState> : IProblemSolver where TState : LogicState, new()
 	{
 		protected TState s;
 
@@ -22,10 +24,12 @@ namespace ifpfc.Logic
 
 		public abstract Vector CalculateDV();
 
-		public BasicState State
+		public LogicState State
 		{
 			get { return s; }
 		}
+
+		public abstract VisualizerState GetVisualizerState(LogicState state);
 
 		#endregion
 	}

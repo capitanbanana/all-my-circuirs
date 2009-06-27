@@ -4,6 +4,7 @@ namespace ifpfc.Logic
 	{
 		void ApplyPortsOutput(double[] outPorts);
 		Vector CalculateDV();
-		BasicState State { get; }
+		LogicState State { get; }
+		VisualizerState GetVisualizerState(LogicState state);
 	}
 }

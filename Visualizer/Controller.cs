@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using ifpfc.Logic;
 using ifpfc.VM;
+using SKBKontur.LIT.Core;
 
 namespace Visualizer
 {
 	internal class Controller : IController
 	{
-		public Controller(IVirtualMachine vm, IDriver driver, IVisualizer visualizer)
+		public Controller(ProblemDescription problem, IVisualizer visualizer, int scenarioNumber)
 		{
-			this.vm = vm;
-			this.driver = driver;
+			vm = new VirtualMachine(117, scenarioNumber, scenarioNumber, new File(problem.ImageFile).Content.Data);
+			solverDriver = new Driver(problem.Solver);
 			this.visualizer = visualizer;
 			simulationTimer.Tick += (sender, args) => StepForward();
 		}
@@ -33,10 +34,10 @@ namespace Visualizer
 
 		private void Simulate()
 		{
-			Vector dv = (CurrentState != null) ? CurrentState.DV : Vector.Zero;
+			Vector dv = lastSolverOutput ?? Vector.Zero;
 			double[] outPorts = vm.RunTimeStep(dv);
-			Vector newDv = !driver.IsEnd() ? driver.RunStep(outPorts) : Vector.Zero;
-			history.Add(new SimulationState(currentTime, newDv, outPorts));
+			lastSolverOutput = !solverDriver.IsEnd() ? solverDriver.RunStep(outPorts) : Vector.Zero;
+			history.Add(solverDriver.UnderlyingSolver.State);
 		}
 
 		private int CurrentTime
@@ -47,11 +48,11 @@ namespace Visualizer
 				currentTime = Math.Max(0, value);
 				if (currentTime >= history.Count)
 					Simulate();
-				visualizer.Paint(CurrentState);
+				visualizer.Paint(solverDriver.UnderlyingSolver.GetVisualizerState(CurrentState));
 			}
 		}
 
-		private SimulationState CurrentState
+		private LogicState CurrentState
 		{
 			get
 			{
@@ -62,10 +63,11 @@ namespace Visualizer
 		}
 
 		private readonly Timer simulationTimer = new Timer { Interval = 500 };
-		private readonly IList<SimulationState> history = new List<SimulationState>();
+		private readonly IList<LogicState> history = new List<LogicState>();
 		private int currentTime;
+		private Vector? lastSolverOutput;
 		private readonly IVirtualMachine vm;
-		private readonly IDriver driver;
+		private readonly IProblemSolverDriver solverDriver;
 		private readonly IVisualizer visualizer;
 	}
 }

@@ -1,6 +1,6 @@
 namespace ifpfc.Logic
 {
-	public class BasicState
+	public class LogicState
 	{
 		public double Score { get; set; }
 		public double Fuel { get; set; }

@@ -3,11 +3,8 @@ using System.IO;
 
 namespace ifpfc.Logic
 {
-	public class Driver : IDriver
+	public class Driver : IProblemSolverDriver
 	{
-		private readonly IProblemSolver solver;
-		private int stepCount;
-
 		public Driver(IProblemSolver solver)
 		{
 			this.solver = solver;
@@ -31,5 +28,13 @@ namespace ifpfc.Logic
 			if (stepCount++ < 2) return new Vector(0, 0);
 			return solver.CalculateDV();
 		}
+
+		public IProblemSolver UnderlyingSolver
+		{
+			get { return solver; }
+		}
+
+		private readonly IProblemSolver solver;
+		private int stepCount;
 	}
 }
