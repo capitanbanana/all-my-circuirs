@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using log4net;
 
 namespace ifpfc
@@ -120,29 +119,42 @@ namespace ifpfc
 
 		private void RunDType(int rd, uint op, uint r1, uint r2)
 		{
+			string readableInstr;
 			switch(op)
 			{
 				case 1:
 					mem[rd] = mem[r1] + mem[r2];
+					readableInstr = FormatBinOp("+");
 					break;
 				case 2:
 					mem[rd] = mem[r1] - mem[r2];
+					readableInstr = FormatBinOp("-");
 					break;
 				case 3:
 					mem[rd] = mem[r1] * mem[r2];
+					readableInstr = FormatBinOp("*");
 					break;
 				case 4:
-					mem[rd] = (mem[r2] == 0.0) ? 0.0 : mem[r1] / mem[r2];
+					mem[rd] = (mem[r2] == 0.0) ? 0.0 : (mem[r1] / mem[r2]);
+					readableInstr = FormatBinOp("/");
 					break;
 				case 5:
 					outport[r1] = mem[r2];
+					readableInstr = string.Format("{0} <- {1}", outportAtR1, memAtR2);
 					break;
 				case 6:
 					mem[rd] = status ? mem[r1] : mem[r2];
+					readableInstr = string.Format("{0} <- {1} ? {2} : {3}", memAtRd, status, memAtR1, memAtR2);
 					break;
 				default:
 					throw new Exception(string.Format("Неизвестный опкод двухаргументной операции {0}", op));
 			}
+			LogInstruction("D", readableInstr, rd, r1, r2, false, op == 5);
+		}
+
+		private static string FormatBinOp(string binOp)
+		{
+			return string.Format("{0} <- {1} {2} {3}", memAtRd, memAtR1, binOp, memAtR2);
 		}
 
 		private static string FormatAddress(int address)
@@ -165,7 +177,7 @@ namespace ifpfc
 			if (r2 != null)
 				debugInfo += string.Format(", r2 = {0}, {1} = {2}", FormatAddress(r2.Value), memAtR2, mem[r2.Value]);
 			debugInfo += string.Format(", rd = {0}, {1} = {2}", FormatAddress(rd), memAtRd, mem[rd]);
-			log.InfoFormat("S{0} {1,-40} ({2})", FormatAddress(rd), readableInstr, debugInfo);
+			log.InfoFormat("{0}{1} {2,-40} ({3})", type, FormatAddress(rd), readableInstr, debugInfo);
 		}
 
 		private const int addressSize = 14;
