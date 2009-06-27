@@ -32,6 +32,7 @@
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.orbitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -44,7 +45,6 @@
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.menuStrip1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
@@ -76,6 +76,13 @@
 			this.statusStrip1.Size = new System.Drawing.Size(840, 22);
 			this.statusStrip1.TabIndex = 1;
 			this.statusStrip1.Text = "statusStrip1";
+			// 
+			// toolStripStatusLabel1
+			// 
+			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+			this.toolStripStatusLabel1.Size = new System.Drawing.Size(39, 17);
+			this.toolStripStatusLabel1.Text = "T=XXX";
+			this.toolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// toolStrip1
 			// 
@@ -184,15 +191,8 @@
 			this.splitContainer1.Location = new System.Drawing.Point(0, 49);
 			this.splitContainer1.Name = "splitContainer1";
 			this.splitContainer1.Size = new System.Drawing.Size(840, 585);
-			this.splitContainer1.SplitterDistance = 609;
+			this.splitContainer1.SplitterDistance = 339;
 			this.splitContainer1.TabIndex = 3;
-			// 
-			// toolStripStatusLabel1
-			// 
-			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-			this.toolStripStatusLabel1.Size = new System.Drawing.Size(39, 17);
-			this.toolStripStatusLabel1.Text = "T=XXX";
-			this.toolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// MainForm
 			// 
