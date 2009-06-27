@@ -89,10 +89,8 @@ namespace Visualizer
 
 			orbitPen_.Color = color;
             var or = new RectangleF(
-				(float)(-1 * dataSource_.Voyager.Orbit.SemiMinorAxis),
-				(float)(-1 * dataSource_.Voyager.Orbit.PeriapsisDistance),
-				(float)(2 * dataSource_.Voyager.Orbit.SemiMinorAxis),
-				(float)(2 * dataSource_.Voyager.Orbit.SemiMajorAxis)
+				(float)(-1 * s.Orbit.SemiMinorAxis), (float)(-1 * s.Orbit.PeriapsisDistance),
+				(float)(2 * s.Orbit.SemiMinorAxis), (float)(2 * s.Orbit.SemiMajorAxis)
 			);
 			gr.DrawEllipse(orbitPen_, new Rectangle(Au2Pixels(or.Left), Au2Pixels(or.Top), Au2Pixels(or.Width), Au2Pixels(or.Height)));
 

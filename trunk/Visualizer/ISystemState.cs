@@ -25,8 +25,7 @@ namespace Visualizer
 				double e = Math.Sqrt(1 - ba * ba);
 				return SemiMajorAxis * (1 - e);
 			}
-		}
-			
+		}	
 	}
 
 	public struct Sattelite
