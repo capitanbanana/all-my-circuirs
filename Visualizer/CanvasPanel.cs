@@ -8,19 +8,18 @@ namespace Visualizer
 	[System.ComponentModel.DesignerCategory("NotDesignable")]
 	internal class CanvasPanel : Panel
 	{
-		private const double RadToDeg = 180.0F / Math.PI;
-
-		private static readonly Color EarthColor = Color.Blue;
+		private static readonly Color EarthColor = Color.LightBlue;
 		private static readonly Color VoyagerColor = Color.Red;
-		private static readonly Color TargetColor = Color.Green;
+		private static readonly Color TargetColor = Color.LightGreen;
 
-		private readonly ISystemState dataSource_;
+		private readonly IVisualizerState dataSource_;
 
+		private readonly Font dafaultFont_ = new Font(SystemFonts.DefaultFont.FontFamily, SystemFonts.DefaultFont.Size - 2);
 		private readonly StringFormat textFormat_;
 		private readonly Pen orbitPen_ = new Pen(Color.White, 1);
 		private readonly SolidBrush bodyBrush_ = new SolidBrush(Color.White);
 
-		public CanvasPanel(ISystemState dataSource)
+		public CanvasPanel(IVisualizerState dataSource)
 		{
 			if (dataSource == null) throw new ArgumentNullException("dataSource");
 			dataSource_ = dataSource;
@@ -44,9 +43,9 @@ namespace Visualizer
 			SetStyle(ControlStyles.UserPaint, true);
 		}
 
-		private int Au2Pixels(double x)
-		{   // convert Astronomical Units (the unit of measure of the OrbitingBody classes) to pixels
-			return (int)(x * ClientRectangle.Height / 1000.0);
+		private int ScaleDistance(double x)
+		{
+			return (int)(x * ClientRectangle.Height / dataSource_.UniverseDiameter);
 		}
 
 		protected override void OnPaint(PaintEventArgs e)
@@ -54,47 +53,68 @@ namespace Visualizer
 			base.OnPaint(e);
 
 			Graphics gr = e.Graphics;
-			ResetTransform(gr);
+			gr.TranslateTransform(ClientRectangle.Width / 2.0f, ClientRectangle.Height / 2.0f);
 
-			//earth
 			bodyBrush_.Color = EarthColor;
 			gr.FillEllipse(bodyBrush_, new Rectangle(-5, -5, 10, 10));
-
-			var titleRect = new Rectangle(11, 11, 50, 15);
-			e.Graphics.DrawString("Earth", SystemFonts.DefaultFont, Brushes.White, titleRect, textFormat_);
+			DrawCaption(gr, "Earth", 3, 3);
 
 			DrawSattelite(gr, dataSource_.Voyager, VoyagerColor);
-			foreach(var t in dataSource_.Targets)
+			foreach (var t in dataSource_.Targets)
 				DrawSattelite(gr, t, TargetColor);
 		}
 
-		private void ResetTransform(Graphics gr)
+		private void DrawCaption(Graphics gr, string caption, int x, int y)
 		{
-			gr.ResetTransform();
-			gr.TranslateTransform(ClientRectangle.Width / 2.0f, ClientRectangle.Height / 2.0f);
-			var mxFlipY = new Matrix(1, 0, 0, -1, 0, ClientRectangle.Height);
-            gr.MultiplyTransform(mxFlipY, MatrixOrder.Append);
+			var size = gr.MeasureString(caption, dafaultFont_, 0, textFormat_);
+			var titleRect = new RectangleF(x, y, size.Width, size.Height);
+			gr.DrawString(caption, dafaultFont_, bodyBrush_, titleRect, textFormat_);
 		}
 
 		private void DrawSattelite(Graphics gr, Sattelite s, Color color)
 		{
-			var posAu = new PointF((float)s.Location.X, (float)s.Location.Y);
-			var pos = new Point(Au2Pixels(posAu.X), Au2Pixels(posAu.Y));
+			var gs = gr.Save();
+
+			var pos = new Point(ScaleDistance(s.Location.X), ScaleDistance(s.Location.Y));
 			bodyBrush_.Color = color;
 			gr.FillEllipse(bodyBrush_, new Rectangle(pos.X - 3, pos.Y - 3, 6, 6));
+			DrawCaption(gr, s.Name, pos.X + 2, pos.Y + 2);
 
-			// Rotate the system to the Earth-Sun angle (have to convert angle to degrees)
-			var transformAngle = (float)(-1 * s.Orbit.TransformAngle * RadToDeg);
+			//тут я запутался с преобразованиями систем координат,
+			//поэтому пока оставил стандартную windows-систему: ось X направлена вправо, ось Y - вниз
+
+			//gr.ResetTransform();
+			//gr.Transform = new Matrix(1, 0, 0, -1, ClientRectangle.Width / 2.0f, ClientRectangle.Height / 2.0f);
+			//var rotateAngle = (float)(-1 * s.Orbit.TransformAngle * (180.0F / Math.PI));
+			//gr.RotateTransform(rotateAngle, MatrixOrder.Prepend);
+
+			//var cos = (float)Math.Cos(s.Orbit.TransformAngle);
+			//var sin = (float)Math.Sin(s.Orbit.TransformAngle);
+			//var mxRotate = new Matrix(cos, -sin, sin, cos, 0, 0);
+			//var mxFlipY = new Matrix(1, 0, 0, -1, 0, 0);
+			//var rotateAngle = (float)(-1 * s.Orbit.TransformAngle * (180.0F / Math.PI));
+            //gr.MultiplyTransform(mxFlipY, MatrixOrder.Append);
+			//gr.RotateTransform(rotateAngle, MatrixOrder.Prepend);
+			//gr.TranslateTransform(ClientRectangle.Width / 2.0f, -ClientRectangle.Height / 2.0f, MatrixOrder.Append);
+
+			////flip Y-axis
+			//var mxFlipY = new Matrix(1, 0, 0, -1, 0, ClientRectangle.Height);
+			//gr.MultiplyTransform(mxFlipY, MatrixOrder.Append);
+
+			var transformAngle = (float)(-1 * s.Orbit.TransformAngle * (180.0F / Math.PI));
 			gr.RotateTransform(transformAngle, MatrixOrder.Prepend);
 
 			orbitPen_.Color = color;
-            var or = new RectangleF(
+			var or = new RectangleF(
 				(float)(-1 * s.Orbit.SemiMinorAxis), (float)(-1 * s.Orbit.PeriapsisDistance),
 				(float)(2 * s.Orbit.SemiMinorAxis), (float)(2 * s.Orbit.SemiMajorAxis)
 			);
-			gr.DrawEllipse(orbitPen_, new Rectangle(Au2Pixels(or.Left), Au2Pixels(or.Top), Au2Pixels(or.Width), Au2Pixels(or.Height)));
+			gr.DrawEllipse(
+				orbitPen_,
+				new Rectangle(ScaleDistance(or.Left), ScaleDistance(or.Top), ScaleDistance(or.Width), ScaleDistance(or.Height))
+			);
 
-			ResetTransform(gr);
+			gr.Restore(gs);
 		}
 	}
 }
