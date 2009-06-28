@@ -1,15 +1,15 @@
 ﻿using System;
+using System.IO;
 using ifpfc.Logic.Hohmann;
 
 namespace ifpfc.Logic.MeetAndGreet
 {
 	public class MeetAndGreetSolver : BaseSolver<MeetAndGreetState>
 	{
-		private const double Eps = 0.001;
+		private const double Eps = 0.0001;
 
 		private HohmannAlgoState algoState = HohmannAlgoState.ReadyToJump;
-		private int goodTicks;
-
+		
 		protected override void FinishStateInitialization(double[] outPorts, MeetAndGreetState newState)
 		{
 			newState.Tx = outPorts[4];
@@ -20,40 +20,38 @@ namespace ifpfc.Logic.MeetAndGreet
 		{
 			//проверить, что крутимся в одну сторону
 
-			var r1 = s.CurrentOrbitR;
-			var r2 = s.TargetOrbitR;
-			double tmp = (r1 + r2) / (2 * r2);
+			SolverLogger.Log("Current : V = " + s.V + "  POS = " + s.S);
+			Vector nextV;
+			Vector nextPos;
+			Physics.Forecast(s.S, s.V, Vector.Zero, out nextPos, out nextV);
+			SolverLogger.Log("Forecast: V = " + nextV + "  POS = " + nextPos);
+
+			var r0 = s.CurrentOrbitR;
+			var r1 = s.TargetOrbitR;
+			double tmp = (r0 + r1) / (2 * r1);
 			double desiredPhi = Math.PI * (1 - Math.Sqrt((tmp * tmp * tmp)));
 
-			var thetaS = Math.Atan2(s.S.y, s.S.x);
-			var thetaT = Math.Atan2(s.T.y, s.T.x);
+			var thetaS = Math.Atan2(s.OS.y, s.OS.x);
+			var thetaT = Math.Atan2(s.OT.y, s.OT.x);
 			var actualPhi = thetaT - thetaS;
 			if (actualPhi < 0) actualPhi += 2*Math.PI;
 
-			double desirableV;
+			double desirableV = 0;
 			if (algoState == HohmannAlgoState.ReadyToJump && Math.Abs(desiredPhi - actualPhi) < Eps)
 			{
-				desirableV = GetDvForFirstJump(r2, r1);
+				desirableV = GetDvForFirstJump(r1, r0);
 				algoState = HohmannAlgoState.Jumping;
-				var dv = GetDV(r1, desirableV);
-				SolverLogger.Log("IMPULSE 1 " + dv.x + ", " + dv.y + "\r\n");
+				var dv = GetDV(r0, desirableV);
+				File.AppendAllText("driver.txt", "IMPULSE 1 " + dv.x + ", " + dv.y + "\r\n");
 				return dv;
 			}
-
-			if (Math.Abs(s.ST.Len()) < 1000)
-				goodTicks++;
-			else
-				goodTicks = 0;
-			if (goodTicks > 0)
-				SolverLogger.Log("GOOD "+ goodTicks + "\r\n");
-
-			if ((Math.Abs(s.ST.Len()) < 50)) 
-				algoState = HohmannAlgoState.Finishing;
-			if (algoState == HohmannAlgoState.Finishing)
+			
+			if ((Math.Abs(r0 - r1) < 1000) && algoState == HohmannAlgoState.Jumping)
 			{
-				desirableV = GetDvForSecondJump(r1);
-				var dv = GetDV(r1, desirableV);
-				SolverLogger.Log("IMPULSE 2 " + dv.x + ", " + dv.y + "\r\n");
+				algoState = HohmannAlgoState.Finishing;
+				desirableV = GetDvForSecondJump(nextPos.Len()) * 0.71;
+				var dv = GetDV(r0, desirableV);
+				File.AppendAllText("driver.txt", "IMPULSE 2 " + dv.x + ", " + dv.y + "\r\n");
 				return dv;
 			}
 			
@@ -62,26 +60,33 @@ namespace ifpfc.Logic.MeetAndGreet
 
 		private Vector GetDV(double r0, double desirableV)
 		{
-			var desirableVector = new Vector(desirableV * s.Sy / r0, -desirableV * s.Sx / r0);
-			var vector = new Vector(s.Vx - desirableVector.x, s.Vy - desirableVector.y);
-			if (s.Fuel < 5 || vector.x * vector.x + vector.y * vector.y < 1) return new Vector(0,0);
+			Vector nextV;
+			Vector nextPos;
+			Physics.Forecast(s.S, s.V, Vector.Zero, out nextPos, out nextV);
+			var nextR = nextPos.Len();
+			var desirableVector = new Vector(desirableV * nextPos.y / nextR, -desirableV * nextPos.x / nextR);
+			SolverLogger.Log("DesirableVector: " + desirableVector.x + ", " + desirableVector.y);
+			var vector = new Vector(nextV.x - desirableVector.x, nextV.y - desirableVector.y);
+			SolverLogger.Log("DV: " + vector.x + ", " + vector.y);
+			//return new Vector(0, 0);
+			if (s.Fuel < 5 || vector.x * vector.x + vector.y * vector.y < 1) return new Vector(0, 0);
 			return vector;
+		}
+
+		private static double GetDvForSecondJump(double r)
+		{
+			return Math.Sqrt(2 * Physics.mu / r);
+		}
+
+		private static double GetDvForFirstJump(double r1, double r0)
+		{
+			return Math.Sqrt(2 * Physics.mu * r1 / (r0 * (r0 + r1)));
 		}
 
 		protected override void FillState(VisualizerState state)
 		{
 			FillStateByCircularOrbit(state, s.TargetOrbitR);
-			state.Targets = new[] {new Sattelite("Target", s.T, new Vector(0, 0)),};
-		}
-
-		private static double GetDvForSecondJump(double r)
-		{
-			return Math.Sqrt(2*Physics.mu/r);
-		}
-
-		private static double GetDvForFirstJump(double r1, double r0)
-		{
-			return Math.Sqrt(2*Physics.mu*r1/(r0*(r0 + r1)));
+			state.Targets = new[] {new Sattelite("Target", s.OT, new Vector(0, 0))};
 		}
 	}
 }
