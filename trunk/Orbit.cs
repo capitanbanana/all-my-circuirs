@@ -10,9 +10,6 @@ namespace ifpfc
 
 	public struct Orbit
 	{
-		//не используется, всегда предполагается (0, 0)
-		public Location Focus;
-
 		public double SemiMajorAxis;
 		public double SemiMinorAxis;
 

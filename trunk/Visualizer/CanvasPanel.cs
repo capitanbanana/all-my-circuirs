@@ -115,27 +115,43 @@ namespace Visualizer
 
 		private static Orbit CalculateSatteliteOrbit(Sattelite s)
 		{
-			return new Orbit();
+			double v2 = s.Speed.Len2();
+			double r = s.Location.Len();
+			double tmp = 2*Physics.mu/r;
+			double a = Physics.mu/(tmp - v2);
+
+			double cosPhi = Math.Cos(s.Location.PolarAngle);
+			double d = Math.Sqrt(4*a*a - 4*a*r + r*r*cosPhi*cosPhi);
+			double e = (d - r*cosPhi)/(2*a);
+
+			double b = a*Math.Sqrt(1 - e*e);
+			return new Orbit {SemiMajorAxis = a, SemiMinorAxis = b};
 		}
 
 		private void DrawOrbit(Graphics gr, Orbit orbit, Color color)
 		{
-			if (orbit.SemiMajorAxis > 0)
+			try
 			{
-				var gs = gr.Save();
-				var transformAngle = (float)(-1 * orbit.TransformAngle * (180.0F / Math.PI));
-				gr.RotateTransform(transformAngle, MatrixOrder.Prepend);
+				if (orbit.SemiMajorAxis > 0)
+				{
+					var gs = gr.Save();
+					var transformAngle = (float)(-1 * orbit.TransformAngle * (180.0F / Math.PI));
+					gr.RotateTransform(transformAngle, MatrixOrder.Prepend);
 
-				orbitPen_.Color = color;
-				var or = new RectangleF(
-					(float)(-1 * orbit.SemiMinorAxis), (float)(-1 * orbit.PeriapsisDistance),
-					(float)(2 * orbit.SemiMinorAxis), (float)(2 * orbit.SemiMajorAxis)
-				);
-				gr.DrawEllipse(
-					orbitPen_,
-					new Rectangle(ScaleDistance(or.Left), ScaleDistance(or.Top), ScaleDistance(or.Width), ScaleDistance(or.Height))
-				);
-				gr.Restore(gs);
+					orbitPen_.Color = color;
+					var or = new RectangleF(
+						(float)(-1 * orbit.SemiMinorAxis), (float)(-1 * orbit.PeriapsisDistance),
+						(float)(2 * orbit.SemiMinorAxis), (float)(2 * orbit.SemiMajorAxis)
+						);
+					gr.DrawEllipse(
+						orbitPen_,
+						new Rectangle(ScaleDistance(or.Left), ScaleDistance(or.Top), ScaleDistance(or.Width), ScaleDistance(or.Height))
+						);
+					gr.Restore(gs);
+				}
+			}
+			catch(OverflowException e)
+			{
 			}
 		}
 	}
