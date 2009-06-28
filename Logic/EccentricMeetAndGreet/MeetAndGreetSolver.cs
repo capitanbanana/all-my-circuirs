@@ -1,6 +1,4 @@
-﻿using System;
-using ifpfc.Logic.Hohmann;
-using ifpfc.Logic.MeetAndGreet;
+﻿using ifpfc.Logic.MeetAndGreet;
 
 namespace ifpfc.Logic.EccentricMeetAndGreet
 {
