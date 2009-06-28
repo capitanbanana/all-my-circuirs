@@ -13,7 +13,7 @@ namespace ifpfc.Logic.Hohmann
 		{
 			XmlConfigurator.Configure();
 			//var vm = new VirtualMachine(117, 1001, 1001, TestData.Hohmann);
-			var vm = new HohmannsEngine(117, 1001, 1001);
+			var vm = new HohmannsEngine(117, 1003, 1003);
 			var driver = new Driver(new HohmannSolver());
 			var dv = new Vector(0, 0);
 			while (!driver.IsEnd())
