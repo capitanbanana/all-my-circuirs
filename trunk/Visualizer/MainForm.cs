@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using ifpfc;
 using ifpfc.Logic.Hohmann;
+using ifpfc.Logic.MeetAndGreet;
+using log4net.Config;
 
 namespace Visualizer
 {
 	internal partial class MainForm : Form
 	{
-		private readonly VisualizerState ds_;
 		private IController currentController_;
 		private bool nowRunning_;
 		private readonly CanvasPanel pnlCanvas;
-		private readonly Timer renderTimer = new Timer { Interval = 50 };
+		private readonly Timer renderTimer = new Timer { Interval = 100 };
 
 		public MainForm()
 		{
@@ -23,6 +23,8 @@ namespace Visualizer
 			pnlCanvas = new CanvasPanel { Parent = splitContainer1.Panel1 };
 
 			SetUpSolversCombobox();
+
+			XmlConfigurator.Configure();
 
 			renderTimer.Tick += (sender, args) => Render();
 			renderTimer.Start();

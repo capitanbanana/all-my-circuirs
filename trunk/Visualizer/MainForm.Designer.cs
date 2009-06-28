@@ -49,16 +49,14 @@
 			this.btnBackward_ = new System.Windows.Forms.ToolStripButton();
 			this.btnRun_ = new System.Windows.Forms.ToolStripButton();
 			this.btnForward_ = new System.Windows.Forms.ToolStripButton();
-			this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
 			this.tbSpeed = new System.Windows.Forms.ToolStripTextBox();
-			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-			this.pgVisualizer = new System.Windows.Forms.PropertyGrid();
 			this.setSpeedButton = new System.Windows.Forms.ToolStripButton();
+			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.menuStrip1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
-			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -244,43 +242,21 @@
 			this.btnForward_.Text = ">";
 			this.btnForward_.Click += new System.EventHandler(this.btnForward__Click);
 			// 
+			// toolStripSeparator3
+			// 
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+			// 
 			// toolStripLabel2
 			// 
 			this.toolStripLabel2.Name = "toolStripLabel2";
 			this.toolStripLabel2.Size = new System.Drawing.Size(145, 22);
 			this.toolStripLabel2.Text = "Скорость в тиках за шаг: ";
 			// 
-			// toolStripSeparator3
-			// 
-			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
-			// 
 			// tbSpeed
 			// 
 			this.tbSpeed.Name = "tbSpeed";
 			this.tbSpeed.Size = new System.Drawing.Size(100, 25);
-			// 
-			// splitContainer1
-			// 
-			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.splitContainer1.IsSplitterFixed = true;
-			this.splitContainer1.Location = new System.Drawing.Point(0, 49);
-			this.splitContainer1.Name = "splitContainer1";
-			// 
-			// splitContainer1.Panel2
-			// 
-			this.splitContainer1.Panel2.Controls.Add(this.pgVisualizer);
-			this.splitContainer1.Size = new System.Drawing.Size(939, 664);
-			this.splitContainer1.SplitterDistance = 642;
-			this.splitContainer1.TabIndex = 3;
-			// 
-			// pgVisualizer
-			// 
-			this.pgVisualizer.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pgVisualizer.Location = new System.Drawing.Point(0, 0);
-			this.pgVisualizer.Name = "pgVisualizer";
-			this.pgVisualizer.Size = new System.Drawing.Size(293, 664);
-			this.pgVisualizer.TabIndex = 0;
 			// 
 			// setSpeedButton
 			// 
@@ -291,6 +267,17 @@
 			this.setSpeedButton.Size = new System.Drawing.Size(100, 22);
 			this.setSpeedButton.Text = "Задать скорость";
 			this.setSpeedButton.Click += new System.EventHandler(this.setSpeedButton_Click);
+			// 
+			// splitContainer1
+			// 
+			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.splitContainer1.Location = new System.Drawing.Point(0, 49);
+			this.splitContainer1.Name = "splitContainer1";
+			this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+			this.splitContainer1.Panel2Collapsed = true;
+			this.splitContainer1.Size = new System.Drawing.Size(939, 664);
+			this.splitContainer1.SplitterDistance = 417;
+			this.splitContainer1.TabIndex = 3;
 			// 
 			// MainForm
 			// 
@@ -311,7 +298,6 @@
 			this.statusStrip1.PerformLayout();
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
-			this.splitContainer1.Panel2.ResumeLayout(false);
 			this.splitContainer1.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -342,7 +328,6 @@
 		private System.Windows.Forms.ToolStripButton btnRun_;
 		private System.Windows.Forms.ToolStripButton btnForward_;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-		private System.Windows.Forms.PropertyGrid pgVisualizer;
 		private System.Windows.Forms.ToolStripLabel toolStripLabel2;
 		private System.Windows.Forms.ToolStripTextBox tbSpeed;
 		private System.Windows.Forms.ToolStripButton setSpeedButton;
