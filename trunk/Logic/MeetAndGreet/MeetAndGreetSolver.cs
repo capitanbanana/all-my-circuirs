@@ -5,9 +5,8 @@ namespace ifpfc.Logic.MeetAndGreet
 {
 	public class MeetAndGreetSolver : BaseSolver<MeetAndGreetState>
 	{
+		private const double Eps = 0.001;
 		private HohmannAlgoState algoState = HohmannAlgoState.ReadyToJump;
-
-		private double minDistance_ = Double.MaxValue;
 
 		protected override void FinishStateInitialization(double[] outPorts, MeetAndGreetState newState)
 		{
@@ -23,14 +22,14 @@ namespace ifpfc.Logic.MeetAndGreet
 			var modTv = Math.Sqrt(Physics.mu / s.TargetOrbitR);
 			Vector targetV = new Vector(targetPos.y, -targetPos.x).Norm() * modTv;
 			//векторное произведение [v x pos] должно быть > 0 (подгонка - у нас все время движение против часовой стрелки)
-			if (targetV.x * targetPos.y - targetV.y * targetPos.x < 0)
+			if(targetV.x * targetPos.y - targetV.y * targetPos.x < 0)
 				targetV *= -1;
 
 			//вычисляю полупериод Хофмана - настолько нам нужно заглянуть в будущее
 			var targetT = 2 * Math.PI * s.TargetOrbitR / modTv;
 			double tmp = (s.CurrentOrbitR + s.TargetOrbitR) / (2 * s.TargetOrbitR);
 			var dT = targetT * Math.Sqrt(tmp * tmp * tmp);
-			for (int t = 0; t < dT; t++)
+			for(int t = 0; t < dT; t++)
 			{
 				Vector nextPos, nextV;
 				Physics.Forecast(myPos, myV, t == 0 ? myDV : Vector.Zero, out nextPos, out nextV);
@@ -49,99 +48,65 @@ namespace ifpfc.Logic.MeetAndGreet
 		{
 			//проверить, что крутимся в одну сторону
 
+			SolverLogger.Log(string.Format("DistanceToTarget: {0}", s.ST.Len()));
+
 			Vector nextV;
 			Vector nextPos;
 			Physics.Forecast(s.S, s.V, Vector.Zero, out nextPos, out nextV);
-			var r0 = s.CurrentOrbitR;
-			var r1 = s.TargetOrbitR;
 
-			var distance = s.ST.Len();
-			if (distance < minDistance_)
-			{
-				minDistance_ = distance;
-				SolverLogger.Log(string.Format("Min DistanceToTarget={0:F0}, CurrentR={1:F0}, TargetR={2:F0}", minDistance_, r0, r1));
-			}
+			double r0 = s.CurrentOrbitR;
+			double r1 = s.TargetOrbitR;
 
 			if (algoState == HohmannAlgoState.ReadyToJump)
 			{
-				double tmp = (r0 + r1) / (2 * r1);
-				var tau = Math.Sqrt(tmp * tmp * tmp);
-				double desiredPhi = r1 > r0 ? Math.PI * (1 - tau) : Math.PI * (tau - 1);
+				double tmp = (r0 + r1)/(2*r1);
+				double desiredPhi = Math.PI*(1 - Math.Sqrt((tmp*tmp*tmp)));
 
-				var thetaS = s.S.PolarAngle;
-				if (thetaS < 0) thetaS += 2 * Math.PI;
-				var thetaT = s.T.PolarAngle;
-				if (thetaT < 0) thetaT += 2 * Math.PI;
-				var actualPhi = r1 > r0 ? thetaS - thetaT : thetaT - thetaS;
-				if (actualPhi < 0) actualPhi += 2 * Math.PI;
+				double thetaS = s.S.PolarAngle;
+				if (thetaS < 0) thetaS += 2*Math.PI;
+				double thetaT = s.T.PolarAngle;
+				if (thetaT < 0) thetaT += 2*Math.PI;
+				double actualPhi = thetaS - thetaT;
+				if (actualPhi < 0) actualPhi += 2*Math.PI;
 
-				if (Math.Abs(desiredPhi - actualPhi) < 0.01)
+				SolverLogger.Log(string.Format("DesiredPhi: {0}, ActualPhi: {1}", desiredPhi*180/Math.PI,
+				                               actualPhi*180/Math.PI));
+
+				if (algoState == HohmannAlgoState.ReadyToJump && Math.Abs(desiredPhi - actualPhi) < Eps)
 				{
-					//SolverLogger.Log(string.Format("My POS: {0}, V: {1}", s.S, s.V));
-					//SolverLogger.Log(string.Format("Target POS: {0}", s.T));
-
-					var desirableV = GetDvForFirstJump(r1, r0);
-					var dv = GetDV(desirableV);
-
-					//var desirableV = Math.Sqrt(2 * Physics.mu * r1 / (r0 * (r0 + r1)));
-					//var dv = (1 - desirableV / s.V.Len()) * s.V;
-
-					if (PredictCollision(dv) < 1000)
-					{
-						SolverLogger.Log("IMPULSE 1 " + dv.x + ", " + dv.y + "\r\n");
-						algoState = HohmannAlgoState.Jumping;
-						return dv;
-					}
+					SolverLogger.Log(string.Format("My POS: {0}, V: {1}", s.S, s.V));
+					SolverLogger.Log(string.Format("Target POS: {0}", s.T));
+					algoState = HohmannAlgoState.Jumping;
+					double desirableV = Math.Sqrt(2*Physics.mu*r1/(r0*(r0 + r1)));
+					//var dv = GetDV(desirableV);
+					return (1 - desirableV/s.V.Len())*s.V;
 				}
 			}
 
-			if (algoState == HohmannAlgoState.Jumping && (Math.Abs(r0 - r1) < 10))
-			//if (algoState == HohmannAlgoState.Jumping && distance < 1000)
+			if (algoState == HohmannAlgoState.Jumping)
+				if (((int)s.ST.Len() < 150))
+				{
+					algoState = HohmannAlgoState.Finishing;
+					//var desirableV = GetDvForSecondJump(nextPos.Len());
+					//var dv = GetDV(desirableV);
+					//return dv;
+					double desirableV = Math.Sqrt(Physics.mu/r1);// *1.0001;
+					Vector dv = (1 - desirableV/s.V.Len())*s.V;
+					return dv;
+				}
+			if (algoState == HohmannAlgoState.Finishing)
 			{
-				//algoState = HohmannAlgoState.Finishing;
-				//var desirableV = GetDvForSecondJump(nextPos.Len()) * 0.71;
-				//var dv = GetDV(desirableV);
-
-				algoState = HohmannAlgoState.Finishing;
-				var desirableV = Math.Sqrt(Physics.mu / r1);
-				var dv = (1 - desirableV / s.V.Len()) * s.V;
-
-				SolverLogger.Log("IMPULSE 2 " + dv.x + ", " + dv.y + "\r\n");
-				return dv;
+				SolverLogger.Log(string.Format("Gagarin: {0} Orbit={1} V={2} OrbitV={3}", s.S, s.S.Len(), s.V.Len(), Math.Sqrt(Physics.mu / s.S.Len())));
+				SolverLogger.Log(string.Format("Target : {0} Orbit={1} V={2}", s.T, s.TargetOrbitR, Math.Sqrt(Physics.mu / s.TargetOrbitR)));
 			}
 
 			return new Vector(0, 0);
 		}
 
-		private Vector GetDV(double desirableV)
-		{
-			Vector nextV;
-			Vector nextPos;
-			Physics.Forecast(s.S, s.V, Vector.Zero, out nextPos, out nextV);
-			var nextR = nextPos.Len();
-			var desirableVector = new Vector(desirableV * nextPos.y / nextR, -desirableV * nextPos.x / nextR);
-			//SolverLogger.Log("DesirableVector: " + desirableVector.x + ", " + desirableVector.y);
-			var vector = new Vector(nextV.x - desirableVector.x, nextV.y - desirableVector.y);
-			//SolverLogger.Log("DV: " + vector.x + ", " + vector.y);
-			//return new Vector(0, 0);
-			if (s.Fuel < 5 || vector.x * vector.x + vector.y * vector.y < 1) return new Vector(0, 0);
-			return vector;
-		}
-
-		private static double GetDvForSecondJump(double r)
-		{
-			return Math.Sqrt(2 * Physics.mu / r);
-		}
-
-		private static double GetDvForFirstJump(double r1, double r0)
-		{
-			return Math.Sqrt(2 * Physics.mu * r1 / (r0 * (r0 + r1)));
-		}
-
 		protected override void FillState(VisualizerState state)
 		{
 			FillStateByCircularOrbit(state, s.TargetOrbitR);
-			state.Targets = new[] { new Sattelite("Target", s.T, new Vector(0, 0)) };
+			state.Targets = new[] {new Sattelite("Target", s.T, new Vector(0, 0))};
 		}
 	}
 }

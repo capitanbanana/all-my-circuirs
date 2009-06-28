@@ -3,21 +3,21 @@
 00002    nop                                             mem: 30
 00003    nop                                             mem: 0
 00004    mem[4] <- mem[379]                              mem: 0
-00005    mem[5] <- mem[4] - mem[3]                       mem: 0
+00005    mem[5] <- mem[4] - 0                       mem: 0
 00006    status <- mem[5] == 0.0                         mem: 0
 00007    mem[7] <- status ? mem[2] : mem[1]              mem: 0
-00008    mem[8] <- mem[7] - mem[0]                       mem: 0
+00008    mem[8] <- mem[7] - 1                       mem: 0
 00009    mem[9] <- mem[398]                              mem: 0
 00010    status <- mem[5] == 0.0                         mem: 0
-00011    mem[11] <- status ? mem[0] : mem[9]             mem: 0
-00012    mem[12] <- mem[11] - mem[0]                     mem: 0
+00011    mem[11] <- status ? 1 : mem[9]             mem: 0
+00012    mem[12] <- mem[11] - 1                     mem: 0
 00013    status <- mem[12] == 0.0                        mem: 0
 00014    mem[14] <- status ? mem[8] : mem[7]             mem: 0
 00015    nop                                             mem: 2
 00016    mem[16] <- mem[399]                             mem: 0
 00017    nop                                             mem: 1000
 00018    status <- mem[5] == 0.0                         mem: 0
-00019    mem[19] <- status ? mem[17] : mem[16]           mem: 0
+00019    mem[19] <- status ? 10000 : mem[16]           mem: 0
 00020    mem[20] <- mem[19] * mem[15]                    mem: 0
 00021    status <- mem[12] == 0.0                        mem: 0
 00022    mem[22] <- status ? mem[20] : mem[19]           mem: 0
@@ -31,7 +31,7 @@
 00030    mem[30] <- inport[16000]                        mem: 0
 00031    mem[31] <- mem[30] - mem[29]                    mem: 0
 00032    status <- mem[31] == 0.0                        mem: 0
-00033    mem[33] <- status ? mem[28] : mem[3]            mem: 0
+00033    mem[33] <- status ? mem[28] : 0            mem: 0
 00034    nop                                             mem: 2003
 00035    mem[35] <- mem[30] - mem[34]                    mem: 0
 00036    status <- mem[35] == 0.0                        mem: 0
@@ -49,12 +49,12 @@
 00048    mem[48] <- status ? mem[46] : mem[26]           mem: 0
 00049    mem[49] <- mem[381]                             mem: 0
 00050    status <- mem[5] == 0.0                         mem: 0
-00051    mem[51] <- status ? mem[3] : mem[49]            mem: 0
+00051    mem[51] <- status ? 0 : mem[49]            mem: 0
 00052    mem[52] <- mem[51] - mem[48]                    mem: 0
 00053    mem[53] <- mem[52] * mem[52]                    mem: 0
 00054    mem[54] <- mem[390]                             mem: 0
 00055    status <- mem[31] == 0.0                        mem: 0
-00056    mem[56] <- status ? mem[27] : mem[3]            mem: 0
+00056    mem[56] <- status ? mem[27] : 0            mem: 0
 00057    nop                                             mem: 7357000
 00058    status <- mem[35] == 0.0                        mem: 0
 00059    mem[59] <- status ? mem[57] : mem[56]           mem: 0
@@ -67,7 +67,7 @@
 00066    mem[66] <- status ? mem[64] : mem[54]           mem: 0
 00067    mem[67] <- mem[380]                             mem: 0
 00068    status <- mem[5] == 0.0                         mem: 0
-00069    mem[69] <- status ? mem[3] : mem[67]            mem: 0
+00069    mem[69] <- status ? 0 : mem[67]            mem: 0
 00070    mem[70] <- mem[69] - mem[66]                    mem: 0
 00071    mem[71] <- mem[70] * mem[70]                    mem: 0
 00072    mem[72] <- mem[71] + mem[53]                    mem: 0
@@ -82,7 +82,7 @@
 00081    mem[81] <- mem[76] * mem[80]                    mem: 0
 00082    mem[82] <- mem[81] / mem[75]                    mem: 0
 00083    mem[83] <- mem[52] * mem[82]                    mem: 0
-00084    mem[84] <- mem[0] / mem[0]                      mem: 0
+00084    mem[84] <- 1 / 1                      mem: 0
 00085    mem[85] <- mem[84] * mem[84]                    mem: 0
 00086    mem[86] <- mem[85] / mem[15]                    mem: 0
 00087    mem[87] <- mem[83] * mem[86]                    mem: 0
@@ -103,19 +103,19 @@
 00102    mem[102] <- mem[101] + mem[87]                  mem: 0
 00103    mem[103] <- mem[386]                            mem: 0
 00104    nop                                             mem: 6457000
-00105    mem[105] <- mem[29] + mem[17]                   mem: 0
+00105    mem[105] <- mem[29] + 10000                   mem: 0
 00106    mem[106] <- mem[30] - mem[105]                  mem: 0
 00107    status <- mem[106] == 0.0                       mem: 0
-00108    mem[108] <- status ? mem[104] : mem[3]          mem: 0
-00109    mem[109] <- mem[34] + mem[17]                   mem: 0
+00108    mem[108] <- status ? mem[104] : 0          mem: 0
+00109    mem[109] <- mem[34] + 10000                   mem: 0
 00110    mem[110] <- mem[30] - mem[109]                  mem: 0
 00111    status <- mem[110] == 0.0                       mem: 0
 00112    mem[112] <- status ? mem[27] : mem[108]         mem: 0
-00113    mem[113] <- mem[39] + mem[17]                   mem: 0
+00113    mem[113] <- mem[39] + 10000                   mem: 0
 00114    mem[114] <- mem[30] - mem[113]                  mem: 0
 00115    status <- mem[114] == 0.0                       mem: 0
 00116    mem[116] <- status ? mem[38] : mem[112]         mem: 0
-00117    mem[117] <- mem[43] + mem[17]                   mem: 0
+00117    mem[117] <- mem[43] + 10000                   mem: 0
 00118    mem[118] <- mem[30] - mem[117]                  mem: 0
 00119    status <- mem[118] == 0.0                       mem: 0
 00120    mem[120] <- status ? mem[27] : mem[116]         mem: 0
@@ -133,7 +133,7 @@
 00132    mem[132] <- mem[131] * mem[131]                 mem: 0
 00133    mem[133] <- mem[385]                            mem: 0
 00134    status <- mem[106] == 0.0                       mem: 0
-00135    mem[135] <- status ? mem[27] : mem[3]           mem: 0
+00135    mem[135] <- status ? mem[27] : 0           mem: 0
 00136    status <- mem[110] == 0.0                       mem: 0
 00137    mem[137] <- status ? mem[28] : mem[135]         mem: 0
 00138    nop                                             mem: 6357000
@@ -193,7 +193,7 @@
 00192    mem[192] <- mem[393]                            mem: 0
 00193    nop                                             mem: 6922,33535852193
 00194    status <- mem[31] == 0.0                        mem: 0
-00195    mem[195] <- status ? mem[193] : mem[3]          mem: 0
+00195    mem[195] <- status ? mem[193] : 0          mem: 0
 00196    status <- mem[35] == 0.0                        mem: 0
 00197    mem[197] <- status ? mem[27] : mem[195]         mem: 0
 00198    nop                                             mem: -249,121207499866
@@ -214,7 +214,7 @@
 00213    mem[213] <- mem[388]                            mem: 0
 00214    nop                                             mem: 7875,21543323545
 00215    status <- mem[106] == 0.0                       mem: 0
-00216    mem[216] <- status ? mem[214] : mem[3]          mem: 0
+00216    mem[216] <- status ? mem[214] : 0          mem: 0
 00217    status <- mem[110] == 0.0                       mem: 0
 00218    mem[218] <- status ? mem[27] : mem[216]         mem: 0
 00219    status <- mem[114] == 0.0                       mem: 0
@@ -243,12 +243,12 @@
 00242    mem[242] <- mem[210] * mem[210]                 mem: 0
 00243    mem[243] <- mem[242] + mem[241]                 mem: 0
 00244    mem[244] <- sqrt(mem[243])                      mem: 0
-00245    mem[245] <- mem[244] - mem[3]                   mem: 0
+00245    mem[245] <- mem[244] - 0                   mem: 0
 00246    status <- mem[245] == 0.0                       mem: 0
-00247    mem[247] <- status ? mem[240] : mem[3]          mem: 0
-00248    mem[248] <- mem[239] - mem[17]                  mem: 0
+00247    mem[247] <- status ? mem[240] : 0          mem: 0
+00248    mem[248] <- mem[239] - 10000                  mem: 0
 00249    status <- mem[248] < 0.0                        mem: 0
-00250    mem[250] <- status ? mem[247] : mem[3]          mem: 0
+00250    mem[250] <- status ? mem[247] : 0          mem: 0 //GOOD_TIME?
 00251    mem[251] <- mem[51] - mem[102]                  mem: 0
 00252    mem[252] <- mem[251] * mem[251]                 mem: 0
 00253    mem[253] <- mem[69] - mem[207]                  mem: 0
@@ -271,7 +271,7 @@
 00270    mem[270] <- mem[392]                            mem: 0
 00271    nop                                             mem: 1
 00272    status <- mem[31] == 0.0                        mem: 0
-00273    mem[273] <- status ? mem[271] : mem[3]          mem: 0
+00273    mem[273] <- status ? mem[271] : 0          mem: 0
 00274    status <- mem[35] == 0.0                        mem: 0
 00275    mem[275] <- status ? mem[271] : mem[273]        mem: 0
 00276    status <- mem[40] == 0.0                        mem: 0
@@ -280,22 +280,22 @@
 00279    mem[279] <- status ? mem[271] : mem[277]        mem: 0
 00280    status <- mem[5] == 0.0                         mem: 0
 00281    mem[281] <- status ? mem[279] : mem[270]        mem: 0
-00282    mem[282] <- mem[51] - mem[187]                  mem: 0
-00283    mem[283] <- mem[282] * mem[282]                 mem: 0
-00284    mem[284] <- mem[69] - mem[235]                  mem: 0
-00285    mem[285] <- mem[284] * mem[284]                 mem: 0
+00282    Sy <- mem[51] - mem[187]                  mem: 0 //Sy
+00283    mem[283] <- Sy * Sy                 mem: 0
+00284    Sx <- mem[69] - mem[235]                  mem: 0 //Sx
+00285    mem[285] <- Sx * Sx                 mem: 0
 00286    mem[286] <- mem[285] + mem[283]                 mem: 0
 00287    mem[287] <- sqrt(mem[286])                      mem: 0
 00288    mem[288] <- mem[287] * mem[287]                 mem: 0
 00289    mem[289] <- mem[288] * mem[287]                 mem: 0
 00290    mem[290] <- mem[81] / mem[289]                  mem: 0
-00291    mem[291] <- mem[282] * mem[290]                 mem: 0
+00291    mem[291] <- Sy * mem[290]                 mem: 0
 00292    mem[292] <- mem[291] + mem[161]                 mem: 0
 00293    mem[293] <- mem[292] / mem[15]                  mem: 0
 00294    mem[294] <- mem[163] + mem[293]                 mem: 0
 00295    mem[295] <- mem[294] * mem[84]                  mem: 0
 00296    mem[296] <- mem[184] + mem[295]                 mem: 0
-00297    mem[297] <- mem[284] * mem[290]                 mem: 0
+00297    mem[297] <- Sx * mem[290]                 mem: 0
 00298    mem[298] <- mem[297] + mem[208]                 mem: 0
 00299    mem[299] <- mem[298] / mem[15]                  mem: 0
 00300    mem[300] <- mem[210] + mem[299]                 mem: 0
@@ -303,7 +303,7 @@
 00302    mem[302] <- mem[232] + mem[301]                 mem: 0
 00303    mem[303] <- mem[387]                            mem: 0
 00304    status <- mem[106] == 0.0                       mem: 0
-00305    mem[305] <- status ? mem[271] : mem[3]          mem: 0
+00305    mem[305] <- status ? mem[271] : 0          mem: 0
 00306    status <- mem[110] == 0.0                       mem: 0
 00307    mem[307] <- status ? mem[271] : mem[305]        mem: 0
 00308    status <- mem[114] == 0.0                       mem: 0
@@ -322,19 +322,19 @@
 00321    mem[321] <- status ? mem[319] : mem[303]        mem: 0
 00322    mem[322] <- mem[384]                            mem: 0
 00323    status <- mem[5] == 0.0                         mem: 0
-00324    mem[324] <- status ? mem[3] : mem[322]          mem: 0
+00324    mem[324] <- status ? 0 : mem[322]          mem: 0
 00325    mem[325] <- mem[383]                            mem: 0
 00326    status <- mem[5] == 0.0                         mem: 0
-00327    mem[327] <- status ? mem[3] : mem[325]          mem: 0
-00328    mem[328] <- mem[4] + mem[0]                     mem: 0
-00329    mem[329] <- mem[102] - mem[187]                 mem: 0
-00330    mem[330] <- mem[207] - mem[235]                 mem: 0
+00327    mem[327] <- status ? 0 : mem[325]          mem: 0
+00328    mem[328] <- mem[4] + 1                     mem: 0
+00329    STy <- mem[102] - mem[187]                 mem: 0 //STy
+00330    STx <- mem[207] - mem[235]                 mem: 0 //STx
 00331    mem[331] <- mem[395]                            mem: 0
-00332    mem[332] <- mem[331] + mem[0]                   mem: 0
+00332    mem[332] <- mem[331] + 1                   mem: 0 //GOOD_TIME
 00333    status <- mem[245] == 0.0                       mem: 0
-00334    mem[334] <- status ? mem[332] : mem[3]          mem: 0
+00334    mem[334] <- status ? mem[332] : 0          mem: 0
 00335    status <- mem[248] < 0.0                        mem: 0
-00336    mem[336] <- status ? mem[334] : mem[3]          mem: 0
+00336    mem[336] <- status ? mem[334] : 0          mem: 0 //GOOD_TIME
 00337    mem[337] <- mem[397]                            mem: 0
 00338    nop                                             mem: 50000
 00339    status <- mem[5] == 0.0                         mem: 0
@@ -352,9 +352,9 @@
 00351    mem[351] <- mem[350] / mem[84]                  mem: 0
 00352    mem[352] <- mem[351] - mem[336]                 mem: 0
 00353    status <- mem[352] < 0.0                        mem: 0
-00354    mem[354] <- status ? mem[349] : mem[3]          mem: 0
-00355    mem[355] <- mem[342] - mem[3]                   mem: 0
-00356    mem[356] <- mem[372] - mem[0]                   mem: 0
+00354    mem[354] <- status ? mem[349] : 0          mem: 0
+00355    mem[355] <- mem[342] - 0                   mem: 0
+00356    mem[356] <- mem[372] - 1                   mem: 0
 00357    status <- mem[355] < 0.0                        mem: 0
 00358    mem[358] <- status ? mem[356] : mem[354]        mem: 0
 00359    mem[359] <- mem[338] - mem[341]                 mem: 0
@@ -373,10 +373,10 @@
 00372    nop                                             mem: 0
 00373    outport[0] <- mem[371]                          mem: 0
 00374    outport[1] <- mem[342]                          mem: 0
-00375    outport[2] <- mem[284]                          mem: 0
-00376    outport[3] <- mem[282]                          mem: 0
-00377    outport[4] <- mem[330]                          mem: 0
-00378    outport[5] <- mem[329]                          mem: 0
+00375    outport[2] <- Sx                          mem: 0
+00376    outport[3] <- Sy                          mem: 0
+00377    outport[4] <- STx                          mem: 0
+00378    outport[5] <- STy                          mem: 0
 00379    mem[379] <- mem[328]                            mem: 0
 00380    mem[380] <- mem[69]                             mem: 0
 00381    mem[381] <- mem[51]                             mem: 0
@@ -393,7 +393,7 @@
 00392    mem[392] <- mem[281]                            mem: 0
 00393    mem[393] <- mem[269]                            mem: 0
 00394    mem[394] <- mem[264]                            mem: 0
-00395    mem[395] <- mem[336]                            mem: 0
+00395    mem[395] <- mem[336]                            mem: 0 //GOOD_TIME
 00396    mem[396] <- mem[250]                            mem: 0
 00397    mem[397] <- mem[342]                            mem: 0
 00398    mem[398] <- mem[24]                             mem: 0
