@@ -22,14 +22,14 @@ namespace ifpfc.VM
 		public double[] Mem { get; private set; }
 		
 
-		public HohmannsEngine(int teamId, int scenarioId, double configurationNumber)
+		public HohmannsEngine(int teamId, int scenarioId)
 		{
 			this.teamId = teamId;
 			this.scenarioId = scenarioId;
 			Mem = new double[addressSpaceSize];
 			Inport = new double[addressSpaceSize];
 			Outport = new double[addressSpaceSize];
-			Inport[16000] = configurationNumber;
+			Inport[16000] = scenarioId;
 			InitMem();
 		}
 
