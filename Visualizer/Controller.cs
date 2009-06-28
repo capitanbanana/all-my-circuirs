@@ -4,6 +4,7 @@ using System.Threading;
 using ifpfc;
 using ifpfc.Logic;
 using ifpfc.Logic.Hohmann;
+using ifpfc.Logic.MeetAndGreet;
 using ifpfc.VM;
 
 namespace Visualizer

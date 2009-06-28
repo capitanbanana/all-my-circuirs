@@ -1,14 +1,13 @@
 ﻿using System;
-using System.IO;
+using ifpfc.Logic.Hohmann;
 
-namespace ifpfc.Logic.Hohmann
+namespace ifpfc.Logic.MeetAndGreet
 {
 	public class MeetAndGreetSolver : BaseSolver<MeetAndGreetState>
 	{
 		private const double Eps = 0.001;
 
 		private HohmannAlgoState algoState = HohmannAlgoState.ReadyToJump;
-		private int jumpTimeout;
 		private int goodTicks;
 
 		protected override void FinishStateInitialization(double[] outPorts, MeetAndGreetState newState)
@@ -31,14 +30,13 @@ namespace ifpfc.Logic.Hohmann
 			var actualPhi = thetaT - thetaS;
 			if (actualPhi < 0) actualPhi += 2*Math.PI;
 
-			double desirableV = 0;
+			double desirableV;
 			if (algoState == HohmannAlgoState.ReadyToJump && Math.Abs(desiredPhi - actualPhi) < Eps)
 			{
 				desirableV = GetDvForFirstJump(r2, r1);
 				algoState = HohmannAlgoState.Jumping;
-				jumpTimeout = 100;
 				var dv = GetDV(r1, desirableV);
-				File.AppendAllText("driver.txt", "IMPULSE 1 " + dv.x + ", " + dv.y + "\r\n");
+				SolverLogger.Log("IMPULSE 1 " + dv.x + ", " + dv.y + "\r\n");
 				return dv;
 			}
 
@@ -47,7 +45,7 @@ namespace ifpfc.Logic.Hohmann
 			else
 				goodTicks = 0;
 			if (goodTicks > 0)
-				File.AppendAllText("driver.txt", "GOOD "+ goodTicks + "\r\n");
+				SolverLogger.Log("GOOD "+ goodTicks + "\r\n");
 
 			if ((Math.Abs(s.ST.Len()) < 50)) 
 				algoState = HohmannAlgoState.Finishing;
@@ -55,7 +53,7 @@ namespace ifpfc.Logic.Hohmann
 			{
 				desirableV = GetDvForSecondJump(r1);
 				var dv = GetDV(r1, desirableV);
-				File.AppendAllText("driver.txt", "IMPULSE 2 " + dv.x + ", " + dv.y + "\r\n");
+				SolverLogger.Log("IMPULSE 2 " + dv.x + ", " + dv.y + "\r\n");
 				return dv;
 			}
 			
@@ -64,7 +62,7 @@ namespace ifpfc.Logic.Hohmann
 
 		private Vector GetDV(double r0, double desirableV)
 		{
-			Vector desirableVector = new Vector(desirableV * s.Sy / r0, -desirableV * s.Sx / r0);
+			var desirableVector = new Vector(desirableV * s.Sy / r0, -desirableV * s.Sx / r0);
 			var vector = new Vector(s.Vx - desirableVector.x, s.Vy - desirableVector.y);
 			if (s.Fuel < 5 || vector.x * vector.x + vector.y * vector.y < 1) return new Vector(0,0);
 			return vector;
@@ -80,13 +78,13 @@ namespace ifpfc.Logic.Hohmann
 						"Гагарин",
 						s.S,
 						new Vector(s.Vx, s.Vy)
-					),
+						),
 					new []{new Sattelite("Target", s.T, new Vector(0, 0)), },
 					new[]
 						{
 							new Orbit { SemiMajorAxis = s.TargetOrbitR, SemiMinorAxis = s.TargetOrbitR },
 						}
-				);
+					);
 			}
 		}
 
