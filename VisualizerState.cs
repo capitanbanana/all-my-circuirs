@@ -6,29 +6,13 @@ namespace ifpfc
 	public class VisualizerState
 	{
 		//диаметр видимой части ¬селенной, используетс€ дл€ масштабировани€ картинки
-		public readonly double UniverseDiameter;
-		
+		public double UniverseDiameter { get; set; }
 		//состо€ние управл€емого спутника
-		public readonly Sattelite Voyager;
-
+		public Sattelite Voyager { get; set; }
 		//сосот€ни€ целей
-		public readonly IEnumerable<Sattelite> Targets;
-
-		public readonly IEnumerable<Orbit> FixedOrbits;
-
-		public VisualizerState(double universeDiameter, Sattelite voyager, IEnumerable<Sattelite> targets, IEnumerable<Orbit> fixedOrbits)
-		{
-			UniverseDiameter = universeDiameter;
-			FixedOrbits = fixedOrbits;
-			Voyager = voyager;
-			Targets = targets;
-		}
-
-		public VisualizerState(Sattelite voyager, IEnumerable<Sattelite> targets, IEnumerable<Orbit> fixedOrbits)
-			: this(60*1000*1000, voyager, targets, fixedOrbits)
-		{
-			FixedOrbits = fixedOrbits;
-		}
+		public IEnumerable<Sattelite> Targets { get; set; }
+		public IEnumerable<Orbit> FixedOrbits { get; set; }
+		public double Score { get; set; }
 
 		public override string ToString()
 		{

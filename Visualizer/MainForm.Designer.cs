@@ -84,13 +84,11 @@
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.Size = new System.Drawing.Size(939, 22);
 			this.statusStrip1.TabIndex = 1;
-			this.statusStrip1.Text = "statusStrip1";
 			// 
 			// toolStripStatusLabel1
 			// 
 			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-			this.toolStripStatusLabel1.Size = new System.Drawing.Size(43, 17);
-			this.toolStripStatusLabel1.Text = "T=XXX";
+			this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
 			this.toolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// toolStrip1

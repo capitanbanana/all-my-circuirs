@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace ifpfc.Logic
 {
@@ -32,6 +33,32 @@ namespace ifpfc.Logic
 			get { return s; }
 		}
 
-		public abstract VisualizerState VisualizerState { get; }
+		public VisualizerState VisualizerState
+		{
+			get
+			{
+				var result = new VisualizerState
+					{
+						Score = s.Score,
+						Voyager = new Sattelite("Гагарин", new Vector(s.Sx, s.Sy), new Vector(s.Vx, s.Vy)),
+						Targets = Enumerable.Empty<Sattelite>(),
+						FixedOrbits = Enumerable.Empty<Orbit>(),
+					};
+				FillState(result);
+				return result;
+			}
+		}
+
+		protected void FillStateByCircularOrbit(VisualizerState state, double orbitRadius)
+		{
+			state.UniverseDiameter = 3*orbitRadius;
+			state.FixedOrbits =
+				new[]
+					{
+						new Orbit {SemiMajorAxis = orbitRadius, SemiMinorAxis = orbitRadius},
+					};
+		}
+
+		protected abstract void FillState(VisualizerState state);
 	}
 }
