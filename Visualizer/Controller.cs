@@ -14,7 +14,7 @@ namespace Visualizer
 		public Controller(ProblemDescription problem)
 		{
 			if (problem.Solver is HohmannSolver)
-				vm = new HohmannsEngine(117, problem.ScenarioNumber, problem.ScenarioNumber);
+				vm = new HohmannsEngine(117, problem.ScenarioNumber);
 			else if (problem.Solver is MeetAndGreetSolver)
 				vm = new MeetAndGreetEngine(117, problem.ScenarioNumber, problem.ScenarioNumber);
 			else 
