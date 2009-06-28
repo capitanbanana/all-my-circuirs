@@ -1,24 +1,24 @@
 using System;
 
-namespace ifpfc.Logic.Hohmann
+namespace ifpfc.Logic.MeetAndGreet
 {
 	public class MeetAndGreetState : LogicState
 	{
 		public double Tx { get; set; }
 		public double Ty { get; set; }
 
-		public Vector S { get { return new Vector(-Sx, -Sy); } }
-		public Vector T { get { return new Vector(S.x + Tx, S.y + Ty); } }
+		public Vector OS { get { return new Vector(-Sx, -Sy); } }
+		public Vector OT { get { return new Vector(OS.x + Tx, OS.y + Ty); } }
 		public Vector ST { get { return new Vector(Tx, Ty); } }
 		
 		public double CurrentOrbitR
 		{
-			get { return S.Len(); }
+			get { return OS.Len(); }
 		}
 
 		public double TargetOrbitR
 		{
-			get { return T.Len(); }
+			get { return OT.Len(); }
 		}
 
 		public override string ToString()
