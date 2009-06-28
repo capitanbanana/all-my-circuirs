@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using ifpfc.Logic.EccentricMeetAndGreet;
 using ifpfc.Logic.Hohmann;
 using ifpfc.Logic.MeetAndGreet;
 using log4net.Config;
@@ -59,6 +60,18 @@ namespace Visualizer
 				),
 				new KeyValuePair<string, ProblemDescription>(
 					"MeetAndGreet - 4", new ProblemDescription(@"..\..\..\ProblemVMImages\bin2.obf", new MeetAndGreetSolver(), 2004)
+				),
+				new KeyValuePair<string, ProblemDescription>(
+					"EccentricMeetAndGreet - 1", new ProblemDescription(@"..\..\..\ProblemVMImages\bin3.obf", new EccentricMeetAndGreetSolver(), 3001)
+				),
+				new KeyValuePair<string, ProblemDescription>(
+					"EccentricMeetAndGreet - 2", new ProblemDescription(@"..\..\..\ProblemVMImages\bin3.obf", new EccentricMeetAndGreetSolver(), 3002)
+				),
+				new KeyValuePair<string, ProblemDescription>(
+					"EccentricMeetAndGreet - 3", new ProblemDescription(@"..\..\..\ProblemVMImages\bin3.obf", new EccentricMeetAndGreetSolver(), 3003)
+				),
+				new KeyValuePair<string, ProblemDescription>(
+					"EccentricMeetAndGreet - 4", new ProblemDescription(@"..\..\..\ProblemVMImages\bin3.obf", new EccentricMeetAndGreetSolver(), 3004)
 				),
 			});
 			cmbxSolvers_.ComboBox.DataSource = scenarios;

@@ -10,7 +10,6 @@ namespace ifpfc.VM
 using System.Collections.Generic;
 using System.Linq;
 using ifpfc.Logic;
-using ifpfc.VM;
 
 namespace ifpfc.VM
 {
@@ -30,14 +29,14 @@ namespace ifpfc.VM
 		public double[] Mem { get; private set; }
 		
 
-		public {CLASSNAME}(int teamId, int scenarioId, double configurationNumber)
+		public {CLASSNAME}(int teamId, int scenarioId)
 		{
 			this.teamId = teamId;
 			this.scenarioId = scenarioId;
 			Mem = new double[addressSpaceSize];
 			Inport = new double[addressSpaceSize];
 			Outport = new double[addressSpaceSize];
-			Inport[16000] = configurationNumber;
+			Inport[16000] = scenarioId;
 			InitMem();
 		}
 
@@ -76,11 +75,20 @@ namespace ifpfc.VM
 
 		private IEnumerable<byte> CreateFrame(int tick, IList<int> portList)
 		{
+			Func<int, double> getPortValue =
+				portNum =>
+				{
+					if(portNum == 0x3E80) return Inport[0x3E80];
+					if(portNum == 2) return dxs[tick];
+					if(portNum == 3) return dys[tick];
+					throw new Exception(portNum.ToString());
+				};
+
 			var portBytes =
 				from portNum in portList
 				from b in
 					BitConverter.GetBytes(portNum)
-					.Concat(BitConverter.GetBytes(Inport[portNum]))
+					.Concat(BitConverter.GetBytes(getPortValue(portNum)))
 				select b;
 			return
 				BitConverter.GetBytes(tick)
