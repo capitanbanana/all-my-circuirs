@@ -27,14 +27,26 @@ namespace ifpfc.Logic.Hohmann
 				desirableV = GetDvForFirstJump(r1, r0);
 				algoState = HohmannAlgoState.Jumping;
 				var dv = GetDV(desirableV);
+
+				//avk
+				//algoState = HohmannAlgoState.Jumping;
+				//desirableV = Math.Sqrt(2 * Physics.mu * r1 / (r0 * (r0 + r1)));
+				//var dv = (1 - desirableV / s.V.Len()) * s.V;
+				
 				SolverLogger.Log("IMPULSE 1 " + dv.x + ", " + dv.y + "\r\n");
 				return dv;
 			}
 			if((Math.Abs(r0 - r1) < 1000) && algoState == HohmannAlgoState.Jumping) 
 			{
 				algoState = HohmannAlgoState.Finishing;
-				desirableV = GetDvForSecondJump(nextPos.Len())*0.71;
+				desirableV = GetDvForSecondJump(nextPos.Len()) * 0.71;
 				var dv = GetDV(desirableV);
+
+				//avk
+				//algoState = HohmannAlgoState.Finishing;
+				//desirableV = Math.Sqrt(Physics.mu / r0);
+				//var dv = (1 - desirableV / s.V.Len()) * s.V;
+
 				SolverLogger.Log("IMPULSE 2 " + dv.x + ", " + dv.y + "\r\n");
 				return dv;
 			}
