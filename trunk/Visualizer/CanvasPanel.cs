@@ -71,6 +71,8 @@ namespace Visualizer
 			DrawSattelite(gr, dataSource_.Voyager, VoyagerColor);
 			foreach (var t in dataSource_.Targets)
 				DrawSattelite(gr, t, TargetColor);
+			foreach (var orbit in dataSource_.FixedOrbits)
+				DrawOrbit(gr, orbit, Color.Yellow);
 		}
 
 		private void DrawCaption(Graphics gr, string caption, int x, int y)
@@ -108,7 +110,16 @@ namespace Visualizer
 			//var mxFlipY = new Matrix(1, 0, 0, -1, 0, ClientRectangle.Height);
 			//gr.MultiplyTransform(mxFlipY, MatrixOrder.Append);
 
-			Orbit orbit = CalculateOrbit(s);
+			DrawOrbit(gr, CalculateSatteliteOrbit(s), color);
+		}
+
+		private static Orbit CalculateSatteliteOrbit(Sattelite s)
+		{
+			return new Orbit();
+		}
+
+		private void DrawOrbit(Graphics gr, Orbit orbit, Color color)
+		{
 			if (orbit.SemiMajorAxis > 0)
 			{
 				var gs = gr.Save();
@@ -126,11 +137,6 @@ namespace Visualizer
 				);
 				gr.Restore(gs);
 			}
-		}
-
-		private static Orbit CalculateOrbit(Sattelite s)
-		{
-			return new Orbit();
 		}
 	}
 }
