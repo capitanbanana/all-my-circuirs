@@ -5,7 +5,7 @@ namespace ifpfc.Logic.MeetAndGreet
 {
 	public class MeetAndGreetSolver : BaseSolver<MeetAndGreetState>
 	{
-		private const double Eps = 0.001;
+		private const double Eps = 0.0003;
 		private HohmannAlgoState algoState = HohmannAlgoState.ReadyToJump;
 
 		protected override void FinishStateInitialization(double[] outPorts, MeetAndGreetState newState)
@@ -69,8 +69,8 @@ namespace ifpfc.Logic.MeetAndGreet
 				double actualPhi = thetaS - thetaT;
 				if (actualPhi < 0) actualPhi += 2*Math.PI;
 
-				SolverLogger.Log(string.Format("DesiredPhi: {0}, ActualPhi: {1}", desiredPhi*180/Math.PI,
-				                               actualPhi*180/Math.PI));
+				SolverLogger.Log(string.Format("DesiredPhi: {0}, ActualPhi: {1}, Diff=: {2}", desiredPhi*180/Math.PI,
+				                               actualPhi*180/Math.PI, desiredPhi - actualPhi));
 
 				if (algoState == HohmannAlgoState.ReadyToJump && Math.Abs(desiredPhi - actualPhi) < Eps)
 				{
