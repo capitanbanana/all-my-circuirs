@@ -6,7 +6,7 @@ namespace ifpfc.Logic.MeetAndGreet
 {
 	public class MeetAndGreetSolver : BaseSolver<MeetAndGreetState>
 	{
-		private const double Eps = 0.01;
+		private const double Eps = 0.001;
 		private HohmannAlgoState algoState = HohmannAlgoState.ReadyToJump;
 		
 		protected override void FinishStateInitialization(double[] outPorts, MeetAndGreetState newState)
@@ -31,37 +31,49 @@ namespace ifpfc.Logic.MeetAndGreet
 			if (algoState == HohmannAlgoState.ReadyToJump)
 			{
 				double tmp = (r0 + r1) / (2 * r1);
-				double desiredPhi = Math.PI * (1 - Math.Sqrt((tmp * tmp * tmp)));
+				var tau = Math.Sqrt(tmp * tmp * tmp);
+				double desiredPhi = r1 > r0 ? Math.PI * (1 - tau) : Math.PI * (tau - 1);
 
 				var thetaS = s.S.PolarAngle;
 				if (thetaS < 0) thetaS += 2 * Math.PI;
 				var thetaT = s.T.PolarAngle;
 				if (thetaT < 0) thetaT += 2 * Math.PI;
-				var actualPhi = thetaS - thetaT;
+				var actualPhi = r1 > r0 ? thetaS - thetaT : thetaT - thetaS;
 				if (actualPhi < 0) actualPhi += 2 * Math.PI;
 
 				SolverLogger.Log(string.Format("DesiredPhi: {0}, ActualPhi: {1}", desiredPhi * 180 / Math.PI,
 					actualPhi * 180 / Math.PI));
 
-				if (algoState == HohmannAlgoState.ReadyToJump && Math.Abs(desiredPhi - actualPhi) < Eps)
+				if (Math.Abs(desiredPhi - actualPhi) < Eps)
 				{
 					SolverLogger.Log(string.Format("My POS: {0}, V: {1}", s.S, s.V));
 					SolverLogger.Log(string.Format("Target POS: {0}", s.T));
+
+					var desirableV = GetDvForFirstJump(r1, r0);
 					algoState = HohmannAlgoState.Jumping;
-                    var desirableV = Math.Sqrt(2 * Physics.mu * r1 / (r0 * (r0 + r1)));
-					//var dv = GetDV(desirableV);
-					return (1 - desirableV / s.V.Len()) * s.V;
+					var dv = GetDV(desirableV);
+                    
+					//algoState = HohmannAlgoState.Jumping;
+					//var desirableV = Math.Sqrt(2 * Physics.mu * r1 / (r0 * (r0 + r1)));
+					//var dv = (1 - desirableV / s.V.Len()) * s.V;
+
+					SolverLogger.Log("IMPULSE 1 " + dv.x + ", " + dv.y + "\r\n");
+					return dv;
 				}
 			}
 
-			if (algoState == HohmannAlgoState.Jumping && (Math.Abs(r0 - r1) < 100))
+			//if (algoState == HohmannAlgoState.Jumping && (Math.Abs(r0 - r1) < 100))
+			if (algoState == HohmannAlgoState.Jumping && s.ST.Len() < 1000)
 			{
 				algoState = HohmannAlgoState.Finishing;
-				//var desirableV = GetDvForSecondJump(nextPos.Len());
-				//var dv = GetDV(desirableV);
-				//return dv;
-				var desirableV = Math.Sqrt(Physics.mu / r1);
-				return (1 - desirableV / s.V.Len()) * s.V;
+				var desirableV = GetDvForSecondJump(nextPos.Len()) * 0.71;
+				var dv = GetDV(desirableV);
+
+				//var desirableV = Math.Sqrt(Physics.mu / r1);
+				//return (1 - desirableV / s.V.Len()) * s.V;
+
+				SolverLogger.Log("IMPULSE 2 " + dv.x + ", " + dv.y + "\r\n");
+				return dv;
 			}
 			
 			return new Vector(0, 0);
