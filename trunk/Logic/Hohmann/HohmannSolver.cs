@@ -56,22 +56,9 @@ namespace ifpfc.Logic.Hohmann
 			return vector;
 		}
 
-		public override VisualizerState VisualizerState
+		protected override void FillState(VisualizerState state)
 		{
-			get
-			{
-				return new VisualizerState(
-					3*s.TargetOrbitR,
-					new Sattelite(
-						"Гагарин",
-						new Vector(s.Sx, s.Sy),
-						new Vector(s.Vx, s.Vy)),
-					Enumerable.Empty<Sattelite>(),
-					new[]
-						{
-							new Orbit { SemiMajorAxis = s.TargetOrbitR, SemiMinorAxis = s.TargetOrbitR },
-						});
-			}
+			FillStateByCircularOrbit(state, s.TargetOrbitR);
 		}
 
 		private static double GetDvForSecondJump(double r)

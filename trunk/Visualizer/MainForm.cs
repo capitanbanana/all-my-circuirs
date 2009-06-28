@@ -124,11 +124,13 @@ namespace Visualizer
 				return;
 			if (nowRunning_)
 				currentController_.Step(step);
+			var state = currentController_.CurrentState;
 			toolStripStatusLabel1.Text = string.Format(
-				"Московское время {1} тиков, просимулировано {0} тиков",
+				"Московское время {1} тиков, просимулировано {0} тиков; очки = {2}",
 				currentController_.TicksSimulated,
-				currentController_.CurrentTime);
-			pnlCanvas.Render(currentController_.CurrentState);
+				currentController_.CurrentTime,
+				(state != null) ? state.Score.ToString() : "N/A");
+			pnlCanvas.Render(state);
 		}
 
 		private int step = 100;

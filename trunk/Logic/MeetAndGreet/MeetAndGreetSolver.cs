@@ -68,24 +68,10 @@ namespace ifpfc.Logic.MeetAndGreet
 			return vector;
 		}
 
-		public override VisualizerState VisualizerState
+		protected override void FillState(VisualizerState state)
 		{
-			get
-			{
-				return new VisualizerState(
-					3 * s.TargetOrbitR,
-					new Sattelite(
-						"Гагарин",
-						s.S,
-						new Vector(s.Vx, s.Vy)
-						),
-					new []{new Sattelite("Target", s.T, new Vector(0, 0)), },
-					new[]
-						{
-							new Orbit { SemiMajorAxis = s.TargetOrbitR, SemiMinorAxis = s.TargetOrbitR },
-						}
-					);
-			}
+			FillStateByCircularOrbit(state, s.TargetOrbitR);
+			state.Targets = new[] {new Sattelite("Target", s.T, new Vector(0, 0)),};
 		}
 
 		private static double GetDvForSecondJump(double r)
