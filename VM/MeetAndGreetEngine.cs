@@ -8,6 +8,7 @@ namespace ifpfc.VM
 {
 	public class MeetAndGreetEngine : IVirtualMachine
 	{
+		//mem[395]
 		private readonly int teamId;
 		private readonly int scenarioId;
 		private const int addressSize = 14;
@@ -68,11 +69,20 @@ namespace ifpfc.VM
 
 		private IEnumerable<byte> CreateFrame(int tick, IList<int> portList)
 		{
+			Func<int, double> getPortValue =
+				portNum =>
+				{
+					if(portNum == 0x3E80) return Inport[0x3E80];
+					if(portNum == 2) return dxs[tick];
+					if(portNum == 3) return dys[tick];
+					throw new Exception(portNum.ToString());
+				};
+
 			var portBytes =
 				from portNum in portList
 				from b in
 					BitConverter.GetBytes(portNum)
-					.Concat(BitConverter.GetBytes(Inport[portNum]))
+					.Concat(BitConverter.GetBytes(getPortValue(portNum)))
 				select b;
 			return
 				BitConverter.GetBytes(tick)
