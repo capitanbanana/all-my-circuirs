@@ -70,7 +70,7 @@ namespace ifpfc.Logic.Hohmann
 
 		protected override void FillState(VisualizerState state)
 		{
-			FillStateByCircularOrbit(state, s.TargetOrbitR);
+			FillStateByCircularOrbit(state, s.TargetOrbitR, true);
 		}
 
 		private static double GetDvForSecondJump(double r)
