@@ -66,7 +66,7 @@ namespace Visualizer
 			int scaledR = ScaleDistance(Physics.R);
 			gr.FillEllipse(bodyBrush_, new Rectangle(-scaledR, -scaledR, 2*scaledR, 2*scaledR));
 			bodyBrush_.Color = VoyagerColor;
-			DrawCaption(gr, "Земля в иллюминаторе", -scaledR, 3);
+			//DrawCaption(gr, "Земля в иллюминаторе", -scaledR, 3);
 
 			DrawSattelite(gr, dataSource_.Voyager, VoyagerColor);
 			foreach (var t in dataSource_.Targets)

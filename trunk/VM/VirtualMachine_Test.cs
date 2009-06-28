@@ -16,7 +16,7 @@ namespace ifpfc.VM
 		[Fact]
 		public void can_run_first_image()
 		{
-			var vm = new VirtualMachine(42, 1004, 1004, ReadImage("bin1.obf"));
+			var vm = new VirtualMachine(42, 3001, 3001, ReadImage("bin3.obf"));
 			var ports = vm.RunTimeStep(Vector.Zero);
 			LogOutputPorts(ports);
 		}

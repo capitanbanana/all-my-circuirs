@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using ifpfc;
 using ifpfc.Logic;
+using ifpfc.Logic.EccentricMeetAndGreet;
 using ifpfc.Logic.Hohmann;
 using ifpfc.Logic.MeetAndGreet;
 using ifpfc.VM;
@@ -15,8 +16,10 @@ namespace Visualizer
 		{
 			if (problem.Solver is HohmannSolver)
 				vm = new HohmannsEngine(117, problem.ScenarioNumber);
-			else if (problem.Solver is MeetAndGreetSolver)
+			else if(problem.Solver is MeetAndGreetSolver)
 				vm = new MeetAndGreetEngine(117, problem.ScenarioNumber, problem.ScenarioNumber);
+			else if(problem.Solver is EccentricMeetAndGreetSolver)
+				vm = new EccentricMeetAndGreetEngine(117, problem.ScenarioNumber);
 			else 
 				throw new ArgumentException("неизвестный солвер!");
 
