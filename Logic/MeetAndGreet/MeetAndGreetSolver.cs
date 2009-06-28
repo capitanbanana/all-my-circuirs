@@ -3,7 +3,7 @@ using ifpfc.Logic.Hohmann;
 
 namespace ifpfc.Logic.MeetAndGreet
 {
-	public class MeetAndGreetSolver : BaseSolver<MeetAndGreetState>
+	public partial class MeetAndGreetSolver : BaseSolver<MeetAndGreetState>
 	{
 		private const double Eps = 0.0003;
 		private HohmannAlgoState algoState = HohmannAlgoState.ReadyToJump;
@@ -12,36 +12,6 @@ namespace ifpfc.Logic.MeetAndGreet
 		{
 			newState.ST = new Vector(outPorts[4], outPorts[5]);
 			newState.T = newState.S - newState.ST;
-		}
-
-		private double PredictCollision(Vector myDV)
-		{
-			Vector myPos = s.S;
-			Vector myV = s.V;
-			Vector targetPos = s.T;
-			var modTv = Math.Sqrt(Physics.mu / s.TargetOrbitR);
-			Vector targetV = new Vector(targetPos.y, -targetPos.x).Norm() * modTv;
-			//векторное произведение [v x pos] должно быть > 0 (подгонка - у нас все время движение против часовой стрелки)
-			if(targetV.x * targetPos.y - targetV.y * targetPos.x < 0)
-				targetV *= -1;
-
-			//вычисляю полупериод Хофмана - настолько нам нужно заглянуть в будущее
-			var targetT = 2 * Math.PI * s.TargetOrbitR / modTv;
-			double tmp = (s.CurrentOrbitR + s.TargetOrbitR) / (2 * s.TargetOrbitR);
-			var dT = targetT * Math.Sqrt(tmp * tmp * tmp);
-			for(int t = 0; t < dT; t++)
-			{
-				Vector nextPos, nextV;
-				Physics.Forecast(myPos, myV, t == 0 ? myDV : Vector.Zero, out nextPos, out nextV);
-				myPos = nextPos;
-				myV = nextV;
-				Physics.Forecast(targetPos, targetV, Vector.Zero, out nextPos, out nextV);
-				targetPos = nextPos;
-				targetV = nextV;
-			}
-			var dist = (targetPos - myPos).Len();
-			SolverLogger.Log(string.Format("Predicted collision distance: {0:F0}", dist));
-			return dist;
 		}
 
 		public override Vector CalculateDV()
@@ -59,15 +29,16 @@ namespace ifpfc.Logic.MeetAndGreet
 
 			if (algoState == HohmannAlgoState.ReadyToJump)
 			{
-				double tmp = (r0 + r1)/(2*r1);
-				double desiredPhi = Math.PI*(1 - Math.Sqrt((tmp*tmp*tmp)));
+				double tmp = (r0 + r1) / (2 * r1);
+				var tau = Math.Sqrt(tmp * tmp * tmp);
+				double desiredPhi = r1 > r0 ? Math.PI * (1 - tau) : Math.PI * (tau - 1);
 
-				double thetaS = s.S.PolarAngle;
-				if (thetaS < 0) thetaS += 2*Math.PI;
-				double thetaT = s.T.PolarAngle;
-				if (thetaT < 0) thetaT += 2*Math.PI;
-				double actualPhi = thetaS - thetaT;
-				if (actualPhi < 0) actualPhi += 2*Math.PI;
+				var thetaS = s.S.PolarAngle;
+				if (thetaS < 0) thetaS += 2 * Math.PI;
+				var thetaT = s.T.PolarAngle;
+				if (thetaT < 0) thetaT += 2 * Math.PI;
+				var actualPhi = r1 > r0 ? thetaS - thetaT : thetaT - thetaS;
+				if (actualPhi < 0) actualPhi += 2 * Math.PI;
 
 				SolverLogger.Log(string.Format("DesiredPhi: {0}, ActualPhi: {1}, Diff=: {2}", desiredPhi*180/Math.PI,
 				                               actualPhi*180/Math.PI, desiredPhi - actualPhi));
