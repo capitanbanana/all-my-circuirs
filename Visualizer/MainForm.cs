@@ -133,6 +133,6 @@ namespace Visualizer
 			pnlCanvas.Render(state);
 		}
 
-		private int step = 100;
+		private int step = 300;
 	}
 }
