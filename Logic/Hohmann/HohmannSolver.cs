@@ -39,7 +39,6 @@ namespace ifpfc.Logic.Hohmann
 				var dv = GetDV(r0, desirableV);
 				File.AppendAllText("driver.txt", "IMPULSE 1 " + dv.x + ", " + dv.y + "\r\n");
 				return dv;
-
 			}
 			if((Math.Abs(r0 - r1) < 50)) 
 				algoState = HohmannAlgoState.Finishing;
@@ -62,14 +61,17 @@ namespace ifpfc.Logic.Hohmann
 			return vector;
 		}
 
-		public override VisualizerState GetVisualizerState(LogicState state)
+		public override VisualizerState VisualizerState
 		{
-			return new VisualizerState(
-				new Sattelite(
-					"Гагарин",
-					new Vector(state.Sx, state.Sy),
-					new Vector(state.Vx, state.Vy)),
-				Enumerable.Empty<Sattelite>());
+			get
+			{
+				return new VisualizerState(
+					new Sattelite(
+						"Гагарин",
+						new Vector(s.Sx, s.Sy),
+						new Vector(s.Vx, s.Vy)),
+					Enumerable.Empty<Sattelite>());
+			}
 		}
 
 		private static double GetDvForSecondJump(double r)

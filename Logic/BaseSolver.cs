@@ -1,12 +1,8 @@
-using System;
-
 namespace ifpfc.Logic
 {
 	public abstract class BaseSolver<TState> : IProblemSolver where TState : LogicState, new()
 	{
 		protected TState s;
-
-		#region IProblemSolver Members
 
 		public void ApplyPortsOutput(double[] outPorts)
 		{
@@ -29,8 +25,6 @@ namespace ifpfc.Logic
 			get { return s; }
 		}
 
-		public abstract VisualizerState GetVisualizerState(LogicState state);
-
-		#endregion
+		public abstract VisualizerState VisualizerState { get; }
 	}
 }

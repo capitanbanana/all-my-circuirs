@@ -22,7 +22,7 @@ namespace ifpfc
 		}
 
 		public VisualizerState(Sattelite voyager, IEnumerable<Sattelite> targets)
-			: this(15*1000*1000, voyager, targets)
+			: this(60*1000*1000, voyager, targets)
 		{
 		}
 

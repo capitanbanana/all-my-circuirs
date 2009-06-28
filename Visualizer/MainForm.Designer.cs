@@ -46,9 +46,11 @@
 			this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
 			this.cmbxSolvers_ = new System.Windows.Forms.ToolStripComboBox();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.btnFastBackward = new System.Windows.Forms.ToolStripButton();
 			this.btnBackward_ = new System.Windows.Forms.ToolStripButton();
 			this.btnRun_ = new System.Windows.Forms.ToolStripButton();
 			this.btnForward_ = new System.Windows.Forms.ToolStripButton();
+			this.btnFastForward = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.pgVisualizer = new System.Windows.Forms.PropertyGrid();
@@ -72,7 +74,7 @@
 			// orbitToolStripMenuItem
 			// 
 			this.orbitToolStripMenuItem.Name = "orbitToolStripMenuItem";
-			this.orbitToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
+			this.orbitToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
 			this.orbitToolStripMenuItem.Text = "Orbit";
 			// 
 			// statusStrip1
@@ -88,7 +90,7 @@
 			// toolStripStatusLabel1
 			// 
 			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-			this.toolStripStatusLabel1.Size = new System.Drawing.Size(39, 17);
+			this.toolStripStatusLabel1.Size = new System.Drawing.Size(43, 17);
 			this.toolStripStatusLabel1.Text = "T=XXX";
 			this.toolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
@@ -107,9 +109,11 @@
             this.toolStripLabel1,
             this.cmbxSolvers_,
             this.toolStripSeparator2,
+            this.btnFastBackward,
             this.btnBackward_,
             this.btnRun_,
             this.btnForward_,
+            this.btnFastForward,
             this.toolStripSeparator3});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 24);
 			this.toolStrip1.Name = "toolStrip1";
@@ -193,7 +197,7 @@
 			// toolStripLabel1
 			// 
 			this.toolStripLabel1.Name = "toolStripLabel1";
-			this.toolStripLabel1.Size = new System.Drawing.Size(46, 22);
+			this.toolStripLabel1.Size = new System.Drawing.Size(47, 22);
 			this.toolStripLabel1.Text = "Solvers:";
 			// 
 			// cmbxSolvers_
@@ -207,6 +211,16 @@
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+			// 
+			// btnFastBackward
+			// 
+			this.btnFastBackward.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.btnFastBackward.Image = ((System.Drawing.Image)(resources.GetObject("btnFastBackward.Image")));
+			this.btnFastBackward.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btnFastBackward.Name = "btnFastBackward";
+			this.btnFastBackward.Size = new System.Drawing.Size(27, 22);
+			this.btnFastBackward.Text = "<<";
+			this.btnFastBackward.Click += new System.EventHandler(this.btnFastBackward_Click);
 			// 
 			// btnBackward_
 			// 
@@ -224,7 +238,7 @@
 			this.btnRun_.Image = ((System.Drawing.Image)(resources.GetObject("btnRun_.Image")));
 			this.btnRun_.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnRun_.Name = "btnRun_";
-			this.btnRun_.Size = new System.Drawing.Size(63, 22);
+			this.btnRun_.Size = new System.Drawing.Size(68, 22);
 			this.btnRun_.Text = "Run/Pause";
 			this.btnRun_.Click += new System.EventHandler(this.btnRun__Click);
 			// 
@@ -237,6 +251,16 @@
 			this.btnForward_.Size = new System.Drawing.Size(23, 22);
 			this.btnForward_.Text = ">";
 			this.btnForward_.Click += new System.EventHandler(this.btnForward__Click);
+			// 
+			// btnFastForward
+			// 
+			this.btnFastForward.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.btnFastForward.Image = ((System.Drawing.Image)(resources.GetObject("btnFastForward.Image")));
+			this.btnFastForward.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btnFastForward.Name = "btnFastForward";
+			this.btnFastForward.Size = new System.Drawing.Size(27, 22);
+			this.btnFastForward.Text = ">>";
+			this.btnFastForward.Click += new System.EventHandler(this.btnFastForward_Click);
 			// 
 			// toolStripSeparator3
 			// 
@@ -316,6 +340,8 @@
 		private System.Windows.Forms.ToolStripButton btnForward_;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.PropertyGrid pgVisualizer;
+		private System.Windows.Forms.ToolStripButton btnFastBackward;
+		private System.Windows.Forms.ToolStripButton btnFastForward;
 	}
 }
 

@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using ifpfc;
 using ifpfc.Logic;
 
 namespace Visualizer
@@ -13,18 +14,14 @@ namespace Visualizer
 		private static readonly Color VoyagerColor = Color.Red;
 		private static readonly Color TargetColor = Color.LightGreen;
 
-		private readonly IVisualizerState dataSource_;
-
-		private readonly Font dafaultFont_ = new Font(SystemFonts.DefaultFont.FontFamily, SystemFonts.DefaultFont.Size - 2);
+		private readonly Font defaultFont_ = new Font(SystemFonts.DefaultFont.FontFamily, SystemFonts.DefaultFont.Size);
 		private readonly StringFormat textFormat_;
 		private readonly Pen orbitPen_ = new Pen(Color.White, 1);
 		private readonly SolidBrush bodyBrush_ = new SolidBrush(Color.White);
+		private VisualizerState dataSource_;
 
-		public CanvasPanel(IVisualizerState dataSource)
+		public CanvasPanel()
 		{
-			if (dataSource == null) throw new ArgumentNullException("dataSource");
-			dataSource_ = dataSource;
-
 			base.AutoSize = true;
 			base.Dock = DockStyle.Fill;
 			base.BackColor = Color.Black;
@@ -44,6 +41,12 @@ namespace Visualizer
 			SetStyle(ControlStyles.UserPaint, true);
 		}
 
+		public void Render(VisualizerState newState)
+		{
+			dataSource_ = newState;
+			Invalidate();
+		}
+
 		private int ScaleDistance(double x)
 		{
 			return (int)(x * ClientRectangle.Height / dataSource_.UniverseDiameter);
@@ -53,13 +56,17 @@ namespace Visualizer
 		{
 			base.OnPaint(e);
 
+			if (dataSource_ == null)
+				return;
+
 			Graphics gr = e.Graphics;
 			gr.TranslateTransform(ClientRectangle.Width / 2.0f, ClientRectangle.Height / 2.0f);
 
 			bodyBrush_.Color = EarthColor;
 			int scaledR = ScaleDistance(Physics.R);
 			gr.FillEllipse(bodyBrush_, new Rectangle(-scaledR, -scaledR, 2*scaledR, 2*scaledR));
-			DrawCaption(gr, "Earth", 3, 3);
+			bodyBrush_.Color = VoyagerColor;
+			DrawCaption(gr, "Земля в иллюминаторе", -scaledR, 3);
 
 			DrawSattelite(gr, dataSource_.Voyager, VoyagerColor);
 			foreach (var t in dataSource_.Targets)
@@ -68,14 +75,14 @@ namespace Visualizer
 
 		private void DrawCaption(Graphics gr, string caption, int x, int y)
 		{
-			var size = gr.MeasureString(caption, dafaultFont_, 0, textFormat_);
+			var size = gr.MeasureString(caption, defaultFont_, 0, textFormat_);
 			var titleRect = new RectangleF(x, y, size.Width, size.Height);
-			gr.DrawString(caption, dafaultFont_, bodyBrush_, titleRect, textFormat_);
+			gr.DrawString(caption, defaultFont_, bodyBrush_, titleRect, textFormat_);
 		}
 
 		private void DrawSattelite(Graphics gr, Sattelite s, Color color)
 		{
-			var pos = new Point(ScaleDistance(s.Location.X), ScaleDistance(s.Location.Y));
+			var pos = new Point(ScaleDistance(s.Location.x), ScaleDistance(s.Location.y));
 			bodyBrush_.Color = color;
 			gr.FillEllipse(bodyBrush_, new Rectangle(pos.X - 3, pos.Y - 3, 6, 6));
 			DrawCaption(gr, s.Name, pos.X + 2, pos.Y + 2);
@@ -101,16 +108,17 @@ namespace Visualizer
 			//var mxFlipY = new Matrix(1, 0, 0, -1, 0, ClientRectangle.Height);
 			//gr.MultiplyTransform(mxFlipY, MatrixOrder.Append);
 
-			if (s.Orbit.SemiMajorAxis > 0)
+			Orbit orbit = CalculateOrbit(s);
+			if (orbit.SemiMajorAxis > 0)
 			{
 				var gs = gr.Save();
-				var transformAngle = (float)(-1 * s.Orbit.TransformAngle * (180.0F / Math.PI));
+				var transformAngle = (float)(-1 * orbit.TransformAngle * (180.0F / Math.PI));
 				gr.RotateTransform(transformAngle, MatrixOrder.Prepend);
 
 				orbitPen_.Color = color;
 				var or = new RectangleF(
-					(float)(-1 * s.Orbit.SemiMinorAxis), (float)(-1 * s.Orbit.PeriapsisDistance),
-					(float)(2 * s.Orbit.SemiMinorAxis), (float)(2 * s.Orbit.SemiMajorAxis)
+					(float)(-1 * orbit.SemiMinorAxis), (float)(-1 * orbit.PeriapsisDistance),
+					(float)(2 * orbit.SemiMinorAxis), (float)(2 * orbit.SemiMajorAxis)
 				);
 				gr.DrawEllipse(
 					orbitPen_,
@@ -118,6 +126,11 @@ namespace Visualizer
 				);
 				gr.Restore(gs);
 			}
+		}
+
+		private static Orbit CalculateOrbit(Sattelite s)
+		{
+			return new Orbit();
 		}
 	}
 }

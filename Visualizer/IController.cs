@@ -1,9 +1,12 @@
+using ifpfc;
+
 namespace Visualizer
 {
 	internal interface IController
 	{
-		void StepForward();
-		void StepBackward();
-		void SetSimulationMode(SimulationMode mode);
+		void Step(int stepSize);
+		VisualizerState CurrentState { get; }
+		int TicksSimulated { get; }
+		int CurrentTime { get; }
 	}
 }

@@ -56,10 +56,8 @@
       <SubType>NotDesignable</SubType>
     </Compile>
     <Compile Include="Controller.cs" />
-    <Compile Include="DummySystemState.cs" />
     <Compile Include="IController.cs" />
-    <Compile Include="IVisualizerState.cs" />
-    <Compile Include="IVisualizer.cs" />
+    <Compile Include="Orbit.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,7 +90,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="SimulationMode.cs" />
-    <Compile Include="VisualizerStateDataSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core.csproj">
