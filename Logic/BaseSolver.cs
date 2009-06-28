@@ -15,9 +15,14 @@ namespace ifpfc.Logic
 				//newS = S + V + 0.5(g + dv)
 				//V =  newS - S - 0.5(g + dv)
 
-				var glen = Physics.mu/s.S.Len2();
-				var alpha = s.S.PolarAngle;
-				var g = new Vector(glen*Math.Cos(alpha), glen*Math.Sin(alpha));
+				//avk
+				//var glen = Physics.mu/s.S.Len2();
+				//var alpha = Math.PI + s.S.PolarAngle;
+				//var g = new Vector(glen*Math.Cos(alpha), glen*Math.Sin(alpha));
+				//newState.V = newState.S - s.S - 0.5 * g;
+
+				var glen = Physics.mu / s.S.Len2();
+				var g = glen * s.S.Norm();
 				newState.V = newState.S - s.S - 0.5 * g;
 			}
 			FinishStateInitialization(outPorts, newState);

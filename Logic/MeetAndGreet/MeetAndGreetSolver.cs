@@ -6,59 +6,68 @@ namespace ifpfc.Logic.MeetAndGreet
 {
 	public class MeetAndGreetSolver : BaseSolver<MeetAndGreetState>
 	{
-		private const double Eps = 0.0001;
-
+		private const double Eps = 0.01;
 		private HohmannAlgoState algoState = HohmannAlgoState.ReadyToJump;
 		
 		protected override void FinishStateInitialization(double[] outPorts, MeetAndGreetState newState)
 		{
-			newState.Tx = outPorts[4];
-			newState.Ty = outPorts[5];
+			newState.ST = new Vector(outPorts[4], outPorts[5]);
+			newState.T = newState.S - newState.ST;
 		}
 
 		public override Vector CalculateDV()
 		{
 			//проверить, что крутимся в одну сторону
 
-			SolverLogger.Log("Current : V = " + s.V + "  POS = " + s.S);
+			SolverLogger.Log(string.Format("DistanceToTarget: {0}", s.ST.Len()));
+
 			Vector nextV;
 			Vector nextPos;
 			Physics.Forecast(s.S, s.V, Vector.Zero, out nextPos, out nextV);
-			SolverLogger.Log("Forecast: V = " + nextV + "  POS = " + nextPos);
 
 			var r0 = s.CurrentOrbitR;
 			var r1 = s.TargetOrbitR;
-			double tmp = (r0 + r1) / (2 * r1);
-			double desiredPhi = Math.PI * (1 - Math.Sqrt((tmp * tmp * tmp)));
 
-			var thetaS = Math.Atan2(s.OS.y, s.OS.x);
-			var thetaT = Math.Atan2(s.OT.y, s.OT.x);
-			var actualPhi = thetaT - thetaS;
-			if (actualPhi < 0) actualPhi += 2*Math.PI;
-
-			double desirableV = 0;
-			if (algoState == HohmannAlgoState.ReadyToJump && Math.Abs(desiredPhi - actualPhi) < Eps)
+			if (algoState == HohmannAlgoState.ReadyToJump)
 			{
-				desirableV = GetDvForFirstJump(r1, r0);
-				algoState = HohmannAlgoState.Jumping;
-				var dv = GetDV(r0, desirableV);
-				SolverLogger.Log("IMPULSE 1 " + dv.x + ", " + dv.y + "\r\n");
-				return dv;
+				double tmp = (r0 + r1) / (2 * r1);
+				double desiredPhi = Math.PI * (1 - Math.Sqrt((tmp * tmp * tmp)));
+
+				var thetaS = s.S.PolarAngle;
+				if (thetaS < 0) thetaS += 2 * Math.PI;
+				var thetaT = s.T.PolarAngle;
+				if (thetaT < 0) thetaT += 2 * Math.PI;
+				var actualPhi = thetaT - thetaS;
+				if (actualPhi < 0) actualPhi += 2 * Math.PI;
+
+				SolverLogger.Log(string.Format("DesiredPhi: {0}, ActualPhi: {1}", desiredPhi * 180 / Math.PI,
+					actualPhi * 180 / Math.PI));
+
+				if (algoState == HohmannAlgoState.ReadyToJump && Math.Abs(desiredPhi - actualPhi) < Eps)
+				{
+					SolverLogger.Log(string.Format("My POS: {0}, V: {1}", s.S, s.V));
+					SolverLogger.Log(string.Format("Target POS: {0}", s.T));
+					algoState = HohmannAlgoState.Jumping;
+                    var desirableV = Math.Sqrt(2 * Physics.mu * r1 / (r0 * (r0 + r1)));
+					//var dv = GetDV(desirableV);
+					return (1 - desirableV / s.V.Len()) * s.V;
+				}
 			}
-			
-			if ((Math.Abs(r0 - r1) < 1000) && algoState == HohmannAlgoState.Jumping)
+
+			if (algoState == HohmannAlgoState.Jumping && (Math.Abs(r0 - r1) < 100))
 			{
 				algoState = HohmannAlgoState.Finishing;
-				desirableV = GetDvForSecondJump(nextPos.Len()) * 0.71;
-				var dv = GetDV(r0, desirableV);
-				SolverLogger.Log("IMPULSE 2 " + dv.x + ", " + dv.y + "\r\n");
-				return dv;
+				//var desirableV = GetDvForSecondJump(nextPos.Len());
+				//var dv = GetDV(desirableV);
+				//return dv;
+				var desirableV = Math.Sqrt(Physics.mu / r1);
+				return (1 - desirableV / s.V.Len()) * s.V;
 			}
 			
 			return new Vector(0, 0);
 		}
 
-		private Vector GetDV(double r0, double desirableV)
+		private Vector GetDV(double desirableV)
 		{
 			Vector nextV;
 			Vector nextPos;
@@ -86,7 +95,7 @@ namespace ifpfc.Logic.MeetAndGreet
 		protected override void FillState(VisualizerState state)
 		{
 			FillStateByCircularOrbit(state, s.TargetOrbitR);
-			state.Targets = new[] {new Sattelite("Target", s.OT, new Vector(0, 0))};
+			state.Targets = new[] {new Sattelite("Target", s.T, new Vector(0, 0))};
 		}
 	}
 }

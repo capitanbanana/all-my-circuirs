@@ -62,5 +62,11 @@ namespace ifpfc.Logic
 		{
 			return new Vector(x - vector.x, y - vector.y);
 		}
+
+		public Vector Norm()
+		{
+			var len = Len();
+			return Math.Abs(len) < 1e-10 ? Zero : new Vector(x / len, y / len);
+		}
 	}
 }

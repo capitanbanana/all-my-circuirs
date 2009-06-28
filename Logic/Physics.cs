@@ -20,8 +20,11 @@ namespace ifpfc.Logic
 		public static Vector CalculateA(Vector pos)
 		{
 			var alen = mu / pos.Len2();
-			var phi = Math.PI + pos.PolarAngle;
-			return new Vector(alen*Math.Cos(phi), alen*Math.Sin(phi));
+			return alen * pos.Norm();
+
+			//avk
+			//var phi = Math.PI + pos.PolarAngle;
+			//return new Vector(alen*Math.Cos(phi), alen*Math.Sin(phi));
 		}
 	}
 }
