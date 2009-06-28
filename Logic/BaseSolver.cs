@@ -54,14 +54,17 @@ namespace ifpfc.Logic
 			}
 		}
 
-		protected void FillStateByCircularOrbit(VisualizerState state, double orbitRadius)
+		protected void FillStateByCircularOrbit(VisualizerState state, double orbitRadius, bool drawFixedOrbit)
 		{
 			state.UniverseDiameter = 3*orbitRadius;
-			state.FixedOrbits =
-				new[]
-					{
-						new Orbit {SemiMajorAxis = orbitRadius, SemiMinorAxis = orbitRadius},
-					};
+			if (drawFixedOrbit)
+			{
+				state.FixedOrbits =
+					new[]
+						{
+							new Orbit {SemiMajorAxis = orbitRadius, SemiMinorAxis = orbitRadius},
+						};
+			}
 		}
 
 		protected abstract void FillState(VisualizerState state);

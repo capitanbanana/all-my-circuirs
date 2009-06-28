@@ -89,7 +89,7 @@ namespace ifpfc.Logic.MeetAndGreet
 
 		protected override void FillState(VisualizerState state)
 		{
-			FillStateByCircularOrbit(state, s.TargetOrbitR);
+			FillStateByCircularOrbit(state, s.TargetOrbitR, false);
 			state.Targets = new[] {new Sattelite("Target", s.T, new Vector(0, 0))};
 		}
 	}

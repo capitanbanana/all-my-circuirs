@@ -68,5 +68,25 @@ namespace ifpfc.Logic
 			var len = Len();
 			return Math.Abs(len) < 1e-10 ? Zero : new Vector(x / len, y / len);
 		}
+
+		public bool Equals(Vector other)
+		{
+			return other.x == x && other.y == y;
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj)) return false;
+			if (obj.GetType() != typeof(Vector)) return false;
+			return Equals((Vector) obj);
+		}
+
+		public override int GetHashCode()
+		{
+			unchecked
+			{
+				return (x.GetHashCode()*397) ^ y.GetHashCode();
+			}
+		}
 	}
 }

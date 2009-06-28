@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -19,6 +20,10 @@ namespace Visualizer
 		private readonly Pen orbitPen_ = new Pen(Color.White, 1);
 		private readonly SolidBrush bodyBrush_ = new SolidBrush(Color.White);
 		private VisualizerState dataSource_;
+
+		private readonly HashSet<Point> tracePixels = new HashSet<Point>();
+		private readonly List<Point> trace = new List<Point>();
+		private bool rememberTrace;
 
 		public CanvasPanel()
 		{
@@ -47,6 +52,13 @@ namespace Visualizer
 			Invalidate();
 		}
 
+		public void ClearTrace()
+		{
+			trace.Clear();
+			tracePixels.Clear();
+			rememberTrace = true;
+		}
+
 		private int ScaleDistance(double x)
 		{
 			return (int)(x * ClientRectangle.Height / dataSource_.UniverseDiameter);
@@ -68,11 +80,13 @@ namespace Visualizer
 			bodyBrush_.Color = VoyagerColor;
 			DrawCaption(gr, "Земля в иллюминаторе", -scaledR, 3);
 
-			DrawSattelite(gr, dataSource_.Voyager, VoyagerColor);
+			DrawSattelite(gr, dataSource_.Voyager, VoyagerColor, false);
 			foreach (var t in dataSource_.Targets)
-				DrawSattelite(gr, t, TargetColor);
+				DrawSattelite(gr, t, TargetColor, true);
 			foreach (var orbit in dataSource_.FixedOrbits)
 				DrawOrbit(gr, orbit, Color.Yellow);
+			foreach (var tracePixel in trace)
+				gr.DrawEllipse(Pens.LightGreen, tracePixel.X, tracePixel.Y, 1, 1);
 		}
 
 		private void DrawCaption(Graphics gr, string caption, int x, int y)
@@ -82,35 +96,23 @@ namespace Visualizer
 			gr.DrawString(caption, defaultFont_, bodyBrush_, titleRect, textFormat_);
 		}
 
-		private void DrawSattelite(Graphics gr, Sattelite s, Color color)
+		private void DrawSattelite(Graphics gr, Sattelite s, Color color, bool updateTrace)
 		{
 			var pos = new Point(ScaleDistance(s.Location.x), ScaleDistance(s.Location.y));
 			bodyBrush_.Color = color;
 			gr.FillEllipse(bodyBrush_, new Rectangle(pos.X - 3, pos.Y - 3, 6, 6));
 			DrawCaption(gr, s.Name, pos.X + 2, pos.Y + 2);
 
-			//тут я запутался с преобразованиями систем координат,
-			//поэтому пока оставил стандартную windows-систему: ось X направлена вправо, ось Y - вниз
-
-			//gr.ResetTransform();
-			//gr.Transform = new Matrix(1, 0, 0, -1, ClientRectangle.Width / 2.0f, ClientRectangle.Height / 2.0f);
-			//var rotateAngle = (float)(-1 * s.Orbit.TransformAngle * (180.0F / Math.PI));
-			//gr.RotateTransform(rotateAngle, MatrixOrder.Prepend);
-
-			//var cos = (float)Math.Cos(s.Orbit.TransformAngle);
-			//var sin = (float)Math.Sin(s.Orbit.TransformAngle);
-			//var mxRotate = new Matrix(cos, -sin, sin, cos, 0, 0);
-			//var mxFlipY = new Matrix(1, 0, 0, -1, 0, 0);
-			//var rotateAngle = (float)(-1 * s.Orbit.TransformAngle * (180.0F / Math.PI));
-            //gr.MultiplyTransform(mxFlipY, MatrixOrder.Append);
-			//gr.RotateTransform(rotateAngle, MatrixOrder.Prepend);
-			//gr.TranslateTransform(ClientRectangle.Width / 2.0f, -ClientRectangle.Height / 2.0f, MatrixOrder.Append);
-
-			////flip Y-axis
-			//var mxFlipY = new Matrix(1, 0, 0, -1, 0, ClientRectangle.Height);
-			//gr.MultiplyTransform(mxFlipY, MatrixOrder.Append);
-
-			// DrawOrbit(gr, CalculateSatteliteOrbit(s), color);
+			if (rememberTrace && updateTrace)
+			{
+				if (tracePixels.Contains(pos))
+					rememberTrace = false;
+				else
+				{
+					tracePixels.Add(pos);
+					trace.Add(pos);
+				}
+			}
 		}
 
 		private static Orbit CalculateSatteliteOrbit(Sattelite s)
