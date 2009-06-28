@@ -1,5 +1,3 @@
-using System;
-
 namespace ifpfc.Logic.MeetAndGreet
 {
 	public class MeetAndGreetState : LogicState
@@ -25,13 +23,5 @@ namespace ifpfc.Logic.MeetAndGreet
 			       " TargetDistance=" + ST.Len() + 
 			       " Fuel=" + Fuel + " Score=" + Score;
 		}
-	}
-
-	public enum MeetAndGreetAlgoState
-	{
-		Waiting = 0,
-		ReadyToJump,
-		Jumping,
-		Finishing
 	}
 }

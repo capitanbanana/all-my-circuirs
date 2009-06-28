@@ -1,32 +1,66 @@
 ﻿using System;
-using System.IO;
 using ifpfc.Logic.Hohmann;
 
 namespace ifpfc.Logic.MeetAndGreet
 {
 	public class MeetAndGreetSolver : BaseSolver<MeetAndGreetState>
 	{
-		private const double Eps = 0.001;
 		private HohmannAlgoState algoState = HohmannAlgoState.ReadyToJump;
-		
+
+		private double minDistance_ = Double.MaxValue;
+
 		protected override void FinishStateInitialization(double[] outPorts, MeetAndGreetState newState)
 		{
 			newState.ST = new Vector(outPorts[4], outPorts[5]);
 			newState.T = newState.S - newState.ST;
 		}
 
+		private double PredictCollision(Vector myDV)
+		{
+			Vector myPos = s.S;
+			Vector myV = s.V;
+			Vector targetPos = s.T;
+			var modTv = Math.Sqrt(Physics.mu / s.TargetOrbitR);
+			Vector targetV = new Vector(targetPos.y, -targetPos.x).Norm() * modTv;
+			//векторное произведение [v x pos] должно быть > 0 (подгонка - у нас все время движение против часовой стрелки)
+			if (targetV.x * targetPos.y - targetV.y * targetPos.x < 0)
+				targetV *= -1;
+
+			//вычисляю полупериод Хофмана - настолько нам нужно заглянуть в будущее
+			var targetT = 2 * Math.PI * s.TargetOrbitR / modTv;
+			double tmp = (s.CurrentOrbitR + s.TargetOrbitR) / (2 * s.TargetOrbitR);
+			var dT = targetT * Math.Sqrt(tmp * tmp * tmp);
+			for (int t = 0; t < dT; t++)
+			{
+				Vector nextPos, nextV;
+				Physics.Forecast(myPos, myV, t == 0 ? myDV : Vector.Zero, out nextPos, out nextV);
+				myPos = nextPos;
+				myV = nextV;
+				Physics.Forecast(targetPos, targetV, Vector.Zero, out nextPos, out nextV);
+				targetPos = nextPos;
+				targetV = nextV;
+			}
+			var dist = (targetPos - myPos).Len();
+			SolverLogger.Log(string.Format("Predicted collision distance: {0:F0}", dist));
+			return dist;
+		}
+
 		public override Vector CalculateDV()
 		{
 			//проверить, что крутимся в одну сторону
 
-			SolverLogger.Log(string.Format("DistanceToTarget: {0}", s.ST.Len()));
-
 			Vector nextV;
 			Vector nextPos;
 			Physics.Forecast(s.S, s.V, Vector.Zero, out nextPos, out nextV);
-
 			var r0 = s.CurrentOrbitR;
 			var r1 = s.TargetOrbitR;
+
+			var distance = s.ST.Len();
+			if (distance < minDistance_)
+			{
+				minDistance_ = distance;
+				SolverLogger.Log(string.Format("Min DistanceToTarget={0:F0}, CurrentR={1:F0}, TargetR={2:F0}", minDistance_, r0, r1));
+			}
 
 			if (algoState == HohmannAlgoState.ReadyToJump)
 			{
@@ -41,41 +75,41 @@ namespace ifpfc.Logic.MeetAndGreet
 				var actualPhi = r1 > r0 ? thetaS - thetaT : thetaT - thetaS;
 				if (actualPhi < 0) actualPhi += 2 * Math.PI;
 
-				SolverLogger.Log(string.Format("DesiredPhi: {0}, ActualPhi: {1}", desiredPhi * 180 / Math.PI,
-					actualPhi * 180 / Math.PI));
-
-				if (Math.Abs(desiredPhi - actualPhi) < Eps)
+				if (Math.Abs(desiredPhi - actualPhi) < 0.01)
 				{
-					SolverLogger.Log(string.Format("My POS: {0}, V: {1}", s.S, s.V));
-					SolverLogger.Log(string.Format("Target POS: {0}", s.T));
+					//SolverLogger.Log(string.Format("My POS: {0}, V: {1}", s.S, s.V));
+					//SolverLogger.Log(string.Format("Target POS: {0}", s.T));
 
 					var desirableV = GetDvForFirstJump(r1, r0);
-					algoState = HohmannAlgoState.Jumping;
 					var dv = GetDV(desirableV);
-                    
-					//algoState = HohmannAlgoState.Jumping;
+
 					//var desirableV = Math.Sqrt(2 * Physics.mu * r1 / (r0 * (r0 + r1)));
 					//var dv = (1 - desirableV / s.V.Len()) * s.V;
 
-					SolverLogger.Log("IMPULSE 1 " + dv.x + ", " + dv.y + "\r\n");
-					return dv;
+					if (PredictCollision(dv) < 1000)
+					{
+						SolverLogger.Log("IMPULSE 1 " + dv.x + ", " + dv.y + "\r\n");
+						algoState = HohmannAlgoState.Jumping;
+						return dv;
+					}
 				}
 			}
 
-			//if (algoState == HohmannAlgoState.Jumping && (Math.Abs(r0 - r1) < 100))
-			if (algoState == HohmannAlgoState.Jumping && s.ST.Len() < 1000)
+			if (algoState == HohmannAlgoState.Jumping && (Math.Abs(r0 - r1) < 10))
+			//if (algoState == HohmannAlgoState.Jumping && distance < 1000)
 			{
-				algoState = HohmannAlgoState.Finishing;
-				var desirableV = GetDvForSecondJump(nextPos.Len()) * 0.71;
-				var dv = GetDV(desirableV);
+				//algoState = HohmannAlgoState.Finishing;
+				//var desirableV = GetDvForSecondJump(nextPos.Len()) * 0.71;
+				//var dv = GetDV(desirableV);
 
-				//var desirableV = Math.Sqrt(Physics.mu / r1);
-				//return (1 - desirableV / s.V.Len()) * s.V;
+				algoState = HohmannAlgoState.Finishing;
+				var desirableV = Math.Sqrt(Physics.mu / r1);
+				var dv = (1 - desirableV / s.V.Len()) * s.V;
 
 				SolverLogger.Log("IMPULSE 2 " + dv.x + ", " + dv.y + "\r\n");
 				return dv;
 			}
-			
+
 			return new Vector(0, 0);
 		}
 
@@ -86,9 +120,9 @@ namespace ifpfc.Logic.MeetAndGreet
 			Physics.Forecast(s.S, s.V, Vector.Zero, out nextPos, out nextV);
 			var nextR = nextPos.Len();
 			var desirableVector = new Vector(desirableV * nextPos.y / nextR, -desirableV * nextPos.x / nextR);
-			SolverLogger.Log("DesirableVector: " + desirableVector.x + ", " + desirableVector.y);
+			//SolverLogger.Log("DesirableVector: " + desirableVector.x + ", " + desirableVector.y);
 			var vector = new Vector(nextV.x - desirableVector.x, nextV.y - desirableVector.y);
-			SolverLogger.Log("DV: " + vector.x + ", " + vector.y);
+			//SolverLogger.Log("DV: " + vector.x + ", " + vector.y);
 			//return new Vector(0, 0);
 			if (s.Fuel < 5 || vector.x * vector.x + vector.y * vector.y < 1) return new Vector(0, 0);
 			return vector;
@@ -107,7 +141,7 @@ namespace ifpfc.Logic.MeetAndGreet
 		protected override void FillState(VisualizerState state)
 		{
 			FillStateByCircularOrbit(state, s.TargetOrbitR);
-			state.Targets = new[] {new Sattelite("Target", s.T, new Vector(0, 0))};
+			state.Targets = new[] { new Sattelite("Target", s.T, new Vector(0, 0)) };
 		}
 	}
 }
