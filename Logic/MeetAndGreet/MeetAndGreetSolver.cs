@@ -42,7 +42,7 @@ namespace ifpfc.Logic.MeetAndGreet
 				desirableV = GetDvForFirstJump(r1, r0);
 				algoState = HohmannAlgoState.Jumping;
 				var dv = GetDV(r0, desirableV);
-				File.AppendAllText("driver.txt", "IMPULSE 1 " + dv.x + ", " + dv.y + "\r\n");
+				SolverLogger.Log("IMPULSE 1 " + dv.x + ", " + dv.y + "\r\n");
 				return dv;
 			}
 			
@@ -51,7 +51,7 @@ namespace ifpfc.Logic.MeetAndGreet
 				algoState = HohmannAlgoState.Finishing;
 				desirableV = GetDvForSecondJump(nextPos.Len()) * 0.71;
 				var dv = GetDV(r0, desirableV);
-				File.AppendAllText("driver.txt", "IMPULSE 2 " + dv.x + ", " + dv.y + "\r\n");
+				SolverLogger.Log("IMPULSE 2 " + dv.x + ", " + dv.y + "\r\n");
 				return dv;
 			}
 			
