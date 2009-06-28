@@ -115,17 +115,26 @@ namespace Visualizer
 
 		private static Orbit CalculateSatteliteOrbit(Sattelite s)
 		{
+			return new Orbit();
+			// большая полуось a выводится из vis-viva equation
 			double v2 = s.Speed.Len2();
 			double r = s.Location.Len();
 			double tmp = 2*Physics.mu/r;
 			double a = Physics.mu/(tmp - v2);
 
+			// эксцентриситет e выводится из первого закона Кеплера
 			double cosPhi = Math.Cos(s.Location.PolarAngle);
 			double d = Math.Sqrt(4*a*a - 4*a*r + r*r*cosPhi*cosPhi);
 			double e = (d - r*cosPhi)/(2*a);
 
+			// малая полуось b вычисляется из эксцентриситета и большой полуоси
 			double b = a*Math.Sqrt(1 - e*e);
-			return new Orbit {SemiMajorAxis = a, SemiMinorAxis = b};
+
+			double r2 = s.Location.Len2();
+			double y2 = (a*a - r2)*b*b/(a*a - b*b);
+			double x2 = r2 - y2;
+
+			return new Orbit {SemiMajorAxis = a, SemiMinorAxis = b, TransformAngle = Math.Atan2(-Math.Sqrt(y2), Math.Sqrt(x2))};
 		}
 
 		private void DrawOrbit(Graphics gr, Orbit orbit, Color color)
