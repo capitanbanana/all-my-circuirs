@@ -37,7 +37,7 @@ namespace ifpfc.Logic.MeetAndGreet
 				if (thetaS < 0) thetaS += 2 * Math.PI;
 				var thetaT = s.T.PolarAngle;
 				if (thetaT < 0) thetaT += 2 * Math.PI;
-				var actualPhi = thetaT - thetaS;
+				var actualPhi = thetaS - thetaT;
 				if (actualPhi < 0) actualPhi += 2 * Math.PI;
 
 				SolverLogger.Log(string.Format("DesiredPhi: {0}, ActualPhi: {1}", desiredPhi * 180 / Math.PI,
