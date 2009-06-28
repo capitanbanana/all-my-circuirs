@@ -1,266 +1,266 @@
 00000    nop                                             mem: 1
-00001    mem[1] <- mem[265]                              mem: 0
+00001    mov mem[1] <- mem[265]                          mem: 0
 00002    nop                                             mem: 30
 00003    nop                                             mem: 0
-00004    mem[4] <- mem[248]                              mem: 0
-00005    mem[5] <- mem[4] - mem[3]                       mem: 0
-00006    status <- mem[5] == 0.0                         mem: 0
-00007    mem[7] <- status ? mem[2] : mem[1]              mem: 0
-00008    mem[8] <- mem[7] - 1                       mem: 0
-00009    mem[9] <- mem[263]                              mem: 0
-00010    status <- mem[5] == 0.0                         mem: 0
-00011    mem[11] <- status ? 1 : mem[9]             mem: 0
-00012    mem[12] <- mem[11] - 1                     mem: 0
-00013    status <- mem[12] == 0.0                        mem: 0
-00014    mem[14] <- status ? mem[8] : mem[7]             mem: 0
-00015    mem[15] <- mem[264]                             mem: 0
+00004    mov mem[4] <- mem[248]                          mem: 0
+00005    -   mem[5] <- mem[4] - 0                        mem: 0
+00006    cmp status <- mem[5] == 0.0                     mem: 0
+00007    phi mem[7] <- status ? 30 : mem[1]              mem: 0
+00008    -   mem[8] <- mem[7] - 1                        mem: 0
+00009    mov mem[9] <- mem[263]                          mem: 0
+00010    cmp status <- mem[5] == 0.0                     mem: 0
+00011    phi mem[11] <- status ? 1 : mem[9]              mem: 0
+00012    -   mem[12] <- mem[11] - 1                      mem: 0
+00013    cmp status <- mem[12] == 0.0                    mem: 0
+00014    phi mem[14] <- status ? mem[8] : mem[7]         mem: 0
+00015    mov mem[15] <- mem[264]                         mem: 0
 00016    nop                                             mem: 1000
-00017    status <- mem[5] == 0.0                         mem: 0
-00018    mem[18] <- status ? mem[16] : mem[15]           mem: 0
+00017    cmp status <- mem[5] == 0.0                     mem: 0
+00018    phi mem[18] <- status ? 1000 : mem[15]       mem: 0
 00019    nop                                             mem: 2
-00020    mem[20] <- mem[18] * mem[19]                    mem: 0
-00021    status <- mem[12] == 0.0                        mem: 0
-00022    mem[22] <- status ? mem[20] : mem[18]           mem: 0
-00023    status <- mem[12] == 0.0                        mem: 0
-00024    mem[24] <- status ? mem[18] : mem[12]           mem: 0
-00025    mem[25] <- mem[260]                             mem: 0
-00026    mem[26] <- mem[262]                             mem: 0
+00020    *   mem[20] <- mem[18] * mem[19]                mem: 0
+00021    cmp status <- mem[12] == 0.0                    mem: 0
+00022    phi mem[22] <- status ? mem[20] : mem[18]       mem: 0
+00023    cmp status <- mem[12] == 0.0                    mem: 0
+00024    phi mem[24] <- status ? mem[18] : mem[12]       mem: 0
+00025    mov mem[25] <- mem[260]                         mem: 0
+00026    mov mem[26] <- mem[262]                         mem: 0
 00027    nop                                             mem: 1,1
 00028    nop                                             mem: 42164
-00029    mem[29] <- mem[28] * mem[16]                    mem: 0
-00030    mem[30] <- mem[29] / mem[27]                    mem: 0
+00029    *   mem[29] <- 42164000                         mem: 0
+00030    /   mem[30] <- mem[29] / mem[27]                mem: 0
 00031    nop                                             mem: 1004
-00032    mem[32] <- inport[16000]                        mem: 0
-00033    mem[33] <- mem[32] - mem[31]                    mem: 0
-00034    status <- mem[33] == 0.0                        mem: 0
-00035    mem[35] <- status ? mem[30] : mem[3]            mem: 0
+00032    inp mem[32] <- inport[16000]                    mem: 0
+00033    -   mem[33] <- mem[32] - mem[31]                mem: 0
+00034    cmp status <- mem[33] == 0.0                    mem: 0
+00035    phi mem[35] <- status ? mem[30] : 0             mem: 0
 00036    nop                                             mem: 1,5
-00037    mem[37] <- mem[29] / mem[36]                    mem: 0
+00037    /   mem[37] <- mem[29] / mem[36]                mem: 0
 00038    nop                                             mem: 1003
-00039    mem[39] <- mem[32] - mem[38]                    mem: 0
-00040    status <- mem[39] == 0.0                        mem: 0
-00041    mem[41] <- status ? mem[37] : mem[35]           mem: 0
-00042    mem[42] <- mem[29] / mem[19]                    mem: 0
+00039    -   mem[39] <- mem[32] - mem[38]                mem: 0
+00040    cmp status <- mem[39] == 0.0                    mem: 0
+00041    phi mem[41] <- status ? mem[37] : mem[35]        mem: 0
+00042    /   mem[42] <- mem[29] / mem[19]                mem: 0
 00043    nop                                             mem: 1002
-00044    mem[44] <- mem[32] - mem[43]                    mem: 0
-00045    status <- mem[44] == 0.0                        mem: 0
-00046    mem[46] <- status ? mem[42] : mem[41]           mem: 0
+00044    -   mem[44] <- mem[32] - mem[43]                mem: 0
+00045    cmp status <- mem[44] == 0.0                    mem: 0
+00046    phi mem[46] <- status ? mem[42] : mem[41]        mem: 0
 00047    nop                                             mem: 1001
-00048    mem[48] <- mem[32] - mem[47]                    mem: 0
-00049    status <- mem[48] == 0.0                        mem: 0
-00050    mem[50] <- status ? mem[29] : mem[46]           mem: 0
-00051    status <- mem[5] == 0.0                         mem: 0
-00052    mem[52] <- status ? mem[50] : mem[26]           mem: 0
-00053    mem[53] <- mem[255]                             mem: 0
+00048    -   mem[48] <- mem[32] - mem[47]                mem: 0
+00049    cmp status <- mem[48] == 0.0                    mem: 0
+00050    phi mem[50] <- status ? mem[29] : mem[46]        mem: 0 желаемая орбита
+00051    cmp status <- mem[5] == 0.0                     mem: 0
+00052    phi mem[52] <- status ? mem[50] : mem[26]        mem: 0 желаемая орбита
+00053    mov mem[53] <- mem[255]                         mem: 0
 00054    nop                                             mem: 0
 00055    nop                                             mem: 6457000
-00056    status <- mem[33] == 0.0                        mem: 0
-00057    mem[57] <- status ? mem[55] : mem[3]            mem: 0
-00058    status <- mem[39] == 0.0                        mem: 0
-00059    mem[59] <- status ? mem[54] : mem[57]           mem: 0
-00060    nop                                             mem: -6357000
-00061    status <- mem[44] == 0.0                        mem: 0
-00062    mem[62] <- status ? mem[60] : mem[59]           mem: 0
-00063    status <- mem[48] == 0.0                        mem: 0
-00064    mem[64] <- status ? mem[54] : mem[62]           mem: 0
-00065    status <- mem[5] == 0.0                         mem: 0
-00066    mem[66] <- status ? mem[64] : mem[53]           mem: 0
-00067    mem[67] <- mem[250]                             mem: 0
-00068    status <- mem[5] == 0.0                         mem: 0
-00069    mem[69] <- status ? mem[3] : mem[67]            mem: 0
-00070    mem[70] <- mem[69] - mem[66]                    mem: 0
-00071    mem[71] <- mem[70] * mem[70]                    mem: 0
-00072    mem[72] <- mem[249]                             mem: 0
-00073    status <- mem[5] == 0.0                         mem: 0
-00074    mem[74] <- status ? mem[3] : mem[72]            mem: 0
-00075    mem[75] <- mem[254]                             mem: 0
-00076    status <- mem[33] == 0.0                        mem: 0
-00077    mem[77] <- status ? mem[54] : mem[3]            mem: 0
+00056    cmp status <- mem[33] == 0.0                    mem: 0
+00057    phi mem[57] <- status ? mem[55] : 0        mem: 0
+00058    cmp status <- mem[39] == 0.0                    mem: 0
+00059    phi mem[59] <- status ? mem[54] : mem[57]        mem: 0
+00060    nop                                             mem: -6357000 // -R_Earth
+00061    cmp status <- mem[44] == 0.0                    mem: 0
+00062    phi mem[62] <- status ? mem[60] : mem[59]        mem: 0
+00063    cmp status <- mem[48] == 0.0                    mem: 0
+00064    phi mem[64] <- status ? mem[54] : mem[62]        mem: 0
+00065    cmp status <- mem[5] == 0.0                     mem: 0
+00066    phi mem[66] <- status ? mem[64] : mem[53]        mem: 0
+00067    mov mem[67] <- mem[250]                         mem: 0
+00068    cmp status <- mem[5] == 0.0                     mem: 0
+00069    phi mem[69] <- status ? 0 : mem[67]        mem: 0
+00070    -   mem[70] <- mem[69] - mem[66]                mem: 0
+00071    *   mem[71] <- mem[70] * mem[70]                mem: 0
+00072    mov mem[72] <- mem[249]                         mem: 0
+00073    cmp status <- mem[5] == 0.0                     mem: 0
+00074    phi mem[74] <- status ? 0 : mem[72]        mem: 0
+00075    mov mem[75] <- mem[254]                         mem: 0
+00076    cmp status <- mem[33] == 0.0                    mem: 0
+00077    phi mem[77] <- status ? mem[54] : 0        mem: 0
 00078    nop                                             mem: 8357000
-00079    status <- mem[39] == 0.0                        mem: 0
-00080    mem[80] <- status ? mem[78] : mem[77]           mem: 0
+00079    cmp status <- mem[39] == 0.0                    mem: 0
+00080    phi mem[80] <- status ? mem[78] : mem[77]        mem: 0
 00081    nop                                             mem: 6357000
-00082    status <- mem[44] == 0.0                        mem: 0
-00083    mem[83] <- status ? mem[81] : mem[80]           mem: 0
+00082    cmp status <- mem[44] == 0.0                    mem: 0
+00083    phi mem[83] <- status ? mem[81] : mem[80]        mem: 0
 00084    nop                                             mem: 6557000
-00085    status <- mem[48] == 0.0                        mem: 0
-00086    mem[86] <- status ? mem[84] : mem[83]           mem: 0
-00087    status <- mem[5] == 0.0                         mem: 0
-00088    mem[88] <- status ? mem[86] : mem[75]           mem: 0
-00089    mem[89] <- mem[74] - mem[88]                    mem: 0
-00090    mem[90] <- mem[89] * mem[89]                    mem: 0
-00091    mem[91] <- mem[90] + mem[71]                    mem: 0
-00092    mem[92] <- sqrt(mem[91])                        mem: 0
-00093    mem[93] <- mem[92] * mem[92]                    mem: 0
-00094    mem[94] <- mem[93] * mem[92]                    mem: 0
-00095    mem[95] <- mem[251]                             mem: 0
-00096    nop                                             mem: 6E+24
-00097    status <- mem[5] == 0.0                         mem: 0
-00098    mem[98] <- status ? mem[96] : mem[95]           mem: 0
-00099    nop                                             mem: 6,67428E-11
-00100    mem[100] <- mem[99] * mem[98]                   mem: 0
-00101    mem[101] <- mem[100] / mem[94]                  mem: 0
-00102    mem[102] <- mem[70] * mem[101]                  mem: 0
-00103    mem[103] <- inport[3]                           mem: 0
-00104    mem[104] <- 1 / 1                     mem: 0
-00105    mem[105] <- mem[103] / mem[104]                 mem: 0
-00106    mem[106] <- mem[105] + mem[102]                 mem: 0
-00107    mem[107] <- mem[104] * mem[104]                 mem: 0
-00108    mem[108] <- mem[107] / mem[19]                  mem: 0
-00109    mem[109] <- mem[106] * mem[108]                 mem: 0
-00110    mem[110] <- mem[258]                            mem: 0
-00111    nop                                             mem: -6922,33535852193
-00112    status <- mem[39] == 0.0                        mem: 0
-00113    mem[113] <- status ? mem[111] : mem[77]         mem: 0
-00114    nop                                             mem: -4719,31790906712
-00115    status <- mem[44] == 0.0                        mem: 0
-00116    mem[116] <- status ? mem[114] : mem[113]        mem: 0
-00117    nop                                             mem: -7814,93273851338
-00118    status <- mem[48] == 0.0                        mem: 0
-00119    mem[119] <- status ? mem[117] : mem[116]        mem: 0
-00120    status <- mem[5] == 0.0                         mem: 0
-00121    mem[121] <- status ? mem[119] : mem[110]        mem: 0
-00122    mem[122] <- mem[121] * mem[104]                 mem: 0
-00123    mem[123] <- mem[66] + mem[122]                  mem: 0
-00124    mem[124] <- mem[123] + mem[109]                 mem: 0
-00125    mem[125] <- mem[124] - mem[69]                  mem: 0
-00126    mem[126] <- mem[125] * mem[125]                 mem: 0
-00127    mem[127] <- mem[89] * mem[101]                  mem: 0
-00128    mem[128] <- inport[2]                           mem: 0
-00129    mem[129] <- mem[128] / mem[104]                 mem: 0
-00130    mem[130] <- mem[129] + mem[127]                 mem: 0
-00131    mem[131] <- mem[130] * mem[108]                 mem: 0
-00132    mem[132] <- mem[257]                            mem: 0
+00085    cmp status <- mem[48] == 0.0                    mem: 0
+00086    phi mem[86] <- status ? mem[84] : mem[83]        mem: 0
+00087    cmp status <- mem[5] == 0.0                     mem: 0
+00088    phi mem[88] <- status ? mem[86] : mem[75]        mem: 0
+00089    -   mem[89] <- mem[74] - mem[88]                mem: 0
+00090    *   mem[90] <- mem[89] * mem[89]                mem: 0
+00091    +   mem[91] <- mem[90] + mem[71]                mem: 0
+00092    sqr mem[92] <- sqrt(mem[91])                    mem: 0
+00093    *   mem[93] <- mem[92] * mem[92]                mem: 0
+00094    *   mem[94] <- mem[93] * mem[92]                mem: 0
+00095    mov mem[95] <- mem[251]                         mem: 0
+00096    nop                                             mem: 6E+24 // M
+00097    cmp status <- mem[5] == 0.0                     mem: 0
+00098    phi mem[98] <- status ? mem[96] : mem[95]        mem: 0
+00099    nop                                             mem: 6,67428E-11 // G
+00100    *   mem[100] <- mem[99] * mem[98]               mem: 0
+00101    /   mem[101] <- mem[100] / mem[94]              mem: 0
+00102    *   mem[102] <- mem[70] * mem[101]              mem: 0
+00103    inp mem[103] <- inport[3]                       mem: 0
+00104    /   1 <- 1 / 1                 mem: 0
+00105    /   mem[105] <- mem[103] / 1             mem: 0
+00106    +   mem[106] <- mem[105] + mem[102]             mem: 0
+00107    *   mem[107] <- 1 * 1             mem: 0
+00108    /   mem[108] <- mem[107] / mem[19]              mem: 0
+00109    *   mem[109] <- mem[106] * mem[108]             mem: 0
+00110    mov mem[110] <- mem[258]                        mem: 0
+00111    nop                                             mem: -6922,33535852193  // S_y_3
+00112    cmp status <- mem[39] == 0.0                    mem: 0
+00113    phi mem[113] <- status ? mem[111] : mem[77]        mem: 0
+00114    nop                                             mem: -4719,31790906712   // 
+00115    cmp status <- mem[44] == 0.0                    mem: 0
+00116    phi mem[116] <- status ? mem[114] : mem[113]        mem: 0
+00117    nop                                             mem: -7814,93273851338  // S_y_1
+00118    cmp status <- mem[48] == 0.0                    mem: 0
+00119    phi mem[119] <- status ? mem[117] : mem[116]        mem: 0
+00120    cmp status <- mem[5] == 0.0                     mem: 0
+00121    phi mem[121] <- status ? mem[119] : mem[110]        mem: 0
+00122    *   mem[122] <- mem[121] * 1             mem: 0
+00123    +   mem[123] <- mem[66] + mem[122]              mem: 0  
+00124    +   mem[124] <- mem[123] + mem[109]             mem: 0
+00125    -   mem[125] <- mem[124] - mem[69]              mem: 0
+00126    *   mem[126] <- mem[125] * mem[125]             mem: 0  (m66+m121 + m109 - m69)^2
+00127    *   mem[127] <- mem[89] * mem[101]              mem: 0
+00128    inp mem[128] <- inport[2]                       mem: 0
+00129    /   mem[129] <- mem[128] / 1             mem: 0
+00130    +   mem[130] <- mem[129] + mem[127]             mem: 0
+00131    *   mem[131] <- mem[130] * mem[108]             mem: 0
+00132    mov mem[132] <- mem[257]                        mem: 0
 00133    nop                                             mem: -7875,21543323545
-00134    status <- mem[33] == 0.0                        mem: 0
-00135    mem[135] <- status ? mem[133] : mem[3]          mem: 0
-00136    status <- mem[39] == 0.0                        mem: 0
-00137    mem[137] <- status ? mem[54] : mem[135]         mem: 0
-00138    status <- mem[44] == 0.0                        mem: 0
-00139    mem[139] <- status ? mem[114] : mem[137]        mem: 0
-00140    status <- mem[48] == 0.0                        mem: 0
-00141    mem[141] <- status ? mem[54] : mem[139]         mem: 0
-00142    status <- mem[5] == 0.0                         mem: 0
-00143    mem[143] <- status ? mem[141] : mem[132]        mem: 0
-00144    mem[144] <- mem[143] * mem[104]                 mem: 0
-00145    mem[145] <- mem[88] + mem[144]                  mem: 0
-00146    mem[146] <- mem[145] + mem[131]                 mem: 0
-00147    mem[147] <- mem[146] - mem[74]                  mem: 0
-00148    mem[148] <- mem[147] * mem[147]                 mem: 0
-00149    mem[149] <- mem[148] + mem[126]                 mem: 0
-00150    mem[150] <- sqrt(mem[149])                      mem: 0
-00151    mem[151] <- mem[150] - mem[52]                  mem: 0
-00152    mem[152] <- mem[3] - mem[151]                   mem: 0
-00153    mem[153] <- mem[151] - mem[3]                   mem: 0
-00154    status <- mem[153] < 0.0                        mem: 0
-00155    mem[155] <- status ? mem[152] : mem[151]        mem: 0
-00156    mem[156] <- mem[25] + mem[155]                  mem: 0
-00157    mem[157] <- mem[105] * mem[105]                 mem: 0
-00158    mem[158] <- mem[129] * mem[129]                 mem: 0
-00159    mem[159] <- mem[158] + mem[157]                 mem: 0
-00160    mem[160] <- sqrt(mem[159])                      mem: 0 // зв®-в® еЁва®Ґ
-00161    mem[161] <- mem[160] - mem[3]                   mem: 0
-00162    status <- mem[161] == 0.0                       mem: 0
-00163    mem[163] <- status ? mem[156] : mem[3]          mem: 0
-00164    mem[164] <- mem[155] - mem[16]                  mem: 0
-00165    status <- mem[164] < 0.0                        mem: 0
-00166    mem[166] <- status ? mem[163] : mem[3]          mem: 0
-00167    mem[167] <- mem[69] - mem[124]                  mem: 0
-00168    mem[168] <- mem[167] * mem[167]                 mem: 0
-00169    mem[169] <- mem[74] - mem[146]                  mem: 0
-00170    mem[170] <- mem[169] * mem[169]                 mem: 0
-00171    mem[171] <- mem[170] + mem[168]                 mem: 0
-00172    mem[172] <- sqrt(mem[171])                      mem: 0
-00173    mem[173] <- mem[172] * mem[172]                 mem: 0
-00174    mem[174] <- mem[173] * mem[172]                 mem: 0
-00175    mem[175] <- mem[100] / mem[174]                 mem: 0
-00176    mem[176] <- mem[167] * mem[175]                 mem: 0
-00177    mem[177] <- mem[176] + mem[102]                 mem: 0
-00178    mem[178] <- mem[177] / mem[19]                  mem: 0
-00179    mem[179] <- mem[105] + mem[178]                 mem: 0
-00180    mem[180] <- mem[179] * mem[104]                 mem: 0
-00181    mem[181] <- mem[121] + mem[180]                 mem: 0
-00182    mem[182] <- mem[169] * mem[175]                 mem: 0
-00183    mem[183] <- mem[182] + mem[127]                 mem: 0
-00184    mem[184] <- mem[183] / mem[19]                  mem: 0
-00185    mem[185] <- mem[129] + mem[184]                 mem: 0
-00186    mem[186] <- mem[185] * mem[104]                 mem: 0
-00187    mem[187] <- mem[143] + mem[186]                 mem: 0
-00188    mem[188] <- mem[256]                            mem: 0
+00134    cmp status <- mem[33] == 0.0                    mem: 0
+00135    phi mem[135] <- status ? mem[133] : 0        mem: 0
+00136    cmp status <- mem[39] == 0.0                    mem: 0
+00137    phi mem[137] <- status ? mem[54] : mem[135]        mem: 0
+00138    cmp status <- mem[44] == 0.0                    mem: 0
+00139    phi mem[139] <- status ? mem[114] : mem[137]        mem: 0
+00140    cmp status <- mem[48] == 0.0                    mem: 0
+00141    phi mem[141] <- status ? mem[54] : mem[139]        mem: 0
+00142    cmp status <- mem[5] == 0.0                     mem: 0
+00143    phi mem[143] <- status ? mem[141] : mem[132]        mem: 0
+00144    *   mem[144] <- mem[143] * 1             mem: 0
+00145    +   mem[145] <- mem[88] + mem[144]              mem: 0  sqrt((m88 + m144 + m131 - m74)^2 + (m66 + m121 + m109 - m69)^2)
+00146    +   mem[146] <- mem[145] + mem[131]             mem: 0
+00147    -   mem[147] <- mem[146] - mem[74]              mem: 0
+00148    *   mem[148] <- mem[147] * mem[147]             mem: 0
+00149    +   mem[149] <- mem[148] + mem[126]             mem: 0
+00150    sqr mem[150] <- sqrt(mem[149])                  mem: 0 текущая орбита.
+00151    -   mem[151] <- mem[150] - TARGET_ORBIT              mem: 0 m151 = m150 - m52
+00152    -   mem[152] <-  -mem[151]               mem: 0
+00153    -   mem[153] <- mem[151]               mem: 0
+00154    cmp status <- mem[150] < TARGET_ORBIT                    mem: 0 Если m150 < m152
+00155    phi mem[155] <- status ? mem[152] : mem[151]        mem: 0 // расстояние между текущей орбитой и желаемой орбитой.
+00156    +   mem[156] <- mem[25] + mem[155]              mem: 0
+00157    *   mem[157] <- mem[105] * mem[105]             mem: 0
+00158    *   mem[158] <- mem[129] * mem[129]             mem: 0
+00159    +   mem[159] <- mem[158] + mem[157]             mem: 0
+00160    sqr mem[160] <- sqrt(mem[159])                  mem: 0
+00161    -   mem[161] <- mem[160] - 0               mem: 0
+00162    cmp status <- mem[161] == 0.0                   mem: 0
+00163    phi mem[163] <- status ? mem[156] : 0        mem: 0
+00164    -   mem[164] <- mem[155] - 1000              mem: 0 // Нечто для расчета GOOD_TIME. Оно должно быть меньше 0
+00165    cmp status <- mem[164] < 0.0                    mem: 0
+00166    phi mem[166] <- status ? mem[163] : 0        mem: 0
+00167    -   mem[167] <- mem[69] - mem[124]              mem: 0
+00168    *   mem[168] <- mem[167] * mem[167]             mem: 0
+00169    -   mem[169] <- mem[74] - mem[146]              mem: 0
+00170    *   mem[170] <- mem[169] * mem[169]             mem: 0
+00171    +   mem[171] <- mem[170] + mem[168]             mem: 0
+00172    sqr mem[172] <- sqrt(mem[171])                  mem: 0
+00173    *   mem[173] <- mem[172] * mem[172]             mem: 0
+00174    *   mem[174] <- mem[173] * mem[172]             mem: 0
+00175    /   mem[175] <- mem[100] / mem[174]             mem: 0
+00176    *   mem[176] <- mem[167] * mem[175]             mem: 0
+00177    +   mem[177] <- mem[176] + mem[102]             mem: 0
+00178    /   mem[178] <- mem[177] / mem[19]              mem: 0
+00179    +   mem[179] <- mem[105] + mem[178]             mem: 0
+00180    *   mem[180] <- mem[179] * 1             mem: 0
+00181    +   mem[181] <- mem[121] + mem[180]             mem: 0
+00182    *   mem[182] <- mem[169] * mem[175]             mem: 0
+00183    +   mem[183] <- mem[182] + mem[127]             mem: 0
+00184    /   mem[184] <- mem[183] / mem[19]              mem: 0
+00185    +   mem[185] <- mem[129] + mem[184]             mem: 0
+00186    *   mem[186] <- mem[185] * 1             mem: 0
+00187    +   mem[187] <- mem[143] + mem[186]             mem: 0
+00188    mov mem[188] <- mem[256]                        mem: 0
 00189    nop                                             mem: 1
-00190    status <- mem[33] == 0.0                        mem: 0
-00191    mem[191] <- status ? mem[189] : mem[3]          mem: 0
-00192    status <- mem[39] == 0.0                        mem: 0
-00193    mem[193] <- status ? mem[189] : mem[191]        mem: 0
-00194    status <- mem[44] == 0.0                        mem: 0
-00195    mem[195] <- status ? mem[189] : mem[193]        mem: 0
-00196    status <- mem[48] == 0.0                        mem: 0
-00197    mem[197] <- status ? mem[189] : mem[195]        mem: 0
-00198    status <- mem[5] == 0.0                         mem: 0
-00199    mem[199] <- status ? mem[197] : mem[188]        mem: 0
-00200    mem[200] <- mem[253]                            mem: 0
-00201    status <- mem[5] == 0.0                         mem: 0
-00202    mem[202] <- status ? mem[3] : mem[200]          mem: 0
-00203    mem[203] <- mem[252]                            mem: 0
-00204    status <- mem[5] == 0.0                         mem: 0
-00205    mem[205] <- status ? mem[3] : mem[203]          mem: 0
-00206    mem[206] <- mem[4] + 1                     mem: 0
-00207    mem[207] <- mem[259]                            mem: 0
-00208    mem[208] <- mem[207] + 1                   mem: 0
-00209    status <- mem[161] == 0.0                       mem: 0
-00210    mem[210] <- status ? mem[208] : mem[3]          mem: 0
-00211    status <- mem[164] < 0.0                        mem: 0
-00212    mem[212] <- status ? mem[210] : mem[3]          mem: 0
-00213    mem[213] <- mem[261]                            mem: 0
-00214    nop                                             mem: 10000 //Const
-00215    status <- mem[5] == 0.0                         mem: 0
-00216    mem[216] <- status ? 10000 : mem[213]        mem: 0
-00217    mem[217] <- mem[160] * mem[104]                 mem: 0
-00218    mem[218] <- mem[216] - mem[217]                 mem: 0
+00190    cmp status <- mem[33] == 0.0                    mem: 0
+00191    phi mem[191] <- status ? mem[189] : 0        mem: 0
+00192    cmp status <- mem[39] == 0.0                    mem: 0
+00193    phi mem[193] <- status ? mem[189] : mem[191]        mem: 0
+00194    cmp status <- mem[44] == 0.0                    mem: 0
+00195    phi mem[195] <- status ? mem[189] : mem[193]        mem: 0
+00196    cmp status <- mem[48] == 0.0                    mem: 0
+00197    phi mem[197] <- status ? mem[189] : mem[195]        mem: 0
+00198    cmp status <- mem[5] == 0.0                     mem: 0
+00199    phi mem[199] <- status ? mem[197] : mem[188]        mem: 0
+00200    mov mem[200] <- mem[253]                        mem: 0
+00201    cmp status <- mem[5] == 0.0                     mem: 0
+00202    phi mem[202] <- status ? 0 : mem[200]        mem: 0
+00203    mov mem[203] <- mem[252]                        mem: 0
+00204    cmp status <- mem[5] == 0.0                     mem: 0
+00205    phi mem[205] <- status ? 0 : mem[203]        mem: 0
+00206    +   mem[206] <- mem[4] + 1                 mem: 0  // Будущее m5
+00207    mov mem[207] <- mem[259]                        mem: 0
+00208    +   mem[208] <- mem[207] + 1               mem: 0
+00209    cmp status <- mem[161] == 0.0                   mem: 0
+00210    phi mem[210] <- status ? mem[208] : 0        mem: 0
+00211    cmp status <- mem[164] < 0.0                    mem: 0
+00212    phi mem[212] <- status ? mem[210] : 0        mem: 0  // GOOD_TIME
+00213    mov mem[213] <- mem[261]                        mem: 0
+00214    nop                                             mem: 10000 //FUEL
+00215    cmp status <- mem[5] == 0.0                     mem: 0
+00216    phi mem[216] <- status ? FUEL_AT_START : mem[213]        mem: 0
+00217    *   mem[217] <- mem[160] * 1             mem: 0
+00218    -   mem[218] <- mem[216] - mem[217]             mem: 0  m218 = m216 - m217 = m5==0 ? FUEL_AT_START : m213 - m160 * m104
 00219    nop                                             mem: 25
 00220    nop                                             mem: 45
-00221    mem[221] <- 10000 - mem[218]                 mem: 0
-00222    mem[222] <- mem[221] / 10000                 mem: 0
-00223    mem[223] <- mem[222] * mem[220]                 mem: 0
-00224    mem[224] <- mem[7] + mem[223]                   mem: 0
-00225    mem[225] <- mem[224] + mem[219]                 mem: 0
+00221    -   mem[221] <- FUEL_AT_START - mem[218]             mem: 0
+00222    /   mem[222] <- mem[221] / FUEL_AT_START             mem: 0
+00223    *   mem[223] <- mem[222] * mem[220]             mem: 0
+00224    +   mem[224] <- mem[7] + mem[223]               mem: 0
+00225    +   mem[225] <- mem[224] + mem[219]             mem: 0 //Score = калькуляция...
 00226    nop                                             mem: 900
-00227    mem[227] <- mem[226] / mem[104]                 mem: 0
-00228    mem[228] <- mem[227] - mem[212]                 mem: 0
-00229    status <- mem[228] < 0.0                        mem: 0
-00230    mem[230] <- status ? mem[225] : mem[3]          mem: 0
-00231    mem[231] <- mem[218] - mem[3]                   mem: 0
-00232    mem[232] <- mem[242] - 1                   mem: 0 //Score
-00233    status <- mem[231] < 0.0                        mem: 0
-00234    mem[234] <- status ? mem[232] : mem[230]        mem: 0
-00235    mem[235] <- 10000 - mem[217]                    mem: 0 !
-00236    status <- mem[235] < 0.0                        mem: 0
-00237    mem[237] <- status ? mem[232] : mem[234]        mem: 0 //Score
-00238    nop                                             mem: 6357000
-00239    mem[239] <- mem[150] - 6357000                  mem: 0
-00240    status <- mem[239] < 0.0                        mem: 0 // ‘в®«Є­г«Ёбм б ‡Ґ¬«Ґ©?
-00241    mem[241] <- status ? mem[232] : mem[237]        mem: 0 //Score
+00227    /   mem[227] <- 900                    mem: 0 -
+00228    -   mem[228] <- 900 - mem[212]             mem: 0
+00229    cmp status <- mem[228] < 0.0                    mem: 0
+00230    phi mem[230] <- status ? mem[225] : 0           mem: 0 // Score = если ... m225, иначе 0
+00231    -   mem[231] <- mem[218] - 0                    mem: 0
+00232    nop                                             mem: -1
+00233    cmp status <- mem[231] < 0.0                    mem: 0
+00234    phi mem[234] <- status ? -1 : mem[230]          mem: 0 // Score = если ... -1, иначе m230
+00235    -   mem[235] <- FUEL_AT_START - mem[217]        mem: 0
+00236    cmp status <- mem[235] < 0.0                    mem: 0
+00237    phi mem[237] <- status ? -1 : mem[234]          mem: 0 //Score = если бензин кончился, то -1, иначе m234
+00238    nop                                             mem: 6357000 //R_Earth
+00239    -   mem[239] <- mem[150] - mem[238]             mem: 0
+00240    cmp status <- mem[239] < 0.0                    mem: 0
+00241    phi mem[241] <- status ? -1 : mem[237]          mem: 0 //SCORE = если упали на землю -1, иначе m237
 00242    nop                                             mem: 0
-00243    outport[0] <- mem[241]                          mem: 0 //Score
-00244    outport[1] <- mem[218]                          mem: 0 // Fuel
-00245    outport[2] <- mem[169]                          mem: 0
-00246    outport[3] <- mem[167]                          mem: 0
-00247    outport[4] <- mem[52]                           mem: 0
-00248    mem[248] <- mem[206]                            mem: 0
-00249    mem[249] <- mem[74]                             mem: 0
-00250    mem[250] <- mem[69]                             mem: 0
-00251    mem[251] <- mem[98]                             mem: 0
-00252    mem[252] <- mem[205]                            mem: 0
-00253    mem[253] <- mem[202]                            mem: 0
-00254    mem[254] <- mem[146]                            mem: 0
-00255    mem[255] <- mem[124]                            mem: 0
-00256    mem[256] <- mem[199]                            mem: 0
-00257    mem[257] <- mem[187]                            mem: 0
-00258    mem[258] <- mem[181]                            mem: 0
-00259    mem[259] <- mem[212]                            mem: 0
-00260    mem[260] <- mem[166]                            mem: 0
-00261    mem[261] <- mem[218]                            mem: 0
-00262    mem[262] <- mem[52]                             mem: 0
-00263    mem[263] <- mem[24]                             mem: 0
-00264    mem[264] <- mem[22]                             mem: 0
-00265    mem[265] <- mem[14]                             mem: 0
+00243    out outport[0] <- mem[241]                      mem: 0
+00244    out outport[1] <- mem[218]                      mem: 0
+00245    out outport[2] <- mem[169]                      mem: 0
+00246    out outport[3] <- mem[167]                      mem: 0
+00247    out outport[4] <- TARGET_ORBIT                  mem: 0
+00248    mov mem[248] <- mem[206]                        mem: 0
+00249    mov mem[249] <- mem[74]                         mem: 0
+00250    mov mem[250] <- mem[69]                         mem: 0
+00251    mov mem[251] <- mem[98]                         mem: 0
+00252    mov mem[252] <- mem[205]                        mem: 0
+00253    mov mem[253] <- mem[202]                        mem: 0
+00254    mov mem[254] <- mem[146]                        mem: 0
+00255    mov mem[255] <- mem[124]                        mem: 0
+00256    mov mem[256] <- mem[199]                        mem: 0
+00257    mov mem[257] <- mem[187]                        mem: 0
+00258    mov mem[258] <- mem[181]                        mem: 0
+00259    mov mem[259] <- mem[212]                        mem: 0 // GOOD_TIME
+00260    mov mem[260] <- mem[166]                        mem: 0
+00261    mov mem[261] <- mem[218]                        mem: 0
+00262    mov mem[262] <- TARGET_ORBIT                    mem: 0
+00263    mov mem[263] <- mem[24]                         mem: 0
+00264    mov mem[264] <- mem[22]                         mem: 0
+00265    mov mem[265] <- mem[14]                         mem: 0

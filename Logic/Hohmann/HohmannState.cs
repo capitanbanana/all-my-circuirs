@@ -8,9 +8,14 @@ namespace ifpfc.Logic.Hohmann
 
 		public override string ToString()
 		{
-			return "TargetR=" + TargetOrbitR + 
-			       " CurrentR=" + Math.Sqrt(Sx*Sx + Sy*Sy) +
-			       " V=" + Math.Sqrt(Vx * Vx + Vy * Vy) + 
+			
+			double r = Math.Sqrt(Sx*Sx + Sy*Sy);
+			double v = Math.Sqrt(Vx * Vx + Vy * Vy);
+			var error = Math.Sqrt(Physics.mu/r) - v;
+			return "TargetR=" + TargetOrbitR +
+			       " CurrentR=" + r +
+			       " V=" + v + 
+                   " ERR=" + error +
 			       " Fuel=" + Fuel + " Score=" + Score;
 		}
 	}

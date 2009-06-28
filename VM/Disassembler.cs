@@ -86,16 +86,16 @@ namespace ifpfc.VM
 						default:
 							throw new Exception(string.Format("Неизвестная операция сравнения {0}", imm));
 					}
-					readableInstr = string.Format("status <- mem[{0}] {1} 0.0", r1, cmpOp);
+					readableInstr = string.Format("cmp status <- mem[{0}] {1} 0.0", r1, cmpOp);
 					break;
 				case 2:
-					readableInstr = string.Format("mem[{0}] <- sqrt(mem[{1}])", rd, r1);
+					readableInstr = string.Format("sqr mem[{0}] <- sqrt(mem[{1}])", rd, r1);
 					break;
 				case 3:
-					readableInstr = string.Format("mem[{0}] <- mem[{1}]", rd, r1);
+					readableInstr = string.Format("mov mem[{0}] <- mem[{1}]", rd, r1);
 					break;
 				case 4:
-					readableInstr = string.Format("mem[{0}] <- inport[{1}]", rd, r1);
+					readableInstr = string.Format("inp mem[{0}] <- inport[{1}]", rd, r1);
 					break;
 				default:
 					throw new Exception(string.Format("Неизвестный опкод одноаргументной операции {0}", op));
@@ -106,7 +106,7 @@ namespace ifpfc.VM
 		private string ReadDType(int rd, uint op, uint r1, uint r2)
 		{
 			string readableInstr;
-			Func<char, string> FormatBinOp = o => string.Format("mem[{0}] <- mem[{1}] {2} mem[{3}]", rd, r1, o, r2);
+			Func<char, string> FormatBinOp = o => string.Format("{2}   mem[{0}] <- mem[{1}] {2} mem[{3}]", rd, r1, o, r2);
 
 			switch (op)
 			{
@@ -123,10 +123,10 @@ namespace ifpfc.VM
 					readableInstr = FormatBinOp('/');
 					break;
 				case 5:
-					readableInstr = string.Format("outport[{0}] <- mem[{1}]", r1, r2);
+					readableInstr = string.Format("out outport[{0}] <- mem[{1}]", r1, r2);
 					break;
 				case 6:
-					readableInstr = string.Format("mem[{0}] <- status ? mem[{1}] : mem[{2}]", rd, r1, r2);
+					readableInstr = string.Format("phi mem[{0}] <- status ? mem[{1}] : mem[{2}]", rd, r1, r2);
 					break;
 				default:
 					throw new Exception(string.Format("Неизвестный опкод двухаргументной операции {0}", op));

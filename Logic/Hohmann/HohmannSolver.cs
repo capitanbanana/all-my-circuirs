@@ -1,14 +1,15 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using log4net;
 
 namespace ifpfc.Logic.Hohmann
 {
 	public class HohmannSolver : BaseSolver<HohmannState>
 	{
 		private HohmannAlgoState algoState = HohmannAlgoState.ReadyToJump;
-		private int jumpTimeout;
 		private int goodTicks;
+		private int jumps = 0;
 
 		protected override void FinishStateInitialization(double[] outPorts, HohmannState newState)
 		{
@@ -17,35 +18,27 @@ namespace ifpfc.Logic.Hohmann
 
 		public override Vector CalculateDV()
 		{
-			double r0 = Math.Sqrt(s.Sx*s.Sx + s.Sy*s.Sy);
-			double v0 = Math.Sqrt(s.Vx*s.Vx + s.Vy*s.Vy);
+			log.Info("Current : V = " + s.V + "  POS = " + s.S);
+			Vector nextV;
+			Vector nextPos;
+			Physics.Forecast(s.S, s.V, Vector.Zero, out nextPos, out nextV);
+			log.Info("Forecast: V = " + nextV + "  POS = " + nextPos);
+			double r0 = Math.Sqrt(s.Sx * s.Sx + s.Sy * s.Sy);
 			double r1 = s.TargetOrbitR;
-			if (Math.Abs(r0 - r1) < 1000)
-			{
-				goodTicks++;
-			}
-			else
-			{
-				goodTicks = 0;
-			}
-			if (goodTicks > 0)
-				File.AppendAllText("driver.txt", "GOOD "+ goodTicks + "\r\n");
 			double desirableV = 0;
 			if (algoState == HohmannAlgoState.ReadyToJump)
 			{
 				desirableV = GetDvForFirstJump(r1, r0);
 				algoState = HohmannAlgoState.Jumping;
-				jumpTimeout = 100;
+				jumps = 0;
 				var dv = GetDV(r0, desirableV);
 				File.AppendAllText("driver.txt", "IMPULSE 1 " + dv.x + ", " + dv.y + "\r\n");
 				return dv;
 			}
-			if((Math.Abs(r0 - r1) < 50)) 
-				algoState = HohmannAlgoState.Finishing;
-			if (algoState == HohmannAlgoState.Finishing)
+			if((Math.Abs(r0 - r1) < 1000) && algoState == HohmannAlgoState.Jumping) 
 			{
 				algoState = HohmannAlgoState.Finishing;
-				desirableV = GetDvForSecondJump(r0);
+				desirableV = GetDvForSecondJump(nextPos.Len())*0.71;
 				var dv = GetDV(r0, desirableV);
 				File.AppendAllText("driver.txt", "IMPULSE 2 " + dv.x + ", " + dv.y + "\r\n");
 				return dv;
@@ -55,12 +48,20 @@ namespace ifpfc.Logic.Hohmann
 
 		private Vector GetDV(double r0, double desirableV)
 		{
-			Vector desirableVector = new Vector(desirableV * s.Sy / r0, -desirableV * s.Sx / r0);
-			var vector = new Vector(s.Vx - desirableVector.x, s.Vy - desirableVector.y);
+			Vector nextV;
+			Vector nextPos;
+			Physics.Forecast(s.S, s.V, Vector.Zero, out nextPos, out nextV);
+			var nextR = nextPos.Len();
+			var desirableVector = new Vector(desirableV * nextPos.y / nextR, -desirableV * nextPos.x / nextR);
+			log.Info("DesirableVector: " + desirableVector.x + ", " + desirableVector.y);
+			var vector = new Vector(nextV.x - desirableVector.x, nextV.y - desirableVector.y);
+			log.Info("DV: " + vector.x + ", " + vector.y);
+			//return new Vector(0, 0);
 			if (s.Fuel < 5 || vector.x * vector.x + vector.y * vector.y < 1) return new Vector(0,0);
 			return vector;
 		}
 
+		private static ILog log = LogManager.GetLogger(typeof (HohmannSolver));
 		public override VisualizerState VisualizerState
 		{
 			get
