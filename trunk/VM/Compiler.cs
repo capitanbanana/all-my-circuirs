@@ -239,7 +239,7 @@ namespace ifpfc.VM
 				case 3:
 					return FormatBinOp('*');
 				case 4:
-					return FormatBinOp('/');
+					return string.Format("Mem[{0}] = (Mem[{2}] == 0) ? 0.0 : (Mem[{1}] / Mem[{2}]);\r\n", rd, r1, r2);
 				case 5:
 					return string.Format("Outport[{0}] = Mem[{1}];\r\n", r1, r2);
 				case 6:

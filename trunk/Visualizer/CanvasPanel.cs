@@ -66,7 +66,7 @@ namespace Visualizer
 			int scaledR = ScaleDistance(Physics.R);
 			gr.FillEllipse(bodyBrush_, new Rectangle(-scaledR, -scaledR, 2*scaledR, 2*scaledR));
 			bodyBrush_.Color = VoyagerColor;
-			//DrawCaption(gr, "Земля в иллюминаторе", -scaledR, 3);
+			DrawCaption(gr, "Земля в иллюминаторе", -scaledR, 3);
 
 			DrawSattelite(gr, dataSource_.Voyager, VoyagerColor);
 			foreach (var t in dataSource_.Targets)
@@ -110,31 +110,25 @@ namespace Visualizer
 			//var mxFlipY = new Matrix(1, 0, 0, -1, 0, ClientRectangle.Height);
 			//gr.MultiplyTransform(mxFlipY, MatrixOrder.Append);
 
-			DrawOrbit(gr, CalculateSatteliteOrbit(s), color);
+			// DrawOrbit(gr, CalculateSatteliteOrbit(s), color);
 		}
 
 		private static Orbit CalculateSatteliteOrbit(Sattelite s)
 		{
-			return new Orbit();
 			// большая полуось a выводится из vis-viva equation
 			double v2 = s.Speed.Len2();
 			double r = s.Location.Len();
 			double tmp = 2*Physics.mu/r;
 			double a = Physics.mu/(tmp - v2);
 
-			// эксцентриситет e выводится из первого закона Кеплера
-			double cosPhi = Math.Cos(s.Location.PolarAngle);
-			double d = Math.Sqrt(4*a*a - 4*a*r + r*r*cosPhi*cosPhi);
-			double e = (d - r*cosPhi)/(2*a);
+			double r_ = 2*a - r;
+			double b = 2*r*Math.Sqrt(r*r_)/(r + r_);
 
-			// малая полуось b вычисляется из эксцентриситета и большой полуоси
-			double b = a*Math.Sqrt(1 - e*e);
+			double e = Math.Sqrt(1 - (b*b)/(a*a));
 
-			double r2 = s.Location.Len2();
-			double y2 = (a*a - r2)*b*b/(a*a - b*b);
-			double x2 = r2 - y2;
+			double theta = Math.Acos((a*(1 - e*e) - r)/(r*e));
 
-			return new Orbit {SemiMajorAxis = a, SemiMinorAxis = b, TransformAngle = Math.Atan2(-Math.Sqrt(y2), Math.Sqrt(x2))};
+			return new Orbit {SemiMajorAxis = a, SemiMinorAxis = b, TransformAngle = theta};
 		}
 
 		private void DrawOrbit(Graphics gr, Orbit orbit, Color color)
@@ -159,7 +153,7 @@ namespace Visualizer
 					gr.Restore(gs);
 				}
 			}
-			catch(OverflowException e)
+			catch(OverflowException)
 			{
 			}
 		}

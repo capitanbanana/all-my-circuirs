@@ -21,7 +21,7 @@ namespace ifpfc.VM
 		[Fact]
 		public void DisassembleEccentricMeetAndGreet()
 		{
-			string code = new Compiler(TestData.MeetAndGreet).Compile("EccentricMeetAndGreetEngine");
+			string code = new Compiler(TestData.EccentricMeetAndGreet).Compile("EccentricMeetAndGreetEngine");
 			File.WriteAllText(@"..\..\VM\EccentricMeetAndGreetEngine.cs", code);
 		}
 	}
