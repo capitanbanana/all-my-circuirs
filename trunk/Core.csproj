@@ -69,6 +69,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Compile Include="Logic\MeetAndGreet\MeetAndGreetSolver.cs" />
+    <Compile Include="Logic\MeetAndGreet\MeetAndGreetState.cs" />
     <Compile Include="Logic\Physics_Test.cs" />
     <Compile Include="Orbit.cs" />
     <Compile Include="VM\Compiler.cs" />

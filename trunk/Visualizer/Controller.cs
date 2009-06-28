@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using ifpfc;
 using ifpfc.Logic;
+using ifpfc.Logic.Hohmann;
 using ifpfc.VM;
 
 namespace Visualizer
@@ -11,7 +12,13 @@ namespace Visualizer
 	{
 		public Controller(ProblemDescription problem)
 		{
-			vm = new HohmannsEngine(117, problem.ScenarioNumber, problem.ScenarioNumber);
+			if (problem.Solver is HohmannSolver)
+				vm = new HohmannsEngine(117, problem.ScenarioNumber, problem.ScenarioNumber);
+			else if (problem.Solver is MeetAndGreetSolver)
+				vm = new MeetAndGreetEngine(117, problem.ScenarioNumber, problem.ScenarioNumber);
+			else 
+				throw new ArgumentException("неизвестный солвер!");
+
 			solverDriver = new Driver(problem.Solver);
 			new Thread(Simulate) { Name = "Симулятор", IsBackground  = true }.Start();
 		}
