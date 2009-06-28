@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace Visualizer
 {
@@ -32,25 +31,5 @@ namespace Visualizer
 				return SemiMajorAxis * (1 - e);
 			}
 		}	
-	}
-
-	public struct Sattelite
-	{
-		public string Name;
-		public Location Location;
-		public Orbit Orbit;
-	}
-
-	// Все параметры задаются в системе единиц СИ
-	public interface IVisualizerState
-	{
-		//диаметр видимой части Вселенной, используется для масштабирования картинки
-		double UniverseDiameter { get; }
-		
-		//состояние управляемого спутника
-		Sattelite Voyager { get; }
-
-		//сосотяния целей
-		IEnumerable<Sattelite> Targets { get; }
 	}
 }

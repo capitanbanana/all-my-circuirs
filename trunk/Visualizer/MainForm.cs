@@ -6,12 +6,13 @@ using ifpfc.Logic.Hohmann;
 
 namespace Visualizer
 {
-	internal partial class MainForm : Form, IVisualizer
+	internal partial class MainForm : Form
 	{
-		private readonly VisualizerStateDataSource ds_ = new VisualizerStateDataSource();
+		private readonly VisualizerState ds_;
 		private IController currentController_;
 		private bool nowRunning_;
 		private readonly CanvasPanel pnlCanvas;
+		private readonly Timer renderTimer = new Timer { Interval = 50 };
 
 		public MainForm()
 		{
@@ -19,9 +20,12 @@ namespace Visualizer
 
 			splitContainer1.SplitterDistance = splitContainer1.Panel1.Height;
 
-			pnlCanvas = new CanvasPanel(ds_) { Parent = splitContainer1.Panel1 };
+			pnlCanvas = new CanvasPanel { Parent = splitContainer1.Panel1 };
 
 			SetUpSolversCombobox();
+
+			renderTimer.Tick += (sender, args) => Render();
+			renderTimer.Start();
 		}
 
 		private void SetUpSolversCombobox()
@@ -52,7 +56,7 @@ namespace Visualizer
 			{
 				var problem = (ProblemDescription)cmbxSolvers_.ComboBox.SelectedValue;
 				if (problem == null) return;
-				currentController_ = new Controller(problem, this);
+				currentController_ = new Controller(problem);
 				SetRunningState(true);
 			};
 		}
@@ -68,34 +72,49 @@ namespace Visualizer
 		private void btnRun__Click(object sender, EventArgs e)
 		{
 			if (currentController_ == null) return;
-			if (nowRunning_)
-			{
-				currentController_.SetSimulationMode(SimulationMode.Manual);
-				SetRunningState(false);
-			}
-			else
-			{
-				currentController_.SetSimulationMode(SimulationMode.Manual);
-				SetRunningState(true);
-			}
+			SetRunningState(!nowRunning_);
 		}
 
 		private void btnBackward__Click(object sender, EventArgs e)
 		{
-			if (currentController_ == null) return;
-			currentController_.StepBackward();
+			Step(-smallStep);
 		}
 
 		private void btnForward__Click(object sender, EventArgs e)
 		{
-			if (currentController_ == null) return;
-			currentController_.StepForward();
+			Step(smallStep);
 		}
 
-		public void Render(VisualizerState state)
+		private void btnFastBackward_Click(object sender, EventArgs e)
 		{
-			ds_.UpdateState(state);
-			pnlCanvas.Invalidate();
+			Step(-giantStep);
 		}
+
+		private void btnFastForward_Click(object sender, EventArgs e)
+		{
+			Step(giantStep);
+		}
+
+		private void Step(int stepSize)
+		{
+			if (currentController_ == null) return;
+			currentController_.Step(stepSize);
+		}
+
+		public void Render()
+		{
+			if (currentController_ == null)
+				return;
+			if (nowRunning_)
+				currentController_.Step(smallStep);
+			toolStripStatusLabel1.Text = string.Format(
+				"Московское время {1} тиков, просимулировано {0} тиков",
+				currentController_.TicksSimulated,
+				currentController_.CurrentTime);
+			pnlCanvas.Render(currentController_.CurrentState);
+		}
+
+		private const int smallStep = 10;
+		private const int giantStep = 500;
 	}
 }

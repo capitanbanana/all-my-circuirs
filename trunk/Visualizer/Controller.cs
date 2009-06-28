@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
+using System.Threading;
+using ifpfc;
 using ifpfc.Logic;
 using ifpfc.VM;
 
@@ -8,64 +9,53 @@ namespace Visualizer
 {
 	internal class Controller : IController
 	{
-		public Controller(ProblemDescription problem, IVisualizer visualizer)
+		public Controller(ProblemDescription problem)
 		{
 			vm = new HohmannsEngine(117, problem.ScenarioNumber, problem.ScenarioNumber);
 			solverDriver = new Driver(problem.Solver);
-			this.visualizer = visualizer;
-			simulationTimer.Tick += (sender, args) => StepForward();
-			simulationTimer.Start();
+			new Thread(Simulate) { Name = "Симулятор", IsBackground  = true }.Start();
 		}
 		
-		public void StepForward()
+		public void Step(int stepSize)
 		{
-			CurrentTime++;
+			CurrentTime += stepSize;
+			if (CurrentTime < 0)
+				CurrentTime = 0;
+			if (CurrentTime >= history.Count)
+				CurrentTime = history.Count;
 		}
 
-		public void StepBackward()
-		{
-			CurrentTime--;
-		}
-
-		public void SetSimulationMode(SimulationMode mode)
-		{
-			simulationTimer.Enabled = mode == SimulationMode.Automatic;
-		}
-
-		private void Simulate()
-		{
-			Vector dv = lastSolverOutput ?? Vector.Zero;
-			double[] outPorts = vm.RunTimeStep(dv);
-			lastSolverOutput = !solverDriver.IsEnd() ? solverDriver.RunStep(outPorts) : Vector.Zero;
-			history.Add(solverDriver.UnderlyingSolver.State);
-		}
-
-		private int CurrentTime
-		{
-			get { return currentTime; }
-			set
-			{
-				currentTime = Math.Max(0, value);
-				if (currentTime >= history.Count)
-					Simulate();
-				visualizer.Render(solverDriver.UnderlyingSolver.GetVisualizerState(CurrentState));
-			}
-		}
-
-		private LogicState CurrentState
+		public VisualizerState CurrentState
 		{
 			get
 			{
-				return history[currentTime - 1];
+				int index = CurrentTime - 1;
+				if ((index < 0) || (index >= history.Count))
+					return null;
+				return history[index];
 			}
 		}
 
-		private readonly Timer simulationTimer = new Timer { Interval = 500 };
-		private readonly IList<LogicState> history = new List<LogicState>();
-		private int currentTime;
+		public int CurrentTime { get; private set; }
+		public int TicksSimulated { get; private set; }
+
+		private void Simulate()
+		{
+			while (TicksSimulated < endOfTheWorld)
+			{
+				Vector dv = lastSolverOutput ?? Vector.Zero;
+				double[] outPorts = vm.RunTimeStep(dv);
+				lastSolverOutput = !solverDriver.IsEnd() ? solverDriver.RunStep(outPorts) : Vector.Zero;
+				history.Add(solverDriver.UnderlyingSolver.VisualizerState);
+				TicksSimulated++;
+			}
+		}
+
+		private const int endOfTheWorld = 30000000;
+
+		private readonly IList<VisualizerState> history = new List<VisualizerState>();
 		private Vector? lastSolverOutput;
 		private readonly IVirtualMachine vm;
 		private readonly IProblemSolverDriver solverDriver;
-		private readonly IVisualizer visualizer;
 	}
 }
