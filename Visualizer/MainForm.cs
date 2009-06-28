@@ -46,6 +46,18 @@ namespace Visualizer
 				new KeyValuePair<string, ProblemDescription>(
 					"Hohmann - 4", new ProblemDescription(@"..\..\..\ProblemVMImages\bin1.obf", new HohmannSolver(), 1004)
 				),
+				new KeyValuePair<string, ProblemDescription>(
+					"MeetAndGreet - 1", new ProblemDescription(@"..\..\..\ProblemVMImages\bin2.obf", new MeetAndGreetSolver(), 2001)
+				),
+				new KeyValuePair<string, ProblemDescription>(
+					"MeetAndGreet - 2", new ProblemDescription(@"..\..\..\ProblemVMImages\bin2.obf", new MeetAndGreetSolver(), 2002)
+				),
+				new KeyValuePair<string, ProblemDescription>(
+					"MeetAndGreet - 3", new ProblemDescription(@"..\..\..\ProblemVMImages\bin2.obf", new MeetAndGreetSolver(), 2003)
+				),
+				new KeyValuePair<string, ProblemDescription>(
+					"MeetAndGreet - 4", new ProblemDescription(@"..\..\..\ProblemVMImages\bin2.obf", new MeetAndGreetSolver(), 2004)
+				),
 			});
 			cmbxSolvers_.ComboBox.DataSource = scenarios;
 			cmbxSolvers_.ComboBox.DisplayMember = "Key";
