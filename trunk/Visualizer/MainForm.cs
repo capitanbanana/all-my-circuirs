@@ -59,6 +59,8 @@ namespace Visualizer
 				currentController_ = new Controller(problem);
 				SetRunningState(true);
 			};
+
+			ShowCurrentSpeed();
 		}
 
 		private void SetRunningState(bool nowRunning)
@@ -77,22 +79,18 @@ namespace Visualizer
 
 		private void btnBackward__Click(object sender, EventArgs e)
 		{
-			Step(-smallStep);
+			Step(-step);
 		}
 
 		private void btnForward__Click(object sender, EventArgs e)
 		{
-			Step(smallStep);
+			Step(step);
 		}
 
-		private void btnFastBackward_Click(object sender, EventArgs e)
+		private void setSpeedButton_Click(object sender, EventArgs e)
 		{
-			Step(-giantStep);
-		}
-
-		private void btnFastForward_Click(object sender, EventArgs e)
-		{
-			Step(giantStep);
+			int.TryParse(tbSpeed.Text, out step);
+			ShowCurrentSpeed();
 		}
 
 		private void Step(int stepSize)
@@ -101,12 +99,17 @@ namespace Visualizer
 			currentController_.Step(stepSize);
 		}
 
+		private void ShowCurrentSpeed()
+		{
+			tbSpeed.Text = step.ToString();
+		}
+
 		public void Render()
 		{
 			if (currentController_ == null)
 				return;
 			if (nowRunning_)
-				currentController_.Step(smallStep);
+				currentController_.Step(step);
 			toolStripStatusLabel1.Text = string.Format(
 				"Московское время {1} тиков, просимулировано {0} тиков",
 				currentController_.TicksSimulated,
@@ -114,7 +117,6 @@ namespace Visualizer
 			pnlCanvas.Render(currentController_.CurrentState);
 		}
 
-		private const int smallStep = 10;
-		private const int giantStep = 500;
+		private int step = 100;
 	}
 }

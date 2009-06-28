@@ -46,14 +46,15 @@
 			this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
 			this.cmbxSolvers_ = new System.Windows.Forms.ToolStripComboBox();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-			this.btnFastBackward = new System.Windows.Forms.ToolStripButton();
 			this.btnBackward_ = new System.Windows.Forms.ToolStripButton();
 			this.btnRun_ = new System.Windows.Forms.ToolStripButton();
 			this.btnForward_ = new System.Windows.Forms.ToolStripButton();
-			this.btnFastForward = new System.Windows.Forms.ToolStripButton();
+			this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.tbSpeed = new System.Windows.Forms.ToolStripTextBox();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.pgVisualizer = new System.Windows.Forms.PropertyGrid();
+			this.setSpeedButton = new System.Windows.Forms.ToolStripButton();
 			this.menuStrip1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
@@ -67,7 +68,7 @@
             this.orbitToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(840, 24);
+			this.menuStrip1.Size = new System.Drawing.Size(939, 24);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -81,9 +82,9 @@
 			// 
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-			this.statusStrip1.Location = new System.Drawing.Point(0, 634);
+			this.statusStrip1.Location = new System.Drawing.Point(0, 713);
 			this.statusStrip1.Name = "statusStrip1";
-			this.statusStrip1.Size = new System.Drawing.Size(840, 22);
+			this.statusStrip1.Size = new System.Drawing.Size(939, 22);
 			this.statusStrip1.TabIndex = 1;
 			this.statusStrip1.Text = "statusStrip1";
 			// 
@@ -109,15 +110,16 @@
             this.toolStripLabel1,
             this.cmbxSolvers_,
             this.toolStripSeparator2,
-            this.btnFastBackward,
             this.btnBackward_,
             this.btnRun_,
             this.btnForward_,
-            this.btnFastForward,
-            this.toolStripSeparator3});
+            this.toolStripSeparator3,
+            this.toolStripLabel2,
+            this.tbSpeed,
+            this.setSpeedButton});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 24);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(840, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(939, 25);
 			this.toolStrip1.TabIndex = 2;
 			this.toolStrip1.Text = "toolStrip1";
 			// 
@@ -212,16 +214,6 @@
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
 			// 
-			// btnFastBackward
-			// 
-			this.btnFastBackward.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.btnFastBackward.Image = ((System.Drawing.Image)(resources.GetObject("btnFastBackward.Image")));
-			this.btnFastBackward.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.btnFastBackward.Name = "btnFastBackward";
-			this.btnFastBackward.Size = new System.Drawing.Size(27, 22);
-			this.btnFastBackward.Text = "<<";
-			this.btnFastBackward.Click += new System.EventHandler(this.btnFastBackward_Click);
-			// 
 			// btnBackward_
 			// 
 			this.btnBackward_.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -252,20 +244,21 @@
 			this.btnForward_.Text = ">";
 			this.btnForward_.Click += new System.EventHandler(this.btnForward__Click);
 			// 
-			// btnFastForward
+			// toolStripLabel2
 			// 
-			this.btnFastForward.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.btnFastForward.Image = ((System.Drawing.Image)(resources.GetObject("btnFastForward.Image")));
-			this.btnFastForward.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.btnFastForward.Name = "btnFastForward";
-			this.btnFastForward.Size = new System.Drawing.Size(27, 22);
-			this.btnFastForward.Text = ">>";
-			this.btnFastForward.Click += new System.EventHandler(this.btnFastForward_Click);
+			this.toolStripLabel2.Name = "toolStripLabel2";
+			this.toolStripLabel2.Size = new System.Drawing.Size(145, 22);
+			this.toolStripLabel2.Text = "Скорость в тиках за шаг: ";
 			// 
 			// toolStripSeparator3
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
 			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+			// 
+			// tbSpeed
+			// 
+			this.tbSpeed.Name = "tbSpeed";
+			this.tbSpeed.Size = new System.Drawing.Size(100, 25);
 			// 
 			// splitContainer1
 			// 
@@ -277,8 +270,8 @@
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.pgVisualizer);
-			this.splitContainer1.Size = new System.Drawing.Size(840, 585);
-			this.splitContainer1.SplitterDistance = 575;
+			this.splitContainer1.Size = new System.Drawing.Size(939, 664);
+			this.splitContainer1.SplitterDistance = 642;
 			this.splitContainer1.TabIndex = 3;
 			// 
 			// pgVisualizer
@@ -286,14 +279,24 @@
 			this.pgVisualizer.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pgVisualizer.Location = new System.Drawing.Point(0, 0);
 			this.pgVisualizer.Name = "pgVisualizer";
-			this.pgVisualizer.Size = new System.Drawing.Size(261, 585);
+			this.pgVisualizer.Size = new System.Drawing.Size(293, 664);
 			this.pgVisualizer.TabIndex = 0;
+			// 
+			// setSpeedButton
+			// 
+			this.setSpeedButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.setSpeedButton.Image = ((System.Drawing.Image)(resources.GetObject("setSpeedButton.Image")));
+			this.setSpeedButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.setSpeedButton.Name = "setSpeedButton";
+			this.setSpeedButton.Size = new System.Drawing.Size(100, 22);
+			this.setSpeedButton.Text = "Задать скорость";
+			this.setSpeedButton.Click += new System.EventHandler(this.setSpeedButton_Click);
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(840, 656);
+			this.ClientSize = new System.Drawing.Size(939, 735);
 			this.Controls.Add(this.splitContainer1);
 			this.Controls.Add(this.toolStrip1);
 			this.Controls.Add(this.statusStrip1);
@@ -340,8 +343,9 @@
 		private System.Windows.Forms.ToolStripButton btnForward_;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.PropertyGrid pgVisualizer;
-		private System.Windows.Forms.ToolStripButton btnFastBackward;
-		private System.Windows.Forms.ToolStripButton btnFastForward;
+		private System.Windows.Forms.ToolStripLabel toolStripLabel2;
+		private System.Windows.Forms.ToolStripTextBox tbSpeed;
+		private System.Windows.Forms.ToolStripButton setSpeedButton;
 	}
 }
 
