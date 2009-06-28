@@ -12,10 +12,10 @@ namespace ifpfc.Logic.MeetAndGreet
 		private static readonly ILog log = LogManager.GetLogger(typeof (MeetAndGreetSolver_Test));
 
 		[Fact]
-		public void Fly2001()
+		public void Fly200x()
 		{
 			XmlConfigurator.Configure();
-			var vm = new MeetAndGreetEngine(117, 2001, 2001);
+			var vm = new MeetAndGreetEngine(117, 2003, 2003);
 			var driver = new Driver(new MeetAndGreetSolver());
 			var dv = new Vector(0, 0);
 			int goodTime = 0;

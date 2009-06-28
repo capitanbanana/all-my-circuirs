@@ -18,7 +18,6 @@ namespace ifpfc.Logic.MeetAndGreet
 		{
 			//проверить, что крутимся в одну сторону
 
-			SolverLogger.Log(string.Format("DistanceToTarget: {0}", s.ST.Len()));
 
 			Vector nextV;
 			Vector nextPos;
@@ -55,20 +54,34 @@ namespace ifpfc.Logic.MeetAndGreet
 			}
 
 			if (algoState == HohmannAlgoState.Jumping)
-				if (((int)s.ST.Len() < 150))
+				if (((int)s.ST.Len() < 500))
 				{
 					algoState = HohmannAlgoState.Finishing;
 					//var desirableV = GetDvForSecondJump(nextPos.Len());
 					//var dv = GetDV(desirableV);
 					//return dv;
 					double desirableV = Math.Sqrt(Physics.mu/r1);// *1.0001;
-					Vector dv = (1 - desirableV/s.V.Len())*s.V;
+					//return GetDV(desirableV);
+					var desirableVector = new Vector(desirableV * s.Sy / s.S.Len(), -desirableV * s.Sx / s.S.Len());
+					Vector dv = s.V - desirableVector;
+//					Vector dv = (1 - desirableV/s.V.Len())*s.V;
 					return dv;
 				}
+				else
+					SolverLogger.Log("DISTANCE TO = " + s.ST.Len());
 			if (algoState == HohmannAlgoState.Finishing)
 			{
-				SolverLogger.Log(string.Format("Gagarin: {0} Orbit={1} V={2} OrbitV={3}", s.S, s.S.Len(), s.V.Len(), Math.Sqrt(Physics.mu / s.S.Len())));
-				SolverLogger.Log(string.Format("Target : {0} Orbit={1} V={2}", s.T, s.TargetOrbitR, Math.Sqrt(Physics.mu / s.TargetOrbitR)));
+				double myOrbit = s.S.Len();
+				double myOrbitV = Math.Sqrt(Physics.mu / myOrbit);
+				double myV = s.V.Len();
+				double hisOrbitV = Math.Sqrt(Physics.mu / s.TargetOrbitR);
+				SolverLogger.Log(string.Format("Gagarin: {0} Orbit={1} V={2} OrbitV={3}", s.S, myOrbit, myV, myOrbitV));
+				SolverLogger.Log(string.Format("Target : {0} Orbit={1} V={2}", s.T, s.TargetOrbitR, hisOrbitV));
+				SolverLogger.Log(string.Format("Summary: ErrV = {0} ErrOrbit={1} DistanceToTarget={2}", 
+					s.V.Len() - myOrbitV,
+					myOrbit - s.TargetOrbitR,
+					s.ST.Len()
+					));
 			}
 
 			return new Vector(0, 0);
