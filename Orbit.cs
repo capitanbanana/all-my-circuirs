@@ -1,6 +1,6 @@
 using System;
 
-namespace Visualizer
+namespace ifpfc
 {
 	public struct Location
 	{

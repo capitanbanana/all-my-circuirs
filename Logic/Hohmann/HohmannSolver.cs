@@ -66,11 +66,16 @@ namespace ifpfc.Logic.Hohmann
 			get
 			{
 				return new VisualizerState(
+					3*s.TargetOrbitR,
 					new Sattelite(
 						"Гагарин",
 						new Vector(s.Sx, s.Sy),
 						new Vector(s.Vx, s.Vy)),
-					Enumerable.Empty<Sattelite>());
+					Enumerable.Empty<Sattelite>(),
+					new[]
+						{
+							new Orbit { SemiMajorAxis = s.TargetOrbitR, SemiMinorAxis = s.TargetOrbitR },
+						});
 			}
 		}
 
