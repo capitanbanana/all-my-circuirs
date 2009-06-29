@@ -57,15 +57,7 @@ namespace ifpfc.Logic.MeetAndGreet
 				if (((int)s.ST.Len() < 500))
 				{
 					algoState = HohmannAlgoState.Finishing;
-					//var desirableV = GetDvForSecondJump(nextPos.Len());
-					//var dv = GetDV(desirableV);
-					//return dv;
-					double desirableV = Math.Sqrt(Physics.mu/r1);// *1.0001;
-					//return GetDV(desirableV);
-					var desirableVector = new Vector(desirableV * s.Sy / s.S.Len(), -desirableV * s.Sx / s.S.Len());
-					Vector dv = s.V - desirableVector;
-//					Vector dv = (1 - desirableV/s.V.Len())*s.V;
-					return dv;
+					return GetStabilizingJump(s.V, s.S);
 				}
 				else
 					SolverLogger.Log("DISTANCE TO = " + s.ST.Len());
@@ -85,6 +77,13 @@ namespace ifpfc.Logic.MeetAndGreet
 			}
 
 			return new Vector(0, 0);
+		}
+
+		private Vector GetStabilizingJump(Vector currentV, Vector currentPos)
+		{
+			double desirableV = Math.Sqrt(Physics.mu / currentPos.Len());
+			var desirableVector = new Vector(desirableV * currentPos.y / currentPos.Len(), -desirableV * currentPos.x / currentPos.Len());
+			return currentV - desirableVector;
 		}
 
 		protected override void FillState(VisualizerState state)

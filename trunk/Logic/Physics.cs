@@ -14,19 +14,20 @@ namespace ifpfc.Logic
 			var startPeriod = CalculateOrbitPeriod(rStart);
 			var directJumpDoubleTime = startPeriod*Math.Pow((rStart + rTarget)/2/rStart, 3.0/2.0);
 			var targetPeriod = CalculateOrbitPeriod(rTarget);
-			int i = 0;
+			int i = 1;
+			//waitTime += targetPeriod;
 			while (2 * waitTime < directJumpDoubleTime)
 			{
 				waitTime += targetPeriod;
 				i++;
 			}
-			Console.WriteLine(i);
+			//SolverLogger.Log("Оборотов = " + i);
 			return 2 * rStart * Math.Pow((2 * waitTime - directJumpDoubleTime) / startPeriod, 2.0 / 3.0) - rTarget;
 		}
 
-		private static double CalculateOrbitPeriod(double rStart)
+		private static double CalculateOrbitPeriod(double r)
 		{
-			return rStart*rStart/Math.Sqrt(mu*rStart);
+			return 2*Math.PI * Math.Sqrt(r*r*r / mu);
 		}
 
 		public static Orbit CalculateOrbit(Vector pos, Vector v)
@@ -43,8 +44,23 @@ namespace ifpfc.Logic
 			double a = (mu*pos.Len())/(2*mu - v.Len2()*pos.Len());
 			double e = vr/(mu*Math.Sin(theta)/H);
 			double b = a*Math.Sqrt(1 - e*e);
-			SolverLogger.Log("H = " + H);
-			return new Orbit {SemiMajorAxis = a, SemiMinorAxis = b, TransformAngle = orbitAngle + Math.PI/2};
+			//SolverLogger.Log("H = " + H);
+			return new Orbit {SemiMajorAxis = a, SemiMinorAxis = b, TransformAngle = orbitAngle};
+		}
+
+		public static Vector GetStabilizingJump(Vector currentV, Vector currentPos)
+		{
+			Vector newP;
+			Vector newV;
+			Forecast(currentPos, currentV, Vector.Zero, out newP, out newV);
+			double desirableV = Math.Sqrt(mu / newP.Len());
+			var desirableVector = GetTangentVector(newP, desirableV);
+			return currentV - desirableVector;
+		}
+
+		public static Vector GetTangentVector(Vector pos, double v)
+		{
+			return new Vector(v * pos.y / pos.Len(), -v * pos.x / pos.Len());
 		}
 
 
@@ -65,5 +81,13 @@ namespace ifpfc.Logic
 			//var phi = Math.PI + pos.PolarAngle;
 			//return new Vector(alen*Math.Cos(phi), alen*Math.Sin(phi));
 		}
+
+		public static Vector CalculateHohmannJump(Vector pos, Vector v, double targetR)
+		{
+			var r = pos.Len();
+			var desirableV = Math.Sqrt(2 * mu * targetR / (r * (r + targetR)));
+			return v - GetTangentVector(pos, desirableV);
+		}
+
 	}
 }

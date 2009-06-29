@@ -136,5 +136,7 @@ namespace ifpfc.Logic.MeetAndGreet
 		{
 			return Math.Sqrt(2 * Physics.mu * r1 / (r0 * (r0 + r1)));
 		}
+
+
 	}
 }

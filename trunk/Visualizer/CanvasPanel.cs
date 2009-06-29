@@ -115,24 +115,6 @@ namespace Visualizer
 			}
 		}
 
-		private static Orbit CalculateSatteliteOrbit(Sattelite s)
-		{
-			// большая полуось a выводится из vis-viva equation
-			double v2 = s.Speed.Len2();
-			double r = s.Location.Len();
-			double tmp = 2*Physics.mu/r;
-			double a = Physics.mu/(tmp - v2);
-
-			double r_ = 2*a - r;
-			double b = 2*r*Math.Sqrt(r*r_)/(r + r_);
-
-			double e = Math.Sqrt(1 - (b*b)/(a*a));
-
-			double theta = Math.Acos((a*(1 - e*e) - r)/(r*e));
-
-			return new Orbit {SemiMajorAxis = a, SemiMinorAxis = b, TransformAngle = theta};
-		}
-
 		private void DrawOrbit(Graphics gr, Orbit orbit, Color color)
 		{
 			try
@@ -140,7 +122,7 @@ namespace Visualizer
 				if (orbit.SemiMajorAxis > 0)
 				{
 					var gs = gr.Save();
-					var transformAngle = (float)(-1 * orbit.TransformAngle * (180.0F / Math.PI));
+					var transformAngle = (float)(-1 * (orbit.TransformAngle + Math.PI/2) * (180.0F / Math.PI));
 					gr.RotateTransform(transformAngle, MatrixOrder.Prepend);
 
 					orbitPen_.Color = color;

@@ -74,6 +74,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <Compile Include="Logic\EccentricMeetAndGreet\EccentricMeetAndGreetSolver.cs" />
+    <Compile Include="Logic\EccentricMeetAndGreet\EccentricMeetAndGreetSolver_Test.cs" />
     <Compile Include="Logic\EccentricMeetAndGreet\NumericCalculus.cs" />
     <Compile Include="Logic\MeetAndGreet\MeetAndGreetSolver.Stuff.cs" />
     <Compile Include="Logic\MeetAndGreet\MeetAndGreetSolver_Test.cs" />
