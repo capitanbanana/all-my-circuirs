@@ -9,18 +9,37 @@ namespace ifpfc.Logic
 		public const double mu = G*M;
 		public const double R = 6.357e6;
 
+		public static Orbit CalculateOrbit(Vector pos, Vector v)
+		{
+			double alpha = pos.PolarAngle;
+			double beta = v.PolarAngle;
+			double vAngle = Math.PI/2 - (alpha - beta);
+			double vr = v.Len()*Math.Sin(vAngle);
+			double vt = v.Len()*Math.Cos(vAngle);
+			double H = vt*pos.Len();
+			double theta = Math.Atan2(vr, vt - mu/H);
+			double orbitAngle = theta + alpha - Math.PI;
+
+			double a = (mu*pos.Len())/(2*mu - v.Len2()*pos.Len());
+			double e = vr/(mu*Math.Sin(theta)/H);
+			double b = a*Math.Sqrt(1 - e*e);
+			SolverLogger.Log("H = " + H);
+			return new Orbit {SemiMajorAxis = a, SemiMinorAxis = b, TransformAngle = orbitAngle + Math.PI/2};
+		}
+
+
 		public static void Forecast(Vector oldP, Vector oldV, Vector dv, out Vector newP, out Vector newV)
 		{
-			var oldA = CalculateA(oldP);
+			Vector oldA = CalculateA(oldP);
 			newP = oldP + oldV + 0.5*(oldA + dv);
-			var newA = CalculateA(newP);
+			Vector newA = CalculateA(newP);
 			newV = oldV + dv + 0.5*(oldA + newA);
 		}
 
 		public static Vector CalculateA(Vector pos)
 		{
-			var alen = mu / pos.Len2();
-			return alen * pos.Norm();
+			double alen = mu/pos.Len2();
+			return alen*pos.Norm();
 
 			//avk
 			//var phi = Math.PI + pos.PolarAngle;

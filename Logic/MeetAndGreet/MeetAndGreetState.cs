@@ -4,6 +4,7 @@ namespace ifpfc.Logic.MeetAndGreet
 	{
 		public Vector T { get; set; }
 		public Vector ST { get; set; }
+		public Vector TV { get; set; }
 
 		public double CurrentOrbitR
 		{

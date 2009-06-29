@@ -14,10 +14,18 @@ namespace ifpfc.Logic.EccentricMeetAndGreet
 		{
 			newState.ST = new Vector(outPorts[4], outPorts[5]);
 			newState.T = newState.S - newState.ST;
+			if (s != null) newState.TV = newState.T - s.T;
 		}
 
 		public override Vector CalculateDV()
 		{
+			double myOrbit = s.S.Len();
+			double myOrbitV = Math.Sqrt(Physics.mu / myOrbit);
+			double myV = s.V.Len();
+//			SolverLogger.Log(string.Format("Gagarin: {0} Orbit={1} V={2} OrbitV={3}", s.S, myOrbit, myV, myOrbitV));
+//			SolverLogger.Log(string.Format("ErrV = {0}",
+//				s.V.Len() - myOrbitV
+//				));
 			return new Vector(0, 0);
 		}
 
@@ -41,7 +49,9 @@ namespace ifpfc.Logic.EccentricMeetAndGreet
 			}
 			state.UniverseDiameter = coef*1000*1000;
 			state.Targets = new[] {new Sattelite("Target", s.T, new Vector(0, 0))};
+			state.FixedOrbits = new[] { Physics.CalculateOrbit(s.T, s.TV), Physics.CalculateOrbit(s.S, s.V) };
 		}
+
 
 		private readonly int scenarioNumber;
 	}
