@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -86,6 +86,8 @@ namespace Visualizer
 				var problem = (ProblemDescription)cmbxSolvers_.ComboBox.SelectedValue;
 				if (problem == null) return;
 				pnlCanvas.ClearTrace();
+				if (currentController_ != null)
+				  currentController_.Close();
 				currentController_ = new Controller(problem);
 				SetRunningState(true);
 			};

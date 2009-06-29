@@ -24,8 +24,14 @@ namespace Visualizer
 				throw new ArgumentException("неизвестный солвер!");
 
 			solverDriver = new Driver(problem.Solver);
-			new Thread(Simulate) { Name = "Симулятор", IsBackground  = true }.Start();
+			simulationThread = new Thread(Simulate) { Name = "Симулятор", IsBackground  = true }; 
+      simulationThread.Start();
 		}
+		
+		public void Close()
+		{
+      simulationThread.Abort();
+    }
 		
 		public void Step(int stepSize)
 		{
@@ -68,5 +74,7 @@ namespace Visualizer
 		private Vector? lastSolverOutput;
 		private readonly IVirtualMachine vm;
 		private readonly IProblemSolverDriver solverDriver;
+		
+		private Thread simulationThread;
 	}
 }
