@@ -18,7 +18,7 @@ namespace ifpfc.Logic
 			double vt = v.Len()*Math.Cos(vAngle);
 			double H = vt*pos.Len();
 			double theta = Math.Atan2(vr, vt - mu/H);
-			double orbitAngle = theta + alpha - Math.PI;
+			double orbitAngle = -(theta + alpha - Math.PI);
 
 			double a = (mu*pos.Len())/(2*mu - v.Len2()*pos.Len());
 			double e = vr/(mu*Math.Sin(theta)/H);
