@@ -20,5 +20,12 @@ namespace ifpfc.Logic
 			Console.WriteLine(p);
 			Console.WriteLine(v);
 		}
+
+		[Fact]
+		public void CalcTempOrbit()
+		{
+			var orbit = Physics.CalculateTempOrbit(-1, 1000000, 1000001);
+			Console.WriteLine(orbit);
+		}
 	}
 }
