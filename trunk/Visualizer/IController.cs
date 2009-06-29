@@ -4,7 +4,8 @@ namespace Visualizer
 {
 	internal interface IController
 	{
-		void Step(int stepSize);
+		void Close();
+    void Step(int stepSize);
 		VisualizerState CurrentState { get; }
 		int TicksSimulated { get; }
 		int CurrentTime { get; }
