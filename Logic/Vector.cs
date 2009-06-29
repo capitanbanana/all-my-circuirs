@@ -15,7 +15,7 @@ namespace ifpfc.Logic
 
 		public override string ToString()
 		{
-			return string.Format("{0:F0}, {1:F0}, L:{2:F2}", x, y, Len());
+			return string.Format("{0:F3}, {1:F3}, L:{2:F2}", x, y, Len());
 		}
 
 		public double PolarAngle
