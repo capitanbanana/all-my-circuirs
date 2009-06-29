@@ -10,21 +10,21 @@ namespace ifpfc.Logic.EccentricMeetAndGreet
 		{
 			double left = 0;
 			double right = c;
-			double f, ro;
+			double f, r;
 			do
 			{
-				ro = (left + right) / 2;
-				f = F(ro, r0, r1, c);
-				if (f < 0) left = ro;
-				if (f > 0) right = ro;
+				r = (left + right) / 2;
+				f = F(r, r0, r1, c);
+				if (f < 0) left = r;
+				if (f > 0) right = r;
 			} while (Math.Abs(f) > Eps);
-			return ro;
+			return r;
 		}
 
-		private static double F(double ro, double r0, double r1, double c)
+		private static double F(double r, double r0, double r1, double c)
 		{
-			var t1 = ro + r0;
-			var t2 = ro + r1;
+			var t1 = r + r0;
+			var t2 = r + r1;
 			return Math.Sqrt(t1 * t1 * t1) + Math.Sqrt(t2 * t2 * t2) - c;
 		}
 	}
