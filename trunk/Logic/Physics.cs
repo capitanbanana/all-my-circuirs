@@ -9,6 +9,26 @@ namespace ifpfc.Logic
 		public const double mu = G*M;
 		public const double R = 6.357e6;
 
+		public static double CalculateTempOrbit(double waitTime, double rStart, double rTarget)
+		{
+			var startPeriod = CalculateOrbitPeriod(rStart);
+			var directJumpDoubleTime = startPeriod*Math.Pow((rStart + rTarget)/2/rStart, 3.0/2.0);
+			var targetPeriod = CalculateOrbitPeriod(rTarget);
+			int i = 0;
+			while (2 * waitTime < directJumpDoubleTime)
+			{
+				waitTime += targetPeriod;
+				i++;
+			}
+			Console.WriteLine(i);
+			return 2 * rStart * Math.Pow((2 * waitTime - directJumpDoubleTime) / startPeriod, 2.0 / 3.0) - rTarget;
+		}
+
+		private static double CalculateOrbitPeriod(double rStart)
+		{
+			return rStart*rStart/Math.Sqrt(mu*rStart);
+		}
+
 		public static Orbit CalculateOrbit(Vector pos, Vector v)
 		{
 			double alpha = pos.PolarAngle;
