@@ -33,6 +33,7 @@ namespace ifpfc
 		public double b { get { return SemiMinorAxis; } }
 		public double c { get { return Math.Sqrt(a * a - b * b); } }
 		public double e { get { return c / a; } }
+		public double p { get { return b * b / a; } }
 
 		//phi in [-pi, pi]
 		public double S(double ro, double phi)
@@ -44,6 +45,12 @@ namespace ifpfc
 			double s1 = (s0 - ro * ro * Math.Sin(2 * phi)) / 4;
 			double s = s1 + (xa * Math.Sqrt(1 - xa * xa) + a * a * Math.Asin(xa)) * b / (2 * a);
 			return s;
+		}
+
+		public double S(double phi)
+		{
+			double ro = p / (1 - e * Math.Cos(phi));
+			return S(ro, phi);
 		}
 	}
 }
